@@ -1,0 +1,386 @@
+% \iffalse meta-comment
+%
+% Copyright (C) 2022 by Julien Labbé <Julien.Labbe@univ-grenoble-alpes.fr>
+%
+%
+% This file may be distributed and/or modified under the conditions of the LaTeX
+% Project Public License, either version 1.3 of this license or (at your option)
+% any later version. The latest version of this license is in:
+%
+%
+% http://www.latex-project.org/lppl.txt
+%
+% and version 1.3 or later is part of all distributions of LaTeX version
+% 2005/12/01 or later.
+%
+% Note : this file was created from the version 2.1 of the dtxtut tutorial,
+% maintained by Scott Pakin.
+%
+% \fi
+%
+% \iffalse
+%<*driver>
+\ProvidesFile{altsubsup.dtx}
+%</driver>
+%<package> \NeedsTeXFormat{LaTeX2e}
+%<package> \ProvidesPackage{altsubsup}
+%<*package>
+[2022/01/23 v1.0 .dtx altsubsup file]
+%</package>
+%
+%<*driver>
+\documentclass{ltxdoc}
+\usepackage{altsubsup}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+\EnableCrossrefs         
+\CodelineIndex
+\RecordChanges
+% \OnlyDescription
+\begin{document}
+\DocInput{altsubsup.dtx}
+\PrintChanges
+\PrintIndex
+\end{document}
+%</driver>
+% \fi
+%
+% \CheckSum{109}
+%
+% \CharacterTable
+% {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+% Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+% Digits        \0\1\2\3\4\5\6\7\8\9
+% Exclamation   \!     Double quote  \"     Hash (number) \#
+% Dollar        \$     Percent       \%     Ampersand     \&
+% Acute accent  \'     Left paren    \(     Right paren   \)
+% Asterisk      \*     Plus          \+     Comma         \,
+% Minus         \-     Point         \.     Solidus       \/
+% Colon         \:     Semicolon     \;     Less than     \<
+% Equals        \=     Greater than  \>     Question mark \?
+% Commercial at \@     Left bracket  \[     Backslash     \\
+% Right bracket \]     Circumflex    \^     Underscore    \_
+% Grave accent  \`     Left brace    \{     Vertical bar  \|
+% Right brace   \}     Tilde         \~}
+%
+%
+% \changes{v1.0}{2022/01/23}{Initial version}
+%
+% \GetFileInfo{altsubsup.dtx}
+%
+% \DoNotIndex{\newcommand,\newenvironment,\let}
+% \DoNotIndex{\#,\$,\%,\&,\@,\\,\{,\},\^,\_,\~,\ }
+% \DoNotIndex{\begingroup,\endgroup,\bgroup,\egroup}
+% \DoNotIndex{\catcode,\mathcode,\lccode,\lowercase}
+% \DoNotIndex{\relax,\expandafter,\endinput}
+% \DoNotIndex{\def,\edef,\gdef,\global,\newif,\ifx,\else,\fi}
+% \DoNotIndex{\@ifnextchar,\@let@token}
+% \DoNotIndex{\sb,\sp,\text}
+%
+% \title{The \textsf{altsubsup} package\thanks{This document
+% corresponds to \textsf{altsubsup}~\fileversion, dated \filedate.}}
+% \author{Julien Labb\'e \\ \texttt{Julien.Labbe@univ-grenoble-alpes.fr}}
+%
+% \maketitle
+%
+% \begin{abstract}
+%   A \LaTeX{} package to write alternative and customisable subscripts and
+%   superscripts, with  square brackets.
+%
+%   Typical use:
+%   \begin{center}
+%     \begin{tabular}{ccc}
+%         |x_[roman]^{italic}|& $\longrightarrow$ & $x_[roman]^{italic}$ \\[6pt]
+%         |x_{italic}^[roman]|& $\longrightarrow$ & $x_{italic}^[roman]$
+%       \end{tabular}
+%     \end{center}
+%   \end{abstract}
+%
+%   \tableofcontents{}
+%   \clearpage
+%
+%   \section{Introduction}
+%
+%   The \textsf{altsubsup} package allows to write alternate subscripts and
+%   superscripts, in math mode, with square brackets :
+%   \begin{center}
+%     |x_[my subscript]| \quad or \quad |x^[my superscript]|.
+%   \end{center}
+%   These alternate superscripts and superscripts are formatted by the commands
+%   set, respectively,  with |\SetAltSubscriptCommand| and
+%   |\SetAltSuperscriptCommand|. By default,  the |\text| command, from
+%   \textsf{amstext} (part of \textsf{amsmath}) is used. This gives:
+%   \begin{center}
+%     $x_[my subscript]$ \quad or \quad $x^[my superscript]$.
+%   \end{center}
+%
+%   This package redefine |_| and |^| symbols. Options allow to redefine both
+%   (by default), only subscript |_| symbol, or only superscript |^| symbol.
+%
+%   \section{Motivations}
+%
+%   Common typographic conventions\footnotemark{} use italic (sloping) type for
+%   physical quantities or mathematical variables and roman (upright) type for
+%   words or fixed numbers. For example, heat capacity at constant pressure should
+%   be printed $C_P$, but kinetic energy $E_[k]$ (instead of $E_k$) and relative
+%   permeability $\mu_[r]$ (instead of $\mu_r$). This can be obtainted in \LaTeX{}
+%   with |E_{\mathrm{k}}| and |\mu_{\mathrm{r}}|. This package allows to write them
+%   simply |E_[k]| and |\mu_[r]|.
+%   \footnotetext{See, for example: International Organization for
+%   Standardization. (2009). \emph{Quantities and units -- Part 1: General} (ISO
+%   Standard No. 80000-1:2009).
+%   \href{https://www.iso.org/standard/30669.html}{https://www.iso.org/standard/30669.html}.}
+%
+%   \section{Usage}
+%
+%   \DescribeMacro{\SetAltSubscriptCommand\marg{cmd}}
+%
+%   Set the command \meta{cmd} used to format square brackets subscripts
+%   |_[...]|. By default, \meta{cmd} is the |\text| command, provided by the
+%   \textsf{amstext} package (part of \textsf{amsmath} package).
+%
+%   \DescribeMacro{\SetAltSuperscriptCommand\marg{cmd}}
+%
+%   Set the command \meta{cmd} used to format square brackets superscripts
+%   |^[...]|. By default, \meta{cmd} is the |\text| command, provided by the
+%   \textsf{amstext} package (part of \textsf{amsmath} package).
+%
+%   \DescribeMacro{\SetAltSubSupCommands\marg{cmd}}
+%
+%   Set both square brackets subscripts and square brackets superscripts, with the
+%   same command \meta{cmd}.
+%
+%   \section{Options}
+%
+%   To load the package, add in your preamble:
+%   \begin{center}
+%     \begin{minipage}{0.7\linewidth}
+%       |\usepackage|\oarg{option}|{altsubsup}|
+%     \end{minipage}
+%   \end{center}
+%   Available values for \meta{option}:
+%   \begin{description}
+%    \item[|subscript|] redefine only the |_| subscript symbol.
+%    \item[|superscript|] redefine only the |^| superscript symbol.
+%    \item[|both|] redefine both |_| and |^| symbols (default).
+%   \end{description}
+%
+%   \section{Example}
+%
+%   The following input:
+%   \begin{center}\begin{minipage}{0.7\linewidth}
+% \begin{verbatim}
+% Default:
+% \begin{displaymath}
+%   x_a^b  \quad
+%   x_{braces sub}^{braces sup}  \quad
+%   x_[brackets sub]^{braces sup}  \quad
+%   x_{braces sub}^[brackets sup]  \quad
+%   x_[brackets sub]^[brackets sup]
+% \end{displaymath}
+%
+% New formats:
+% % \text from amstext package
+% % \color from xcolor package
+% \newcommand{\bluecolor}[1]{\text{\color{blue}#1}}
+% \newcommand{\redcolor}[1] {\text{\color{red}#1}}
+% \SetAltSubscriptCommand{\bluecolor}
+% \SetAltSuperscriptCommand{\redcolor}
+% \begin{displaymath}
+%   x_a^b  \quad
+%   x_{braces sub}^{braces sup}  \quad
+%   x_[brackets sub]^{braces sup}  \quad
+%   x_{braces sub}^[brackets sup]  \quad
+%   x_[brackets sub]^[brackets sup]
+% \end{displaymath}
+%
+% Same command for subscripts and superscripts:
+% \SetAltSubSupCommands{\mathbf}
+% \begin{displaymath}
+%   x_a^b  \quad
+%   x_{braces sub}^{braces sup}  \quad
+%   x_[brackets sub]^{braces sup}  \quad
+%   x_{braces sub}^[brackets sup]  \quad
+%   x_[brackets sub]^[brackets sup]
+% \end{displaymath}
+% \end{verbatim}
+%     \end{minipage}\end{center}
+%
+%   gives:
+%   \begin{center}\begin{minipage}{0.7\linewidth}
+% Default:
+% \begin{displaymath}
+%   x_a^b  \quad
+%   x_{braces sub}^{braces sup}  \quad
+%   x_[brackets sub]^{braces sup}  \quad
+%   x_{braces sub}^[brackets sup]  \quad
+%   x_[brackets sub]^[brackets sup]
+% \end{displaymath}
+%
+% New formats:
+% \newcommand{\bluecolor}[1]{\text{\color{blue}#1}}
+% \newcommand{\redcolor}[1] {\text{\color{red}#1}}
+% \SetAltSubscriptCommand{\bluecolor}
+% \SetAltSuperscriptCommand{\redcolor}
+% \begin{displaymath}
+%   x_a^b  \quad
+%   x_{braces sub}^{braces sup}  \quad
+%   x_[brackets sub]^{braces sup}  \quad
+%   x_{braces sub}^[brackets sup]  \quad
+%   x_[brackets sub]^[brackets sup]
+% \end{displaymath}
+%
+% Same command for subscripts and superscripts:
+% \SetAltSubSupCommands{\mathbf}
+% \begin{displaymath}
+%   x_a^b  \quad
+%   x_{braces sub}^{braces sup}  \quad
+%   x_[brackets sub]^{braces sup}  \quad
+%   x_{braces sub}^[brackets sup]  \quad
+%   x_[brackets sub]^[brackets sup]
+% \end{displaymath}
+%     \end{minipage}\end{center}
+%
+%   \section{Known issues}
+%
+%   The use of the prime symbol |'| can raise the \emph{Double superscript}
+%   error message. This is normally fixed (|x'^2| gives $x'^2$ correctly).
+%   If needed, enclose the expression with |{...}|. In particular, |x'^[sup]|
+%   doesn't work, and should be written: |{x'}^[sup]|.
+%
+%   \section{Alternatives}
+%
+%   Two other packages give similar functionalities:
+%   \begin{description}
+%    \item[the \textsf{subtext} package]
+%     (\href{https://www.ctan.org/pkg/subtext}{https://www.ctan.org/pkg/subtext}),
+%     by Palle J\o{}rgensen, formats |_[...]| subscripts with |\text| (the
+%     differences, is that the \textsf{altsubsup} package works both for
+%     subscripts and superscripts, allows to customise the commands, and
+%     redefine symbols only in math mode);
+%    \item[the \textsf{spbmark} package]
+%     (\href{https://www.ctan.org/pkg/spbmark}{https://www.ctan.org/pkg/spbmark}),
+%     by Qu Yi, allows a complete customisation of subscripts and superscripts.
+%   \end{description}
+%
+%   \StopEventually{}
+%   \section{Implementation}
+%
+%   \subsection*{Package declaration}
+%
+%    \begin{macrocode}
+\ProvidesPackage{altsubsup}[2022/01/23, v1.0, Alternative and customisable
+subscripts and superscripts, with  square brackets.]
+%    \end{macrocode}
+%
+% \subsection*{Flags declaration}
+%
+% Determine the commands that will be redefined.
+%
+%    \begin{macrocode}
+\newif\ifaltsbsp@subscript    \altsbsp@subscripttrue
+\newif\ifaltsbsp@superscript  \altsbsp@superscripttrue
+%    \end{macrocode}
+%
+% \subsection*{Options declarations and processing}
+%
+%    \begin{macrocode}
+\DeclareOption{subscript}   {\altsbsp@subscripttrue   \altsbsp@superscriptfalse}
+\DeclareOption{superscript} {\altsbsp@subscriptfalse  \altsbsp@superscripttrue }
+\DeclareOption{both}        {\altsbsp@subscripttrue   \altsbsp@superscripttrue }
+\DeclareOption*{\PackageWarning{altsubsup}{Unknown option \CurrentOption.}}
+\ProcessOptions\relax
+%    \end{macrocode}
+%
+% \subsection*{Redefine catcodes and make symbols active in mathmode}
+%
+%    \begin{macrocode}
+\AtBeginDocument{%
+  \ifaltsbsp@subscript    \catcode`\_=12 \mathcode`\_="8000 \fi%
+  \ifaltsbsp@superscript  \catcode`\^=12 \mathcode`\^="8000 \fi%
+}
+%    \end{macrocode}
+%
+% \subsection*{Redefinition of the subscript symbol}
+%
+%    \begin{macrocode}
+\ifaltsbsp@subscript%
+\begingroup\lccode`\~=`\_\lowercase{\endgroup%
+  \def~}{\@ifnextchar[% dummy bracket ]
+  {\altsbsp@subwrapper}% bracket wrapper
+  {\sb}% standard form
+}%
+\fi
+%    \end{macrocode}
+%
+% \subsection*{Redefinition of the superscript symbol}
+%
+%    \begin{macrocode}
+\ifaltsbsp@superscript%
+\begingroup\lccode`\~=`\^\lowercase{\endgroup%
+  \def~}{\@ifnextchar[% dummy bracket ]
+  {\altsbsp@supwrapper}% bracket wrapper
+  {\sp}% standard form
+}%
+\fi
+%    \end{macrocode}
+%
+% \subsection*{User macros}
+%
+% \begin{macro}{\SetAltSubscriptCommand}
+%    \begin{macrocode}
+\def\SetAltSubscriptCommand#1{\let\altsbsp@altsubcmd#1}%
+\def\altsbsp@subwrapper[#1]{\sb{\altsbsp@altsubcmd{#1}}}%
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\SetAltSuperscriptCommand}
+%    \begin{macrocode}
+\def\SetAltSuperscriptCommand#1{\let\altsbsp@altsupcmd#1}%
+\def\altsbsp@supwrapper[#1]{\sp{\altsbsp@altsupcmd{#1}}}%
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\SetAltSubSupCommands}
+%    \begin{macrocode}
+\newcommand{\SetAltSubSupCommands}[1]{%
+  \SetAltSubscriptCommand{#1}%
+  \SetAltSuperscriptCommand{#1}%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \subsection*{Set default commands}
+%
+%    \begin{macrocode}
+\RequirePackage{amstext}%
+\SetAltSubSupCommands{\text}%
+%    \end{macrocode}
+%
+% \subsection*{Fix prime symbol}
+%
+%    \begin{macrocode}
+\ifaltsbsp@superscript%
+\begingroup \catcode`\^=12%
+\gdef\altsbsp@pr@m@s{% copy of \@pr@m@s code from latex.ltx
+  \ifx'\@let@token
+    \expandafter\pr@@@s
+  \else
+    \ifx^\@let@token
+      \expandafter\expandafter\expandafter\pr@@@t
+    \else
+      \egroup
+    \fi
+  \fi}
+\endgroup
+\let\pr@m@s\altsbsp@pr@m@s
+\fi
+%    \end{macrocode}
+%
+% \subsection*{End of the package}
+%
+%    \begin{macrocode}
+\endinput
+%    \end{macrocode}
+% \Finale
+\endinput

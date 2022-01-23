@@ -1,0 +1,80 @@
+%%
+%% This is file `altsubsup.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% altsubsup.dtx  (with options: `package')
+%% 
+%% This is a generated file.
+%% 
+%% Copyright (C) 2022 by Julien Labbé <Julien.Labbe@univ-grenoble-alpes.fr>
+%% 
+%% This file may be distributed and/or modified under the conditions of
+%% the LaTeX Project Public License, either version 1.3 of this license
+%% or (at your option) any later version.  The latest version of this
+%% license is in:
+%% 
+%%    http://www.latex-project.org/lppl.txt
+%% 
+%% and version 1.3 or later is part of all distributions of LaTeX version
+%% 2005/12/01 or later.
+%% 
+ \NeedsTeXFormat{LaTeX2e}
+ \ProvidesPackage{altsubsup}
+[2022/01/23 v1.0 .dtx altsubsup file]
+\ProvidesPackage{altsubsup}[2022/01/23, v1.0, Alternative and customisable
+subscripts and superscripts, with  square brackets.]
+\newif\ifaltsbsp@subscript    \altsbsp@subscripttrue
+\newif\ifaltsbsp@superscript  \altsbsp@superscripttrue
+\DeclareOption{subscript}   {\altsbsp@subscripttrue   \altsbsp@superscriptfalse}
+\DeclareOption{superscript} {\altsbsp@subscriptfalse  \altsbsp@superscripttrue }
+\DeclareOption{both}        {\altsbsp@subscripttrue   \altsbsp@superscripttrue }
+\DeclareOption*{\PackageWarning{altsubsup}{Unknown option \CurrentOption.}}
+\ProcessOptions\relax
+\AtBeginDocument{%
+  \ifaltsbsp@subscript    \catcode`\_=12 \mathcode`\_="8000 \fi%
+  \ifaltsbsp@superscript  \catcode`\^=12 \mathcode`\^="8000 \fi%
+}
+\ifaltsbsp@subscript%
+\begingroup\lccode`\~=`\_\lowercase{\endgroup%
+  \def~}{\@ifnextchar[% dummy bracket ]
+  {\altsbsp@subwrapper}% bracket wrapper
+  {\sb}% standard form
+}%
+\fi
+\ifaltsbsp@superscript%
+\begingroup\lccode`\~=`\^\lowercase{\endgroup%
+  \def~}{\@ifnextchar[% dummy bracket ]
+  {\altsbsp@supwrapper}% bracket wrapper
+  {\sp}% standard form
+}%
+\fi
+\def\SetAltSubscriptCommand#1{\let\altsbsp@altsubcmd#1}%
+\def\altsbsp@subwrapper[#1]{\sb{\altsbsp@altsubcmd{#1}}}%
+\def\SetAltSuperscriptCommand#1{\let\altsbsp@altsupcmd#1}%
+\def\altsbsp@supwrapper[#1]{\sp{\altsbsp@altsupcmd{#1}}}%
+\newcommand{\SetAltSubSupCommands}[1]{%
+  \SetAltSubscriptCommand{#1}%
+  \SetAltSuperscriptCommand{#1}%
+}
+\RequirePackage{amstext}%
+\SetAltSubSupCommands{\text}%
+\ifaltsbsp@superscript%
+\begingroup \catcode`\^=12%
+\gdef\altsbsp@pr@m@s{% copy of \@pr@m@s code from latex.ltx
+  \ifx'\@let@token
+    \expandafter\pr@@@s
+  \else
+    \ifx^\@let@token
+      \expandafter\expandafter\expandafter\pr@@@t
+    \else
+      \egroup
+    \fi
+  \fi}
+\endgroup
+\let\pr@m@s\altsbsp@pr@m@s
+\fi
+\endinput
+%%
+%% End of file `altsubsup.sty'.

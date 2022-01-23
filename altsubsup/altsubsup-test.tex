@@ -1,0 +1,107 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Test of the LaTeX altsubsup package
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass{article}
+\title{Test of the \textsf{altsubsup} package}
+\author{Julien Labb\'e}
+
+\usepackage{altsubsup}
+\usepackage{xcolor}
+% \usepackage[both]{altsubsup}
+% \usepackage[subscript]{altsubsup}
+% \usepackage[superscript]{altsubsup}
+
+\begin{document}
+\maketitle
+
+\renewcommand{\arraystretch}{1.5}
+
+\section{Loading the package}
+
+\begin{verbatim}
+\usepackage{altsubsup}
+\end{verbatim}
+
+\section{Using the package}
+
+\subsection{Default configuration}
+
+\begin{center}
+  \begin{tabular}{lccc}
+    \hline
+    input & \verb|x_a^b| & \verb|x_{ab, c}^{de, f}|   & \verb|x_[ab, c]^[de, f]| \\
+    result & $x_a^b$ & $x_{ab, c}^{de, f}$  & $x_[ab, c]^[de, f]$ \\
+    \hline
+  \end{tabular}
+\end{center}
+
+\subsection{Change superscript and subscript commands}
+
+\begin{verbatim}
+% \text command from amstext package
+% \color command from xcolor package
+\newcommand{\bluecolor}[1]{\text{\color{blue}#1}}
+\newcommand{\redcolor}[1] {\text{\color{red}#1}}
+\SetAltSubscriptCommand{\bluecolor}
+\SetAltSuperscriptCommand{\redcolor}
+\end{verbatim}
+
+% \text command from amstext package
+% \color command from xcolor package
+\newcommand{\bluecolor}[1]{\text{\color{blue}#1}}
+\newcommand{\redcolor}[1] {\text{\color{red}#1}}
+\SetAltSubscriptCommand{\bluecolor}
+\SetAltSuperscriptCommand{\redcolor}
+
+\begin{center}
+  \begin{tabular}{lccc}
+    \hline
+    input & \verb|x_a^b| & \verb|x_{ab, c}^{de, f}|   & \verb|x_[ab, c]^[de, f]| \\
+    result & $x_a^b$ & $x_{ab, c}^{de, f}$  & $x_[ab, c]^[de, f]$ \\
+    \hline
+  \end{tabular}
+\end{center}
+
+\begin{verbatim}
+\SetAltSubSupCommands{\mathbf}
+\end{verbatim}
+\SetAltSubSupCommands{\mathbf}
+
+\begin{center}
+  \begin{tabular}{lccc}
+    \hline
+    input & \verb|x_a^b| & \verb|x_{ab, c}^{de, f}|   & \verb|x_[ab, c]^[de, f]| \\
+    result & $x_a^b$ & $x_{ab, c}^{de, f}$  & $x_[ab, c]^[de, f]$ \\
+    \hline
+  \end{tabular}
+\end{center}
+
+% restore defaults
+\SetAltSubSupCommands{\text}
+
+\section{Ensure that prime symbol's still working}
+
+\subsection{Standard command}
+
+\begin{center}
+  \begin{tabular}{lccc}
+    \hline
+    input & \verb|x'^2| & \verb|x''^2| & \verb|x'''^{sup}| \\
+    result & $x'^2$ & $x''^2$ & $x'''^{sup}$  \\
+    \hline
+  \end{tabular}
+\end{center}
+
+\subsection{Alternate brackets command}
+
+\begin{center}
+  \begin{tabular}{lcc}
+    \hline
+    input & \verb|x'^[sup]| & \verb|{x'}^[sup]| \\
+    result & $x'^[sup]$ & ${x'}^[sup]$ \\
+    \hline
+  \end{tabular}
+\end{center}
+
+\end{document}
