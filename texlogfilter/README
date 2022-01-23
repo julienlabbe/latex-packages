@@ -1,0 +1,65 @@
+texlogfilter
+  NAME
+    texlogfilter -- filter latex engines output or log file
+
+  SYNOPSIS
+        texlogfilter [options] file
+
+        latex file.tex < /dev/null | texlogfilter
+
+        texlogfilter --help
+
+  DESCRIPTION
+    Filter latex engines output or log file. For latex, pdflatex, lualatex
+    or xelatex output or log file.
+
+    Without input file, standard input is used.
+
+  OPTIONS
+        --help                 : print this help
+
+        --box                  : show box warnings
+        --no-box               : mask box warnings
+
+        --ref                  : show reference/citation warnings
+        --no-ref               : mask reference/citation warnings
+
+        --filename             : print current file name
+        --no-filename          : do not print current file name
+        --files-ext=string     : regex pattern used to match files extension (default: $extpattern)
+
+        --skips                : indicate skipped lines
+        --no-skips             : mask skipped lines
+        --skip-marker=string   : marker used to indicate skipped lines (defaut: $skipmarker)
+
+        --add-filter=string    : add user filter pattern (as perl regular expression)
+
+        --full-log             : show full log (don't filter - only colorize latex engine output)
+
+        --errors-color=string
+        --warnings-color=string
+        --infos-color=string
+        --skips-color=string
+        --user-color=string    : colors used for errors, warnings, informations and skipped lines
+
+  ALTERNATIVES
+    texlog-extract : <https://www.ctan.org/pkg/texlog-extract>
+    texloganalyser : <https://www.ctan.org/pkg/texloganalyser>
+
+  AUTHOR
+    Written by Julien Labbé.
+
+    Inspired from a script given by Martin Scharrer on tex.stackexchange.com
+    (<https://tex.stackexchange.com/questions/10558/use-latexmk-to-filter-th
+    e-log-file>).
+
+  LICENCE
+    This work may be distributed and/or modified under the conditions of the
+    LaTeX Project Public License, either version 1.3 of this license or (at
+    your option) any later version. The latest version of this license is in
+    <http://www.latex-project.org/lppl.txt> and version 1.3 or later is part
+    of all distributions of LaTeX version 2005/12/01 or later.
+
+  HISTORY
+    2021, november : initial version.
+

@@ -6,3 +6,7 @@ LaTeX packages and other utilities.
 
 A LaTeX package to write alternative and customisable subscripts and
 superscripts, with square brackets.
+
+## perl script texlogfilter
+
+Filter latex engines output or log file.
