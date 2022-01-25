@@ -16,10 +16,12 @@ use Getopt::Long;
 use Term::ANSIColor;
 
 my $name = "texlogfilter";
+my $version = "1.0";
 
 # options
 my @userfilters;
 my $showhelp = 0;
+my $showversion = 0;
 my $showrefmsg = 1;
 my $showboxmsg = 1;
 my $showskips = 0;
@@ -46,7 +48,8 @@ GetOptions ("box!"              => \$showboxmsg,    # show box warnings
             "user-color=s"      => \$usrcolor,      # color for content filtered by pattern added with --add-filter
             "filename!"         => \$printfilename, # print current file name
             "full-log!"         => \$fulllog,       # show full log (don't filter - only colorize latex engine output)
-            "help"              => \$showhelp);
+            "help"              => \$showhelp,
+            "version"           => \$showversion);
 
 if ($printfilename == -1 && $fulllog) { $printfilename = 0; } # don't show filename for full log, if not explicitly required
 
@@ -75,7 +78,8 @@ Without input file, standard input is used. Use on latex engine output with:
     latex file.tex < /dev/null | $name
 
 Options:
- --help                 : print this help
+ --help                 : print this help and exit
+ --version              : print version and exit
 
  --box                  : show box warnings
  --no-box               : mask box warnings
@@ -101,6 +105,11 @@ Options:
  --skips-color=string
  --user-color=string    : colors used for errors, warnings, informations and skipped lines
 EOT
+}
+
+sub print_version {
+    # print version
+    print $version,"\n";
 }
 
 sub print_filename {
@@ -159,6 +168,12 @@ sub handle_info {
 # print help
 if ( $showhelp ) {
   print_help();
+  exit(1);
+}
+
+# print version
+if ( $showversion ) {
+  print_version();
   exit(1);
 }
 
@@ -254,7 +269,8 @@ Without input file, standard input is used.
 
 =head2 OPTIONS
 
-    --help                 : print this help
+    --help                 : print this help and exit
+    --version              : print version and exit
 
     --box                  : show box warnings
     --no-box               : mask box warnings
@@ -305,11 +321,15 @@ any later version. The latest version of this license is in
 L<http://www.latex-project.org/lppl.txt> and version 1.3 or later is part of all
 distributions of LaTeX version 2005/12/01 or later.
 
+=head2 VERSION
+
+$version
+
 =head2 HISTORY
 
 =over
 
-=item 2021, november : initial version.
+=item 2021, november : version 1.0 (initial version).
 
 =back
 
