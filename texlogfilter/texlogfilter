@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
 ################################################################################
-# texlogfilter -- filter latex engines output or log file
+# texlogfilter - filter latex engines output or log file
 # Julien Labbé, 2021
 #
 # This work may be distributed and/or modified under the conditions of the LaTeX
@@ -69,7 +69,7 @@ my $samecontext = -1;   # expected values: 0 (continuing previous line) / 1 (lin
 sub print_help {
     # print usage
     print <<EOT;
-Usage: $name [options] log
+Usage: $name [options] file.log
 
 Filter latex engines output or log file. log is latex, pdflatex, lualatex or
 xelatex output or log file.
@@ -250,22 +250,20 @@ __END__
 
 =head2 NAME
 
-texlogfilter -- filter latex engines output or log file
+texlogfilter - filter latex engines output or log file
 
 =head2 SYNOPSIS
 
-    texlogfilter [options] file
-
-    latex file.tex < /dev/null | texlogfilter
-
-    texlogfilter --help
+    texlogfilter [options] file.log
 
 =head2 DESCRIPTION
 
 Filter latex engines output or log file. For latex, pdflatex, lualatex or
 xelatex output or log file.
 
-Without input file, standard input is used.
+Without input file, standard input is used.  Use on latex engine output with:
+
+    latex file.tex < /dev/null | texlogfilter
 
 =head2 OPTIONS
 
@@ -300,9 +298,9 @@ Without input file, standard input is used.
 
 =over
 
-=item B<texlog-extract> : L<https://www.ctan.org/pkg/texlog-extract>
+=item * B<texlog-extract> : L<https://www.ctan.org/pkg/texlog-extract>
 
-=item B<texloganalyser> : L<https://www.ctan.org/pkg/texloganalyser>
+=item * B<texloganalyser> : L<https://www.ctan.org/pkg/texloganalyser>
 
 =back
 
@@ -310,8 +308,8 @@ Without input file, standard input is used.
 
 Written by Julien Labbé.
 
-Inspired from a script given by Martin Scharrer on tex.stackexchange.com
-(L<https://tex.stackexchange.com/questions/10558/use-latexmk-to-filter-the-log-file>).
+Inspired from a script given by Martin Scharrer on Stack Exchange network (see
+L<https://tex.stackexchange.com/a/10564>).
 
 =head2 LICENCE
 
@@ -329,7 +327,22 @@ distributions of LaTeX version 2005/12/01 or later.
 
 =over
 
-=item 2021, november : version 1.0 (initial version).
+=item * 2021, november : version 1.0 (initial version).
+
+=back
+
+=cut
+
+=head2 DOCUMENTATION
+
+The documentation is integrated, writtent in Plain Old Documentation (POD)
+format. Exported versions are available, in the following files:
+
+=over
+
+=item * F<README>: created with perldoc.
+
+=item * F<texlogfilter.html>: created with pod2html.
 
 =back
 

@@ -1,22 +1,22 @@
 texlogfilter
   NAME
-    texlogfilter -- filter latex engines output or log file
+    texlogfilter - filter latex engines output or log file
 
   SYNOPSIS
-        texlogfilter [options] file
-
-        latex file.tex < /dev/null | texlogfilter
-
-        texlogfilter --help
+        texlogfilter [options] file.log
 
   DESCRIPTION
     Filter latex engines output or log file. For latex, pdflatex, lualatex
     or xelatex output or log file.
 
-    Without input file, standard input is used.
+    Without input file, standard input is used. Use on latex engine output
+    with:
+
+        latex file.tex < /dev/null | texlogfilter
 
   OPTIONS
-        --help                 : print this help
+        --help                 : print this help and exit
+        --version              : print version and exit
 
         --box                  : show box warnings
         --no-box               : mask box warnings
@@ -26,11 +26,11 @@ texlogfilter
 
         --filename             : print current file name
         --no-filename          : do not print current file name
-        --files-ext=string     : regex pattern used to match files extension (default: $extpattern)
+        --files-ext=string     : regex pattern used to match files extension (default: tex|sty|cls|bib)
 
         --skips                : indicate skipped lines
         --no-skips             : mask skipped lines
-        --skip-marker=string   : marker used to indicate skipped lines (defaut: $skipmarker)
+        --skip-marker=string   : marker used to indicate skipped lines (defaut: ...)
 
         --add-filter=string    : add user filter pattern (as perl regular expression)
 
@@ -43,15 +43,15 @@ texlogfilter
         --user-color=string    : colors used for errors, warnings, informations and skipped lines
 
   ALTERNATIVES
-    texlog-extract : <https://www.ctan.org/pkg/texlog-extract>
-    texloganalyser : <https://www.ctan.org/pkg/texloganalyser>
+    *   texlog-extract : <https://www.ctan.org/pkg/texlog-extract>
+
+    *   texloganalyser : <https://www.ctan.org/pkg/texloganalyser>
 
   AUTHOR
     Written by Julien Labbé.
 
-    Inspired from a script given by Martin Scharrer on tex.stackexchange.com
-    (<https://tex.stackexchange.com/questions/10558/use-latexmk-to-filter-th
-    e-log-file>).
+    Inspired from a script given by Martin Scharrer on Stack Exchange
+    network (see <https://tex.stackexchange.com/a/10564>).
 
   LICENCE
     This work may be distributed and/or modified under the conditions of the
@@ -60,6 +60,17 @@ texlogfilter
     <http://www.latex-project.org/lppl.txt> and version 1.3 or later is part
     of all distributions of LaTeX version 2005/12/01 or later.
 
+  VERSION
+    1.0
+
   HISTORY
-    2021, november : initial version.
+    *   2021, november : version 1.0 (initial version).
+
+  DOCUMENTATION
+    The documentation is integrated, writtent in Plain Old Documentation
+    (POD) format. Exported versions are available, in the following files:
+
+    *   README: created with perldoc.
+
+    *   texlogfilter.html: created with pod2html.
 
