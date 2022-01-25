@@ -280,11 +280,11 @@ Without input file, standard input is used.
 
     --filename             : print current file name
     --no-filename          : do not print current file name
-    --files-ext=string     : regex pattern used to match files extension (default: $extpattern)
+    --files-ext=string     : regex pattern used to match files extension (default: tex|sty|cls|bib)
 
     --skips                : indicate skipped lines
     --no-skips             : mask skipped lines
-    --skip-marker=string   : marker used to indicate skipped lines (defaut: $skipmarker)
+    --skip-marker=string   : marker used to indicate skipped lines (defaut: ...)
 
     --add-filter=string    : add user filter pattern (as perl regular expression)
 
@@ -323,7 +323,7 @@ distributions of LaTeX version 2005/12/01 or later.
 
 =head2 VERSION
 
-$version
+1.0
 
 =head2 HISTORY
 
