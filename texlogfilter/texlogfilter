@@ -168,13 +168,13 @@ sub handle_info {
 # print help
 if ( $showhelp ) {
   print_help();
-  exit(1);
+  exit(0);
 }
 
 # print version
 if ( $showversion ) {
   print_version();
-  exit(1);
+  exit(0);
 }
 
 # main loop
