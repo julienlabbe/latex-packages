@@ -302,6 +302,8 @@ Without input file, standard input is used.  Use on latex engine output with:
 
 =item * B<texloganalyser> : L<https://www.ctan.org/pkg/texloganalyser>
 
+=item * B<texlogsieve> : L<https://ctan.org/pkg/texlogsieve>
+
 =back
 
 =head2 AUTHOR

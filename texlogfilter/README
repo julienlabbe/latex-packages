@@ -47,6 +47,8 @@ texlogfilter
 
     *   texloganalyser : <https://www.ctan.org/pkg/texloganalyser>
 
+    *   texlogsieve : <https://ctan.org/pkg/texlogsieve>
+
   AUTHOR
     Written by Julien Labbé.
 
