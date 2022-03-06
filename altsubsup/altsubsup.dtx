@@ -45,7 +45,7 @@
 %</driver>
 % \fi
 %
-% \CheckSum{109}
+% \CheckSum{123}
 %
 % \CharacterTable
 % {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
@@ -292,10 +292,17 @@ subscripts and superscripts, with  square brackets.]
 \ProcessOptions\relax
 %    \end{macrocode}
 %
-% \subsection*{Redefine catcodes and make symbols active in mathmode}
+% \subsection*{Backup standard superscript and subscript macros}
 %
 %    \begin{macrocode}
 \AtBeginDocument{%
+  \begingroup\catcode`\_=8 \global\let\altsbsp@standardsub=_\endgroup
+  \begingroup\catcode`\^=7 \global\let\altsbsp@standardsup=^\endgroup
+%    \end{macrocode}
+%
+% \subsection*{Redefine catcodes and make symbols active in mathmode}
+%
+%    \begin{macrocode}
   \ifaltsbsp@subscript    \catcode`\_=12 \mathcode`\_="8000 \fi%
   \ifaltsbsp@superscript  \catcode`\^=12 \mathcode`\^="8000 \fi%
 }
@@ -308,7 +315,7 @@ subscripts and superscripts, with  square brackets.]
 \begingroup\lccode`\~=`\_\lowercase{\endgroup%
   \def~}{\@ifnextchar[% dummy bracket ]
   {\altsbsp@subwrapper}% bracket wrapper
-  {\sb}% standard form
+  {\altsbsp@standardsub}% standard form
 }%
 \fi
 %    \end{macrocode}
@@ -320,7 +327,7 @@ subscripts and superscripts, with  square brackets.]
 \begingroup\lccode`\~=`\^\lowercase{\endgroup%
   \def~}{\@ifnextchar[% dummy bracket ]
   {\altsbsp@supwrapper}% bracket wrapper
-  {\sp}% standard form
+  {\altsbsp@standardsup}% standard form
 }%
 \fi
 %    \end{macrocode}
@@ -330,14 +337,14 @@ subscripts and superscripts, with  square brackets.]
 % \begin{macro}{\SetAltSubscriptCommand}
 %    \begin{macrocode}
 \def\SetAltSubscriptCommand#1{\let\altsbsp@altsubcmd#1}%
-\def\altsbsp@subwrapper[#1]{\sb{\altsbsp@altsubcmd{#1}}}%
+\def\altsbsp@subwrapper[#1]{\altsbsp@standardsub{\altsbsp@altsubcmd{#1}}}%
 %    \end{macrocode}
 % \end{macro}
 %
 % \begin{macro}{\SetAltSuperscriptCommand}
 %    \begin{macrocode}
 \def\SetAltSuperscriptCommand#1{\let\altsbsp@altsupcmd#1}%
-\def\altsbsp@supwrapper[#1]{\sp{\altsbsp@altsupcmd{#1}}}%
+\def\altsbsp@supwrapper[#1]{\altsbsp@standardsup{\altsbsp@altsupcmd{#1}}}%
 %    \end{macrocode}
 % \end{macro}
 %
