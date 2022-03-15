@@ -6,12 +6,8 @@
 \title{Test of the \textsf{altsubsup} + \textsf{spbmark} packages}
 \author{Julien Labb\'e}
 
-\usepackage{altsubsup}
-\usepackage[both]{spbmark}
+\usepackage[spbmark]{altsubsup}
 \usepackage{xcolor}
-% \usepackage[both]{altsubsup}
-% \usepackage[subscript]{altsubsup}
-% \usepackage[superscript]{altsubsup}
 
 \begin{document}
 \maketitle
@@ -21,8 +17,7 @@
 \section{Loading the packages}
 
 \begin{verbatim}
-\usepackage{altsubsup}
-\usepackage[both]{spbmark}
+\usepackage[spbmark]{altsubsup}
 \end{verbatim}
 
 \section{Using the package}
@@ -41,20 +36,12 @@
 \subsection{Change superscript and subscript commands}
 
 \begin{verbatim}
-% \text command from amstext package
-% \color command from xcolor package
-\newcommand{\bluecolor}[1]{\text{\color{blue}#1}}
-\newcommand{\redcolor}[1] {\text{\color{red}#1}}
-\SetAltSubscriptCommand{\bluecolor}
-\SetAltSuperscriptCommand{\redcolor}
+\defspbstyle{altsub}{cmd=\color{blue}}
+\defspbstyle{altsup}{cmd=\color{red}}
 \end{verbatim}
 
-% \text command from amstext package
-% \color command from xcolor package
-\newcommand{\bluecolor}[1]{\text{\color{blue}#1}}
-\newcommand{\redcolor}[1] {\text{\color{red}#1}}
-\SetAltSubscriptCommand{\bluecolor}
-\SetAltSuperscriptCommand{\redcolor}
+\defspbstyle{altsub}{cmd=\color{blue}}
+\defspbstyle{altsup}{cmd=\color{red}}
 
 \begin{center}
   \begin{tabular}{lccc}
@@ -81,6 +68,8 @@
 
 % restore defaults
 \SetAltSubSupCommands{\text}
+\defspbstyle{altsub}{}
+\defspbstyle{altsup}{}
 
 \section{Ensure that prime symbol's still working}
 

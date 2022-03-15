@@ -22,17 +22,25 @@
 %% 
  \NeedsTeXFormat{LaTeX2e}
  \ProvidesPackage{altsubsup}
-[2022/01/23 v1.0 .dtx altsubsup file]
-\ProvidesPackage{altsubsup}[2022/01/23, v1.0, Alternative and customisable
+[2022/03/15 v1.1 .dtx altsubsup file]
+
+\ProvidesPackage{altsubsup}[2022/03/15, v1.1, Alternative and customisable
 subscripts and superscripts, with  square brackets.]
 \newif\ifaltsbsp@subscript    \altsbsp@subscripttrue
 \newif\ifaltsbsp@superscript  \altsbsp@superscripttrue
+\newif\ifaltsbsp@spbmark      \altsbsp@spbmarkfalse
 \DeclareOption{subscript}   {\altsbsp@subscripttrue   \altsbsp@superscriptfalse}
 \DeclareOption{superscript} {\altsbsp@subscriptfalse  \altsbsp@superscripttrue }
 \DeclareOption{both}        {\altsbsp@subscripttrue   \altsbsp@superscripttrue }
+\DeclareOption{spbmark}     {\altsbsp@spbmarktrue}
 \DeclareOption*{\PackageWarning{altsubsup}{Unknown option \CurrentOption.}}
 \ProcessOptions\relax
+\ifaltsbsp@spbmark
+  \RequirePackage{spbmark}
+\fi
 \AtBeginDocument{%
+  \begingroup\catcode`\_=8 \global\let\altsbsp@standardsub=_\endgroup
+  \begingroup\catcode`\^=7 \global\let\altsbsp@standardsup=^\endgroup
   \ifaltsbsp@subscript    \catcode`\_=12 \mathcode`\_="8000 \fi%
   \ifaltsbsp@superscript  \catcode`\^=12 \mathcode`\^="8000 \fi%
 }
@@ -40,20 +48,30 @@ subscripts and superscripts, with  square brackets.]
 \begingroup\lccode`\~=`\_\lowercase{\endgroup%
   \def~}{\@ifnextchar[% dummy bracket ]
   {\altsbsp@subwrapper}% bracket wrapper
-  {\sb}% standard form
+  {\altsbsp@standardsub}% standard form
 }%
 \fi
 \ifaltsbsp@superscript%
 \begingroup\lccode`\~=`\^\lowercase{\endgroup%
   \def~}{\@ifnextchar[% dummy bracket ]
   {\altsbsp@supwrapper}% bracket wrapper
-  {\sp}% standard form
+  {\altsbsp@standardsup}% standard form
 }%
 \fi
 \def\SetAltSubscriptCommand#1{\let\altsbsp@altsubcmd#1}%
-\def\altsbsp@subwrapper[#1]{\sb{\altsbsp@altsubcmd{#1}}}%
+\ifaltsbsp@spbmark%
+  \defspbstyle{altsub}{}
+  \def\altsbsp@subwrapper[#1]{\sub[style=altsub]{\altsbsp@altsubcmd{#1}}}%
+\else
+  \def\altsbsp@subwrapper[#1]{\altsbsp@standardsub{\altsbsp@altsubcmd{#1}}}%
+\fi
 \def\SetAltSuperscriptCommand#1{\let\altsbsp@altsupcmd#1}%
-\def\altsbsp@supwrapper[#1]{\sp{\altsbsp@altsupcmd{#1}}}%
+\ifaltsbsp@spbmark%
+  \defspbstyle{altsup}{}
+  \def\altsbsp@supwrapper[#1]{\super[style=altsup]{\altsbsp@altsupcmd{#1}}}%
+\else
+  \def\altsbsp@supwrapper[#1]{\altsbsp@standardsup{\altsbsp@altsupcmd{#1}}}%
+\fi
 \newcommand{\SetAltSubSupCommands}[1]{%
   \SetAltSubscriptCommand{#1}%
   \SetAltSuperscriptCommand{#1}%

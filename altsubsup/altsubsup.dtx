@@ -25,15 +25,16 @@
 %<package> \NeedsTeXFormat{LaTeX2e}
 %<package> \ProvidesPackage{altsubsup}
 %<*package>
-[2022/01/23 v1.0 .dtx altsubsup file]
+[2022/03/15 v1.1 .dtx altsubsup file]
 %</package>
 %
 %<*driver>
 \documentclass{ltxdoc}
 \usepackage{altsubsup}
+\usepackage{spbmark}
 \usepackage[hidelinks]{hyperref}
 \usepackage{xcolor}
-\EnableCrossrefs         
+\EnableCrossrefs
 \CodelineIndex
 \RecordChanges
 % \OnlyDescription
@@ -45,7 +46,7 @@
 %</driver>
 % \fi
 %
-% \CheckSum{123}
+% \CheckSum{147}
 %
 % \CharacterTable
 % {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
@@ -64,7 +65,7 @@
 % Right brace   \}     Tilde         \~}
 %
 %
-% \changes{v1.0}{2022/01/23}{Initial version}
+% \changes{v1.0}{2022/01/23}{Initial version.}
 %
 % \GetFileInfo{altsubsup.dtx}
 %
@@ -92,83 +93,117 @@
 %     \begin{tabular}{ccc}
 %         |x_[roman]^{italic}|& $\longrightarrow$ & $x_[roman]^{italic}$ \\[6pt]
 %         |x_{italic}^[roman]|& $\longrightarrow$ & $x_{italic}^[roman]$
-%       \end{tabular}
-%     \end{center}
-%   \end{abstract}
-%
-%   \tableofcontents{}
-%   \clearpage
-%
-%   \section{Introduction}
-%
-%   The \textsf{altsubsup} package allows to write alternate subscripts and
-%   superscripts, in math mode, with square brackets :
-%   \begin{center}
-%     |x_[my subscript]| \quad or \quad |x^[my superscript]|.
+%     \end{tabular}
 %   \end{center}
-%   These alternate superscripts and superscripts are formatted by the commands
-%   set, respectively,  with |\SetAltSubscriptCommand| and
-%   |\SetAltSuperscriptCommand|. By default,  the |\text| command, from
-%   \textsf{amstext} (part of \textsf{amsmath}) is used. This gives:
-%   \begin{center}
-%     $x_[my subscript]$ \quad or \quad $x^[my superscript]$.
-%   \end{center}
+% \end{abstract}
 %
-%   This package redefine |_| and |^| symbols. Options allow to redefine both
-%   (by default), only subscript |_| symbol, or only superscript |^| symbol.
+% \tableofcontents{}
+% \clearpage
 %
-%   \section{Motivations}
+% \section{Introduction}
 %
-%   Common typographic conventions\footnotemark{} use italic (sloping) type for
-%   physical quantities or mathematical variables and roman (upright) type for
-%   words or fixed numbers. For example, heat capacity at constant pressure should
-%   be printed $C_P$, but kinetic energy $E_[k]$ (instead of $E_k$) and relative
-%   permeability $\mu_[r]$ (instead of $\mu_r$). This can be obtainted in \LaTeX{}
-%   with |E_{\mathrm{k}}| and |\mu_{\mathrm{r}}|. This package allows to write them
-%   simply |E_[k]| and |\mu_[r]|.
-%   \footnotetext{See, for example: International Organization for
-%   Standardization. (2009). \emph{Quantities and units -- Part 1: General} (ISO
-%   Standard No. 80000-1:2009).
-%   \href{https://www.iso.org/standard/30669.html}{https://www.iso.org/standard/30669.html}.}
+% The \textsf{altsubsup} package allows to write alternate subscripts and
+% superscripts, in math mode, with square brackets :
+% \begin{center}
+%   |x_[my subscript]| \quad or \quad |x^[my superscript]|.
+% \end{center}
+% These alternate superscripts and superscripts are formatted by the commands
+% set, respectively,  with |\SetAltSubscriptCommand| and
+% |\SetAltSuperscriptCommand|. By default,  the |\text| command, from
+% \textsf{amstext} (part of \textsf{amsmath}) is used. This gives:
+% \begin{center}
+%   $x_[my subscript]$ \quad or \quad $x^[my superscript]$.
+% \end{center}
 %
-%   \section{Usage}
+% This package redefine |_| and |^| symbols. Options allow to redefine both
+% (by default), only subscript |_| symbol, or only superscript |^| symbol.
 %
-%   \DescribeMacro{\SetAltSubscriptCommand\marg{cmd}}
+% \section{Motivations}
 %
-%   Set the command \meta{cmd} used to format square brackets subscripts
-%   |_[...]|. By default, \meta{cmd} is the |\text| command, provided by the
-%   \textsf{amstext} package (part of \textsf{amsmath} package).
+% Common typographic conventions\footnotemark{} use italic (sloping) type for
+% physical quantities or mathematical variables and roman (upright) type for
+% words or fixed numbers. For example, heat capacity at constant pressure should
+% be printed $C_P$, but kinetic energy $E_[k]$ (instead of $E_k$) and relative
+% permeability $\mu_[r]$ (instead of $\mu_r$). This can be obtainted in \LaTeX{}
+% with\footnotemark{} |E_{\mathrm{k}}| and |\mu_{\mathrm{r}}|. This package
+% allows to write them simply |E_[k]| and |\mu_[r]|.
+% \footnotetext{See, for example: International Organization for
+% Standardization. (2009). \emph{Quantities and units -- Part 1: General} (ISO
+% Standard No. 80000-1:2009).
+% \href{https://www.iso.org/standard/30669.html}{https://www.iso.org/standard/30669.html}.}
+% \footnotetext{Instead of \texttt{\textbackslash{}mathrm}, a best choice is
+% the \texttt{\textbackslash{}text} macro provided by \textsf{amsmath}
+% package, which, for example, handle spaces. It's the formatting macro used
+% by default by the \textsf{altsubsup} package.}
 %
-%   \DescribeMacro{\SetAltSuperscriptCommand\marg{cmd}}
+% \section{User interface}
 %
-%   Set the command \meta{cmd} used to format square brackets superscripts
-%   |^[...]|. By default, \meta{cmd} is the |\text| command, provided by the
-%   \textsf{amstext} package (part of \textsf{amsmath} package).
+% \subsection{Usage}
 %
-%   \DescribeMacro{\SetAltSubSupCommands\marg{cmd}}
+% \DescribeMacro{\SetAltSubscriptCommand\marg{cmd}}
 %
-%   Set both square brackets subscripts and square brackets superscripts, with the
-%   same command \meta{cmd}.
+% Set the command \meta{cmd} used to format square brackets subscripts
+% |_[...]|. By default, \meta{cmd} is the |\text| command, provided by the
+% \textsf{amstext} package (part of \textsf{amsmath} package).
 %
-%   \section{Options}
+% \DescribeMacro{\SetAltSuperscriptCommand\marg{cmd}}
 %
-%   To load the package, add in your preamble:
-%   \begin{center}
-%     \begin{minipage}{0.7\linewidth}
-%       |\usepackage|\oarg{option}|{altsubsup}|
-%     \end{minipage}
-%   \end{center}
-%   Available values for \meta{option}:
-%   \begin{description}
-%    \item[|subscript|] redefine only the |_| subscript symbol.
-%    \item[|superscript|] redefine only the |^| superscript symbol.
-%    \item[|both|] redefine both |_| and |^| symbols (default).
-%   \end{description}
+% Set the command \meta{cmd} used to format square brackets superscripts
+% |^[...]|. By default, \meta{cmd} is the |\text| command, provided by the
+% \textsf{amstext} package (part of \textsf{amsmath} package).
 %
-%   \section{Example}
+% \DescribeMacro{\SetAltSubSupCommands\marg{cmd}}
 %
-%   The following input:
-%   \begin{center}\begin{minipage}{0.7\linewidth}
+% Set both square brackets subscripts and square brackets superscripts, with the
+% same command \meta{cmd}.
+%
+% \pagebreak
+% \subsection{Options}
+%
+% To load the package, add in your preamble:
+% \begin{center}
+%   \begin{minipage}{0.7\linewidth}
+%     |\usepackage|\oarg{option}|{altsubsup}|
+%   \end{minipage}
+% \end{center}
+% Available values for \meta{option}:
+% \begin{description}
+%  \item[|subscript|] redefine only the |_| subscript symbol.
+%  \item[|superscript|] redefine only the |^| superscript symbol.
+%  \item[|both|] redefine both |_| and |^| symbols (default).
+%  \item[|spbmark|] use the \textsf{spbmark} package to handle bracket form of
+%  superscripts and superscripts (see below).
+% \end{description}
+%
+% \subsubsection*{\texttt{spbmark} option}
+%
+% The \textsf{spbmark} package
+% (\href{https://www.ctan.org/pkg/spbmark}{https://www.ctan.org/pkg/spbmark}),
+% by Qu Yi, allows a complete customisation of subscripts and superscripts.
+% With the |spbmark| option, the \textsf{altsubsup} package use the |\sub| and
+% |\super| macros of the \textsf{spbmark} package to handle subscripts and
+% superscripts in place of the standard |_| and |^| commands.
+%
+% Theses two macros are called with the respective |altsub| and |altsup| styles,
+% allowing simple customization (these styles are initially created empty).
+% For example, to display subscripts in blue and superscripts in red, use:
+% \begin{center}\begin{minipage}{0.7\linewidth}
+% \begin{verbatim}
+%   \defspbstyle{altsub}{cmd=\color{blue}}
+%   \defspbstyle{altsup}{cmd=\color{red}}
+% \end{verbatim}
+% \end{minipage}\end{center}
+%
+% A major limitation is that using simultaneously a subscript and a superscript gives
+% bad formatting (the \textsf{spbmark} macro for this is |\supersub|).
+% For example, |x_[sub]^[super]| gives $x\sub{\text{sub}}\super{\text{super}}$
+% instead of $x_[sub]^[super]$.
+%
+% \pagebreak
+% \section{Example}
+%
+% The following input:
+% \begin{center}\begin{minipage}{0.7\linewidth}
 % \begin{verbatim}
 % Default:
 % \begin{displaymath}
@@ -204,10 +239,10 @@
 %   x_[brackets sub]^[brackets sup]
 % \end{displaymath}
 % \end{verbatim}
-%     \end{minipage}\end{center}
+% \end{minipage}\end{center}
 %
-%   gives:
-%   \begin{center}\begin{minipage}{0.7\linewidth}
+% gives:
+% \begin{center}\begin{minipage}{0.7\linewidth}
 % Default:
 % \begin{displaymath}
 %   x_a^b  \quad
@@ -239,60 +274,84 @@
 %   x_{braces sub}^[brackets sup]  \quad
 %   x_[brackets sub]^[brackets sup]
 % \end{displaymath}
-%     \end{minipage}\end{center}
+% \end{minipage}\end{center}
 %
-%   \section{Known issues}
+% \section{Complements}
 %
-%   The use of the prime symbol |'| can raise the \emph{Double superscript}
-%   error message. This is normally fixed (|x'^2| gives $x'^2$ correctly).
-%   If needed, enclose the expression with |{...}|. In particular, |x'^[sup]|
-%   doesn't work, and should be written: |{x'}^[sup]|.
+% \subsection{Known issue}
 %
-%   \section{Alternatives}
+% The use of the prime symbol |'| can raise the \emph{Double superscript}
+% error message. This is normally fixed (|x'^2| gives $x'^2$ correctly).
+% If needed, enclose the expression with |{...}|. In particular, |x'^[sup]|
+% doesn't work, and should be written: |{x'}^[sup]|.
 %
-%   Two other packages give similar functionalities:
-%   \begin{description}
-%    \item[the \textsf{subtext} package]
-%     (\href{https://www.ctan.org/pkg/subtext}{https://www.ctan.org/pkg/subtext}),
-%     by Palle J\o{}rgensen, formats |_[...]| subscripts with |\text| (the
-%     differences, is that the \textsf{altsubsup} package works both for
-%     subscripts and superscripts, allows to customise the commands, and
-%     redefine symbols only in math mode);
-%    \item[the \textsf{spbmark} package]
-%     (\href{https://www.ctan.org/pkg/spbmark}{https://www.ctan.org/pkg/spbmark}),
-%     by Qu Yi, allows a complete customisation of subscripts and superscripts.
-%   \end{description}
+% \subsection{Alternative}
 %
-%   \StopEventually{}
-%   \section{Implementation}
+% \begin{description}
+%  \item[the \textsf{subtext} package]
+%   (\href{https://www.ctan.org/pkg/subtext}{https://www.ctan.org/pkg/subtext}),
+%   by Palle J\o{}rgensen, formats |_[...]| subscripts with |\text| (the
+%   differences, is that the \textsf{altsubsup} package works both for
+%   subscripts and superscripts, allows to customise the commands, and
+%   redefine symbols only in math mode).
+% \end{description}
 %
-%   \subsection*{Package declaration}
+% \subsection{Changelog}
+%
+% \begin{description}
+%  \item[v1.1]
+% \begin{itemize}
+% \item Backup standard subscript |_| and superscript |^| commands to handle
+% packages that redefine |\sb| or |\sp| macros, as \textsf{spbmark}.
+% \item Add option |spbmark| to format subscripts and superscripts with the
+% \textsf{spbmark} package.
+% \end{itemize}
+%  \item[v1.0] Initial version.
+% \end{description}
+
+% \StopEventually{}
+% \section{Implementation}
+%
+% \subsection*{Package declaration}
 %
 %    \begin{macrocode}
-\ProvidesPackage{altsubsup}[2022/01/23, v1.0, Alternative and customisable
+\ProvidesPackage{altsubsup}[2022/03/15, v1.1, Alternative and customisable
 subscripts and superscripts, with  square brackets.]
 %    \end{macrocode}
 %
 % \subsection*{Flags declaration}
 %
-% Determine the commands that will be redefined.
+% \subsubsection*{Determine the commands that will be redefined}
 %
 %    \begin{macrocode}
 \newif\ifaltsbsp@subscript    \altsbsp@subscripttrue
 \newif\ifaltsbsp@superscript  \altsbsp@superscripttrue
 %    \end{macrocode}
 %
+% \subsubsection*{Use the spbmark mechanism}
+%
+%    \begin{macrocode}
+\newif\ifaltsbsp@spbmark      \altsbsp@spbmarkfalse
+%    \end{macrocode}
+%
 % \subsection*{Options declarations and processing}
 %
+% \changes{v1.1}{2022/03/15}{Add sbpmark option}
 %    \begin{macrocode}
 \DeclareOption{subscript}   {\altsbsp@subscripttrue   \altsbsp@superscriptfalse}
 \DeclareOption{superscript} {\altsbsp@subscriptfalse  \altsbsp@superscripttrue }
 \DeclareOption{both}        {\altsbsp@subscripttrue   \altsbsp@superscripttrue }
+\DeclareOption{spbmark}     {\altsbsp@spbmarktrue}
 \DeclareOption*{\PackageWarning{altsubsup}{Unknown option \CurrentOption.}}
 \ProcessOptions\relax
+\ifaltsbsp@spbmark
+  \RequirePackage{spbmark}
+\fi
 %    \end{macrocode}
 %
-% \subsection*{Backup standard superscript and subscript macros}
+% \subsection*{Backup standard superscript and subscript commands}
+%
+% \changes{v1.1}{2022/03/15}{Backup standard superscript and superscript commands}
 %
 %    \begin{macrocode}
 \AtBeginDocument{%
@@ -337,16 +396,32 @@ subscripts and superscripts, with  square brackets.]
 % \begin{macro}{\SetAltSubscriptCommand}
 %    \begin{macrocode}
 \def\SetAltSubscriptCommand#1{\let\altsbsp@altsubcmd#1}%
-\def\altsbsp@subwrapper[#1]{\altsbsp@standardsub{\altsbsp@altsubcmd{#1}}}%
 %    \end{macrocode}
 % \end{macro}
+%
+%    \begin{macrocode}
+\ifaltsbsp@spbmark%
+  \defspbstyle{altsub}{}
+  \def\altsbsp@subwrapper[#1]{\sub[style=altsub]{\altsbsp@altsubcmd{#1}}}%
+\else
+  \def\altsbsp@subwrapper[#1]{\altsbsp@standardsub{\altsbsp@altsubcmd{#1}}}%
+\fi
+%    \end{macrocode}
 %
 % \begin{macro}{\SetAltSuperscriptCommand}
 %    \begin{macrocode}
 \def\SetAltSuperscriptCommand#1{\let\altsbsp@altsupcmd#1}%
-\def\altsbsp@supwrapper[#1]{\altsbsp@standardsup{\altsbsp@altsupcmd{#1}}}%
 %    \end{macrocode}
 % \end{macro}
+%
+%    \begin{macrocode}
+\ifaltsbsp@spbmark%
+  \defspbstyle{altsup}{}
+  \def\altsbsp@supwrapper[#1]{\super[style=altsup]{\altsbsp@altsupcmd{#1}}}%
+\else
+  \def\altsbsp@supwrapper[#1]{\altsbsp@standardsup{\altsbsp@altsupcmd{#1}}}%
+\fi
+%    \end{macrocode}
 %
 % \begin{macro}{\SetAltSubSupCommands}
 %    \begin{macrocode}
