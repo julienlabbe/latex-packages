@@ -24,6 +24,9 @@ texlogfilter
         --ref                  : show reference/citation warnings
         --no-ref               : mask reference/citation warnings
 
+        --info                 : show latex info messages
+        --no-info              : mask latex info messages
+
         --filename             : print current file name
         --no-filename          : do not print current file name
         --files-ext=string     : regex pattern used to match files extension (default: tex|sty|cls|bib)
@@ -63,10 +66,12 @@ texlogfilter
     of all distributions of LaTeX version 2005/12/01 or later.
 
   VERSION
-    1.0
+    1.1
 
   HISTORY
-    *   2021, november : version 1.0 (initial version).
+    *   2022, march, version 1.1 : add --info and --no-info options.
+
+    *   2021, november, version 1.0 : initial version.
 
   DOCUMENTATION
     The documentation is integrated, writtent in Plain Old Documentation
