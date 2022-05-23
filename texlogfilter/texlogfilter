@@ -189,15 +189,15 @@ while (<>) {
     # (works badly for packages)
     if (/\(([^)]+$extpattern)$/) {$currentfile = $1;}
 
+    # print above lines, if required
+    if ($nextlines > 0) { $nextlines--; print $_; }
+
     # try to show usefull lines following some warnings or errors (starting with
     # whitespaces or package name)
-    if ($currentpackage ne ""){
+    elsif ($currentpackage ne ""){
         if (/(s+|\($currentpackage\))/){print $_;}
         else {$currentpackage = ""; }
     }
-
-    # print above lines, if required
-    if ($nextlines > 0) { $nextlines--; print $_; }
 
     # find errors
     elsif (/^(!\s+|.*?:\d+:\s+)?(Class|Package) (\w+ )?Error/i)         { if ($3){$currentpackage=$3}  handle_error(0, "nofilename"); }
