@@ -4,7 +4,7 @@
 
 name=altsubsup
 engine=pdflatex
-src=test-*.tex
+src=$(wildcard test-*.tex)
 stydir=..
 
 .PHONY: clean all
