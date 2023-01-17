@@ -1,0 +1,221 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Test of the LaTeX overarrows package
+% Examples
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass{article}
+\title{Package \textsf{overarrows} examples}
+\author{Julien Labb\'e}
+
+\usepackage[old-arrows, esvect, tikz, pstarrows, debug]{overarrows}
+\usepackage{overarrows-doc}
+\usepackage{amssymb}
+\usepackage{tabularx}
+
+\DeclareMathSymbol{\fldra}{\mathrel}{esvector}{'021}
+\DeclareMathSymbol{\fldrb}{\mathrel}{esvector}{'022}
+\DeclareMathSymbol{\fldrc}{\mathrel}{esvector}{'023}
+\DeclareMathSymbol{\fldrd}{\mathrel}{esvector}{'024}
+\DeclareMathSymbol{\fldre}{\mathrel}{esvector}{'025}
+\DeclareMathSymbol{\fldrf}{\mathrel}{esvector}{'026}
+\DeclareMathSymbol{\fldrg}{\mathrel}{esvector}{'027}
+\DeclareMathSymbol{\fldrh}{\mathrel}{esvector}{'030}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\section{Default arrows}
+
+\NewOverArrowCommand{oldamsvec}{
+  amsmath, end=\varrightarrow, trim middle={2.5}, shift left={2},
+}
+\NewOverArrowCommand{amsvec}{
+    amsmath, end=\rightarrow, trim middle={2.5}, shift left={2},
+}
+\NewOverArrowCommand{esvec}{esvect}
+\NewOverArrowCommand[tikz]{tikzvec}{}
+\NewOverArrowCommand[picture]{picvec}{}
+
+\begin{center}
+  \begin{tabularx}{\linewidth}{ *{7}{ >{\centering\arraybackslash}X }}
+  \scriptsize \texttt{\textbackslash vec}
+    & \scriptsize ams & \scriptsize old-arrows & \scriptsize esvect
+    & \scriptsize tikz & \scriptsize picture & \scriptsize pstarrows \\[1em]
+    $\displaystyle \vec{v}$
+    & $\displaystyle \amsvec{v}$
+    & $\displaystyle \oldamsvec{v}$
+    & $\displaystyle \esvec{v}$
+    & $\displaystyle \tikzvec{v}$
+    & \ltxarrows $\displaystyle \picvec{v}$
+    & \pstarrows $\displaystyle \picvec{v}$
+  \end{tabularx}
+\end{center}
+
+\section{Package \textsf{esvect} arrows}
+
+\NewOverArrowCommand{esveca}{esvect, end={\fldra}}
+\NewOverArrowCommand{esvecb}{esvect, end={\fldrb}}
+\NewOverArrowCommand{esvecc}{esvect, end={\fldrc}}
+\NewOverArrowCommand{esvecd}{esvect, end={\fldrd}}
+\NewOverArrowCommand{esvece}{esvect, end={\fldre}}
+\NewOverArrowCommand{esvecf}{esvect, end={\fldrf}}
+\NewOverArrowCommand{esvecg}{esvect, end={\fldrg}}
+\NewOverArrowCommand{esvech}{esvect, end={\fldrh}}
+
+\begin{center}
+  \begin{tabularx}{\linewidth}{ *{8}{ >{\centering\arraybackslash}X }}
+    esveca & esvecb & esvecc & esvecd & esvece & esvecf & esvecg & esvech \\[1em]
+    $\displaystyle \esveca{v}$
+    & $\displaystyle \esvecb{v}$
+    & $\displaystyle \esvecc{v}$
+    & $\displaystyle \esvecd{v}$
+    & $\displaystyle \esvece{v}$
+    & $\displaystyle \esvecf{v}$
+    & $\displaystyle \esvecg{v}$
+    & $\displaystyle \esvech{v}$
+  \end{tabularx}
+\end{center}
+
+\section{Arrow with an hook and two heads}
+
+\begin{dispExample}
+\NewOverArrowCommand{overhooktwoheadrightarrow}{%
+  start=\lhook,
+  end=\twoheadrightarrow,% from amssymb package
+  trim start=1.5,
+  trim end=2,
+}
+\TestOverArrow{overhooktwoheadrightarrow}
+\end{dispExample}
+
+\section{Left-right arrow}
+
+Note: \texttt{\textbackslash overleftrightarrow} is already defined by
+\textsf{amsmath} package.
+
+\begin{dispExample}
+\RenewOverArrowCommand{overleftrightarrow}{%
+  start=\varleftarrow,% from old-arrows package
+  end=\varrightarrow,% from old-arrows package
+  trim start=7,
+  trim end=7,
+  center arrow,
+}
+\TestOverArrow{overleftrightarrow}
+\end{dispExample}
+
+\section{Arrow with a double line}
+
+\begin{dispExample}
+\NewOverArrowCommand{OverRightarrow}{%
+  start={\smallermathstyle\Relbar},
+  middle={\smallermathstyle\Relbar},
+  end={\Rightarrow},
+  trim=4,
+  space after arrow=.25ex,
+}
+\TestOverArrow{OverRightarrow}
+\end{dispExample}
+
+\section{Right and left harpoons}
+
+\begin{dispExample}
+\NewOverArrowCommand{overrightharpoon}{%
+  end=\rightharpoonup,
+}
+\TestOverArrow{overrightharpoon}
+\end{dispExample}
+
+\begin{dispExample}
+\NewOverArrowCommand{overleftharpoon}{%
+  start=\leftharpoonup,
+  end=\relbar,
+  shift left=0,
+  shift right=2,
+}
+\TestOverArrow{overleftharpoon}
+\end{dispExample}
+
+\section{Double arrow, right and left inverted}
+
+\begin{dispExample}
+\NewOverArrowCommand{overrightleftarrow}{%
+  start=\text{\usefont{U}{lasy}{m}{n}\symbol{41}},
+  end=\text{\usefont{U}{lasy}{m}{n}\symbol{40}},
+  trim start=0.7,
+  trim end=0.7,
+  min length=20,
+  shift leftright=-2,
+}
+\TestOverArrow{overrightleftarrow}
+\end{dispExample}
+
+\section{Arrow with a triple tail}
+
+\begin{dispExample}
+\NewOverArrowCommand{overtttailrightarrow}{%
+  start={\vcenter{\hbox{%
+        $\smallermathstyle\succ\xjoinrel[10]\succ\xjoinrel[10]\succ$
+      }}},
+  middle={\relbareda},% from esvect package
+  end={\rightarrow},
+  trim start=12,
+  center arrow,
+  min length=24,
+  space after arrow=.15ex,
+}
+\TestOverArrow{overtttailrightarrow}
+\end{dispExample}
+
+\section{Arched left and right arrow, with \textsf{tikz} package}
+
+\begin{dispExample}
+\NewOverArrowCommand[tikz]{overarchedleftrightarrow}{%
+  arrows={<[scale=0.5]->[scale=0.5]},
+  add tikz options={y=\overarrowlength},
+  path={(0,0) arc (-250:70:0.5 and 0.1)},
+  add path options={line width={\overarrowsmallerthickness}},
+  center arrow,
+  min length=25,
+  space after arrow=0.4ex,
+}
+\TestOverArrow{overarchedleftrightarrow}
+\end{dispExample}
+
+\section{Banded arrow, with \texttt{picture} environment}
+
+\begin{dispExample}
+\NewOverArrowCommand[picture]{overbandedarrow}{
+  picture command={%
+    \qbezier
+    (0.0\overarrowlength,0)
+    (0.5\overarrowlength,0)
+    (0.9\overarrowlength,0.2\overarrowlength)
+    \put(0.9\overarrowlength,0.2\overarrowlength)
+    {\vector(2,1){0.2\overarrowlength}}
+  },
+  geometry={(\overarrowlength,0.4\overarrowlength)(0,0)},
+  center arrow,
+  space after arrow=0.4ex,
+}
+\TestOverArrow{overbandedarrow}
+\end{dispExample}
+
+\section{Under arrow}
+
+Note: \texttt{\textbackslash underleftrightarrow} is already defined by
+\textsf{amsmath} package.
+
+\begin{dispExample}
+  \DeclareOverArrowCommand{underleftrightarrow}{%
+    start=\varleftarrow,
+    center arrow,
+    arrow under,
+  }
+  \TestOverArrow{underleftrightarrow}
+\end{dispExample}
+
+\end{document}

@@ -1,0 +1,242 @@
+%%
+%% This is file `overarrows-doc.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% overarrows.dtx  (with options: `docstyle')
+%% 
+%% This is a generated file.
+%% 
+%% Copyright (C) 2022 by Julien Labbé <Julien.Labbe@univ-grenoble-alpes.fr>
+%% 
+%% This file may be distributed and/or modified under the conditions of
+%% the LaTeX Project Public License, either version 1.3 of this license
+%% or (at your option) any later version.  The latest version of this
+%% license is in:
+%% 
+%%    http://www.latex-project.org/lppl.txt
+%% 
+%% and version 1.3 or later is part of all distributions of LaTeX version
+%% 2005/12/01 or later.
+%% 
+\RequirePackage{xcolor}
+\PassOptionsToPackage{hyperref}{xcolor}
+\RequirePackage[many]{tcolorbox}
+\tcbuselibrary{listings}
+\tcbuselibrary{documentation}
+\hypersetup{hidelinks}
+\definecolor{ovar_lavender}{rgb}{0.92,0.92,1}
+\definecolor{ovar_darkblue}{rgb}{0.1,0.2,0.5}
+\definecolor{ovar_darkgreen}{rgb}{0,0.39,0}
+\definecolor{ovar_beige}{rgb}{.96,.96,.86}
+\colorlet{ovar_commands}{ovar_darkblue}
+\colorlet{ovar_keys}{ovar_darkgreen}
+\colorlet{ovar_lengths}{violet}
+\colorlet{ovar_options}{Definition} % from tcolorbox documentation
+\lstdefinestyle{lstovardoc}{%
+  language = [LaTeX]TeX,
+  columns         = flexible,
+  keywordstyle    = {\bfseries\color{ovar_darkblue}},
+  texcsstyle      = *{\bfseries\color{ovar_darkblue}},
+  commentstyle    = {\color{gray}},
+  identifierstyle = {\color{ovar_darkgreen}},
+  morekeywords    = {},% keywordsprefix needs a morekeywords before
+  keywordsprefix  = {\\},
+  literate        = *{\$}{{\textcolor{red}{\$}}}{1}
+                    {\&}{{\textcolor{red}{\&}}}{1}
+                    {\}}{{\textcolor{darkgray}{\}}}}{1}
+                    {\{}{{\textcolor{darkgray}{\{}}}{1}
+                    {\\\\}{{\textcolor{red}{\textbackslash\textbackslash}}}{2}
+                    {\%\ \ \ \ }{}0,
+  basicstyle      = \ttfamily\footnotesize,
+  frame           = none,
+  framesep        = 0pt,
+  aboveskip       = 0pt,
+  belowskip       = 0pt,
+}
+\lstdefinestyle{lstovarcode}{%
+  style           = lstovardoc,
+  backgroundcolor = \color{ovar_beige},
+  breakindent     = 1cm,
+  numbers         = left,
+  numberstyle     = \scriptsize\ttfamily\color{gray},
+  aboveskip       = \smallskipamount,
+  belowskip       = \smallskipamount,
+}
+\tcbset{% copied and adapted from tcolorbox.doc.s_main.sty
+  documentation listing style=lstovardoc,%
+  doc keypath=overarrows,
+  size=small,%
+  % verbatim ignore percent,
+  %% styles
+  docexample/.style={%
+    bicolor jigsaw,
+    before skip balanced=\medskipamount,
+    after skip balanced=\medskipamount,
+    fonttitle=\bfseries,
+    fontlower=\normalfont,
+    halign lower=center,
+    colframe=ovar_darkblue,
+    colback=ovar_lavender,
+    colbacklower=white,
+    drop fuzzy shadow,
+  },
+  color key=ovar_keys,
+  color command=ovar_commands,
+  color length=ovar_lengths,
+  doc head key={fontlower=\footnotesize, collower=darkgray},
+  before doc body={\parskip=\smallskipamount},
+}
+\begin{filecontents*}{\jobname.mst}
+actual '='
+\end{filecontents*}
+\tcbset{%
+  index actual={=},
+  index colorize=true,
+  index gather all,
+  index format=pgfsection,
+}
+\def\tcb@doc@index@pgfsection{%
+  \def\index@prologue{%
+    \section*{\kvtcb@text@index}\addcontentsline{toc}{section}{\kvtcb@text@index}
+    {\small%
+      Entries listed in the categories ``commands", ``lengths", and
+      ``internal macros" also include references to package implementation. }
+    \bigskip\par\noindent%
+  }%
+  \tcb@doc@index@pgf@%
+}
+\newcommand{\indexmacro}[1]{%
+  \begingroup
+  \let\lst@UM\@empty%
+  \index{{Commands!#1=\tcbIndexPrintComC {#1}}}%
+  \endgroup
+}
+\newcommand{\indexmacrointernal}[1]{%
+  \begingroup
+  \let\lst@UM\@empty%
+  \index{{Internal macros!#1=\tcbIndexPrintComC {#1}}}%
+  \endgroup
+}
+\newcommand{\indexlength}[1]{%
+  \begingroup
+  \let\lst@UM\@empty%
+  \index{{Lengths!#1=\tcbIndexPrintLenC {#1}}}%
+  \endgroup
+}
+\let\macrocode\relax
+\lstnewenvironment{macrocode}{%
+  \lstset{%
+    name=macrocode,
+    firstnumber=auto,
+    style       = lstovarcode,
+    showlines=false,
+    texcs       = [2]{% commands
+      DeclareOverArrowCommand, ProvideOverArrowCommand,%
+      NewOverArrowCommand, RenewOverArrowCommand,%
+      TestOverArrow, xjoinrel, smallermathstyle,%
+      esvectvv, vv,%
+      overrightarrow, overleftarrow, overleftrightarrow, overrightharpoonup,%
+      overrightharpoondown, overleftharpoonup, overleftharpoondown, overbar,%
+      underrightarrow, underleftarrow, underleftrightarrow, underrightharpoonup,%
+      underrightharpoondown, underleftharpoonup, underleftharpoondown, underbar,%
+      SetOverArrowsMethod,%
+    },
+    index       = [2][texcs2],%
+    indexstyle  = [2]\indexmacro,%
+    texcs       = [3]{% lengths
+      overarrowlength, overarrowthickness, overarrowsmallerthickness,%
+    },
+    index       = [3][texcs3],%
+    indexstyle  = [3]\indexlength,%
+    texcs       = [4]{% internal macros
+      ovar@rightarrow, ovar@leftarrow, ifovar@option@oldarrows@,
+      ifovar@option@esvect@, ifovar@option@tikz@, ifovar@option@pstarrows@,
+      ifovar@detectsubscripts@, ifovar@option@debug@,
+      ifovar@option@overrightarrow@, ifovar@option@underrightarrow@,
+      ifovar@option@overleftarrow@, ifovar@option@underleftarrow@,
+      ifovar@option@overleftrightarrow@, ifovar@option@underleftrightarrow@,
+      ifovar@option@overrightharpoonup@, ifovar@option@underrightharpoonup@,
+      ifovar@option@overrightharpoondown@, ifovar@option@underrightharpoondown@,
+      ifovar@option@overleftharpoonup@, ifovar@option@underleftharpoonup@,
+      ifovar@option@overleftharpoondown@, ifovar@option@underleftharpoondown@,
+      ifovar@option@overbar@, ifovar@option@underbar@, ovar@set, ovar@length@min,
+      ovar@before@arrow, ovar@after@arrow, ovar@macro@stack, ovar@macro@arrow,
+      ovar@set@, ovar@shift@left, ovar@shift@right, ovar@stack@fill,
+      ovar@stackunder@fill, ovar@stack@lens, ovar@stackunder@lens,
+      ovar@macro@arrowfill, ovar@arrow@fill, ovar@arrow@start, ovar@trim@start,
+      ovar@trim@middle, ovar@arrow@middle, ovar@trim@end, ovar@arrow@end,
+      ovar@tikz@command, ovar@tikz@pathoptions, ovar@tikz@path,
+      ovar@tikz@options, ovar@picture@geometry, ovar@picture@linethickness,
+      ovar@picture@command, ovar@extralength, ovar@tempdim, ovar@set@arrowlength,
+      ovar@set@arrowthickness, ovar@stackover@@, ovar@stackunder@@,
+      ovar@stackover@, ovar@stackunder@, ovar@stackover@fill,
+      ovar@stackover@lens, ovar@set@common, ovar@starversion,
+      ovar@testmathstyles, ovar@row@teststyle,%
+    },
+    index       = [4][texcs4],%
+    indexstyle  = [4]\indexmacrointernal,%
+    moretexcs   = [5]{% other macros
+      Relbar, relbareda, relbaredd, rightarrow, Rightarrow, varleftarrow,
+      varrightarrow, twoheadrightarrow,%
+    },
+  }
+  \csname\@lst @SetFirstNumber\endcsname
+}{%
+  \csname \@lst @SaveFirstNumber\endcsname
+}
+\DeclareDocumentEnvironment{macro}{m}{%
+ \count@\escapechar \escapechar=-1
+ \edef\macroname{\string#1}
+ \escapechar\count@
+ \marginpar{%
+   \parbox{0.88\linewidth}{%
+     \scriptsize\flushright\ifcsdef{r@com:\macroname}{\refCom*{\macroname}}{\cs{\macroname}}%
+   }%
+ }
+}{% end of macro environment
+}
+\def\refDoc#1{\tcb@ref@doc{#1}}
+\newcommand{\pkg}[1]{\textsf{#1}}
+\newrobustcmd{\tcbIndexPrintOptionCA}[1]{% adapted from \tcbIndexPrintKeyCA
+  \tcb@Index@Print@CA{#1}{ovar_options}{package option}%
+}
+\newrobustcmd{\tcbIndexPrintOptionC}[1]{% adapted from \tcbIndexPrintKeyCA
+  \tcb@Index@Print@C{#1}{ovar_options}%
+}
+\DeclareDocumentEnvironment{docOption}{ O{} m }{%
+  \begin{docKey*}[]
+    [doc name={#2}, doc label={opt:#2}, color key=ovar_options, #1]
+    {#2}{}{}%
+    \kvtcb@index@command{%
+      \kvtcb@doc@sortindex\idx@actual\tcbIndexPrintOptionCA{#2}%
+    }%
+    \kvtcb@index@command{%
+      {Package options}\idx@level\kvtcb@doc@sortindex\idx@actual%
+      \tcbIndexPrintOptionC{#2}%
+    }%
+}{%
+  \end{docKey*}%
+}
+\def\refOpt{\refDoc{key:opt}}
+\let\tcbdocLength\docLength% save original definition
+\DeclareDocumentEnvironment{docLength}{ O{} m }{%
+  \begin{docCommand*}[doc name=#2, color command=ovar_lengths,#1]{#2}{}
+    \protected@edef\@currentlabel{\cs{#2}}%
+    \label{len:#2}%
+    %% add length index entry (from \docLength original definition)
+    \kvtcb@index@command{%
+      \kvtcb@doc@sortindex\idx@actual\tcbIndexPrintLenCA{\kvtcb@doc@index}%
+    }%
+    \kvtcb@index@command{%
+      \kvtcb@text@lengths\idx@level\kvtcb@doc@sortindex\idx@actual%
+      \tcbIndexPrintLenC{\kvtcb@doc@index}%
+    }%
+}{%
+  \end{docCommand*}%
+}
+\def\refLen{\refDoc{len}}
+\endinput
+%%
+%% End of file `overarrows-doc.sty'.

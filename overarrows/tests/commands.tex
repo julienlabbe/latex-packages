@@ -1,0 +1,132 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Test of the LaTeX overarrows package
+% Predefined commands
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% \documentclass[10pt]{article}
+% \documentclass[11pt]{article}
+\documentclass[12pt]{article}
+
+\title{Test of the \textsf{overarrows} package\\ predefined commands}
+\author{Julien Labb\'e}
+
+% \usepackage{lua-visual-debug}
+
+% \usepackage{overarrows}
+\usepackage[allcommands]{overarrows}
+% \usepackage[noesvect, allcommands]{overarrows}
+% \usepackage[old-arrows, allcommands]{overarrows}
+% \usepackage[noesvect, old-arrows, allcommands]{overarrows}
+
+% \usepackage{fourier}
+% \usepackage{kpfonts}
+% \usepackage{mathpazo}
+
+\usepackage{overarrows-doc}
+
+\begin{document}
+\maketitle
+
+\section{\texttt{\textbackslash vv}}
+
+\begin{dispExample}
+  \TestOverArrow*{vv}
+\end{dispExample}
+
+\section{\texttt{\textbackslash overrightarrow}}
+
+\begin{dispExample}
+  \TestOverArrow{overrightarrow}
+\end{dispExample}
+
+\section{\texttt{\textbackslash underrightarrow}}
+
+\begin{dispExample}
+  \TestOverArrow{underrightarrow}
+\end{dispExample}
+
+\section{\texttt{\textbackslash overleftarrow}}
+
+\begin{dispExample}
+  \TestOverArrow{overleftarrow}
+\end{dispExample}
+
+\section{\texttt{\textbackslash underleftarrow}}
+
+\begin{dispExample}
+  \TestOverArrow{underleftarrow}
+\end{dispExample}
+
+\section{\texttt{\textbackslash overleftrightarrow}}
+
+\begin{dispExample}
+  \TestOverArrow{overleftrightarrow}
+\end{dispExample}
+
+\section{\texttt{\textbackslash underleftrightarrow}}
+
+\begin{dispExample}
+  \TestOverArrow{underleftrightarrow}
+\end{dispExample}
+
+\section{\texttt{\textbackslash overrightharpoonup}}
+
+\begin{dispExample}
+  \TestOverArrow{overrightharpoonup}
+\end{dispExample}
+
+\section{\texttt{\textbackslash underrightharpoonup}}
+
+\begin{dispExample}
+  \TestOverArrow{underrightharpoonup}
+\end{dispExample}
+
+\section{\texttt{\textbackslash overrightharpoondown}}
+
+\begin{dispExample}
+  \TestOverArrow{overrightharpoondown}
+\end{dispExample}
+
+\section{\texttt{\textbackslash underrightharpoondown}}
+
+\begin{dispExample}
+  \TestOverArrow{underrightharpoondown}
+\end{dispExample}
+
+\section{\texttt{\textbackslash overleftharpoonup}}
+
+\begin{dispExample}
+  \TestOverArrow{overleftharpoonup}
+\end{dispExample}
+
+\section{\texttt{\textbackslash underleftharpoonup}}
+
+\begin{dispExample}
+  \TestOverArrow{underleftharpoonup}
+\end{dispExample}
+
+\section{\texttt{\textbackslash overleftharpoondown}}
+
+\begin{dispExample}
+  \TestOverArrow{overleftharpoondown}
+\end{dispExample}
+
+\section{\texttt{\textbackslash underleftharpoondown}}
+
+\begin{dispExample}
+  \TestOverArrow{underleftharpoondown}
+\end{dispExample}
+
+\section{\texttt{\textbackslash overbar}}
+
+\begin{dispExample}
+  \TestOverArrow*{overbar}
+\end{dispExample}
+
+\section{\texttt{\textbackslash underbar}}
+
+\begin{dispExample}
+  \TestOverArrow*{underbar}
+\end{dispExample}
+
+\end{document}

@@ -1,0 +1,43 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Test of the LaTeX overarrows package
+% speed test
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass{article}
+
+\usepackage[old-arrows, esvecta, tikz, pstarrows]{overarrows}
+
+\title{Test of the \textsf{overarrows} package}
+\author{Julien Labb\'e}
+
+\NewOverArrowCommand{amsvec}{end={\rightarrow}}
+\NewOverArrowCommand[tikz]{tikzvec}{}
+\NewOverArrowCommand[picture]{picvec}{}
+
+\NewDocumentCommand{\repeatntimes}{ O{1000} m}{
+  \newcount\i
+  \i=#1
+  \loop
+  \message{\the\i}
+  #2\par
+  \advance \i -1
+  \ifnum \i>0
+  \repeat
+}
+
+\begin{document}
+
+% \repeatntimes[100000]{$\vec{v}$}
+% \repeatntimes[10000]{$\overrightarrow{v}$}
+% \repeatntimes[10000]{$\esvectvv{v}$}
+% \repeatntimes[10000]{$\amsvec{v}$}
+\repeatntimes[10000]{$\vv{v}$}
+% \repeatntimes[1000]{$\tikzvec{v}$}
+% \repeatntimes[10000]{$\picvec{v}$}
+
+% \repeatntimes[1000]{\TestOverArrow{overrightarrow}}
+% \repeatntimes[1000]{\TestOverArrow{esvectvv}}
+% \repeatntimes[1000]{\TestOverArrow{vv}}
+% \repeatntimes[100]{\TestOverArrow{tikzvec}}
+% \repeatntimes[500]{\TestOverArrow{picvec}}
+
+\end{document}

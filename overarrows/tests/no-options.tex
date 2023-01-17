@@ -1,0 +1,102 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Test of the LaTeX overarrows package
+% Loading package without options
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass{article}
+
+\title{Test of the \textsf{overarrows} package\\ without options}
+\author{Julien Labb\'e}
+
+\usepackage{overarrows}
+\usepackage{overarrows-doc}
+
+\begin{document}
+\maketitle
+
+\section{Loading the package without options}
+
+\begin{dispListing}
+\usepackage{overarrows}
+\end{dispListing}
+
+\section{Tests of type \texttt{symb} with \texttt{amsmath} config}
+
+\begin{dispExample}
+\NewOverArrowCommand{amsvector}{amsmath}
+\TestOverArrow*{amsvector}
+\end{dispExample}
+
+\begin{dispExample}
+\NewOverArrowCommand{amsstrictvector}{amsmath=strict}
+\TestOverArrow*{amsstrictvector}
+\end{dispExample}
+
+\section{Tests of type \texttt{symb} with \texttt{esvect} config}
+
+\begin{dispExample}
+\NewOverArrowCommand{esvector}{esvect}
+\TestOverArrow*{esvector}
+\end{dispExample}
+
+\begin{dispExample}
+\NewOverArrowCommand{esstrictvector}{esvect=strict}
+\TestOverArrow*{esstrictvector}
+\end{dispExample}
+
+\section{Tests of type \texttt{symb} with options}
+
+\begin{dispExample}
+\NewOverArrowCommand{testovertextarrow}{%
+  min length = 30,
+  space before arrow=5ex,
+  space after arrow=-.5ex,
+  shift left = -5,
+  shift right = -5,
+  start={\Leftarrow},
+  trim start=5,
+  middle={\Relbar},
+  trim middle=5,
+  end={\Rightarrow},
+  trim end=5,
+  detect subscripts,
+}
+\TestOverArrow*{testovertextarrow}
+\end{dispExample}
+
+\section{Tests of type \texttt{picture} without options}
+
+\begin{dispExample}
+\NewOverArrowCommand[picture]{picvector}{}
+\TestOverArrow*{picvector}
+\end{dispExample}
+
+\section{Tests of type \texttt{picture} with options}
+
+\begin{dispExample}
+\NewOverArrowCommand[picture]{thinnerpicvector}{%
+  thinner,
+}
+\NewOverArrowCommand[picture]{thickerpicvector}{%
+  line thickness=2\overarrowthickness,
+}
+
+$$ \thinnerpicvector{v} \qquad \picvector{v} \qquad \thickerpicvector{v} $$
+\end{dispExample}
+
+\begin{dispExample}
+\NewOverArrowCommand[picture]{testoverpicarrow}{%
+  shift left=2,
+  shift right=-5,
+  min length=30,
+  geometry={(\overarrowlength,2ex)(0,-1ex)},
+  picture command={%
+    \put(0.8\overarrowlength,0.2\overarrowlength){%
+      \circle{0.2\overarrowlength}
+    }%
+    \put(0,0){\vector(4,1){0.85\overarrowlength}}},%
+}
+\TestOverArrow*{testoverpicarrow}
+\end{dispExample}
+
+\end{document}

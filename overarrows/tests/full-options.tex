@@ -1,0 +1,105 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Test of the LaTeX overarrows package
+% Loading package with all its options
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass{article}
+
+
+\title{Test of the \textsf{overarrows} package\\with all options}
+\author{Julien Labb\'e}
+
+\usepackage[
+old-arrows, esvecth, tikz, pstarrows, subscripts, allcommands, debug
+]{overarrows}
+\usepackage{overarrows-doc}
+
+\begin{document}
+\maketitle
+
+\section{Loading the package with many options}
+
+\begin{dispListing}
+  \usepackage[
+  old-arrows, esvecth, tikz, pstarrows, subscripts, allcommands, debug
+  ]{overarrows}
+\end{dispListing}
+
+\section{Options \texttt{old-arrows} and \texttt{allcommands}}
+
+\begin{dispExample}
+\TestOverArrow*{overrightarrow}
+\end{dispExample}
+
+\begin{dispExample}
+\NewOverArrowCommand{amsvec}{amsmath, end={\rightarrow}, shift left=2}
+\TestOverArrow*{amsvec}
+\end{dispExample}
+
+\section{Option \texttt{esvech}}
+
+\begin{dispExample}
+\NewOverArrowCommand{esvec}{esvect}
+\TestOverArrow*{esvec}
+\end{dispExample}
+
+\section{Option \texttt{tikz}}
+
+\begin{dispExample}
+\NewOverArrowCommand[tikz]{tikzvec}{}
+\TestOverArrow*{tikzvec}
+\end{dispExample}
+
+\begin{dispExample}
+\NewOverArrowCommand[tikz]{thinnertikzvec}{%
+  thinner,
+}
+\NewOverArrowCommand[tikz]{thickertikzvec}{%
+  line thickness={2\overarrowthickness},
+}
+
+$$ \thinnertikzvec{v} \qquad \tikzvec{v} \qquad \thickertikzvec{v} $$
+\end{dispExample}
+
+\begin{dispExample}
+\NewOverArrowCommand[tikz]{tikzoptvec}{%
+  tikz options={line width=2\overarrowthickness},
+  path options={arrows={<->}},
+  path={(0,0)--(0.5,0.05)},
+}
+\TestOverArrow*{tikzoptvec}
+\end{dispExample}
+
+\begin{dispExample}
+\NewOverArrowCommand[tikz]{tikzaddoptvec}{%
+  add tikz options={blue},
+  add path options={thick},
+  arrows={->>}, min length=20,
+}
+\TestOverArrow*{tikzaddoptvec}
+\end{dispExample}
+
+\begin{dispExample}
+\NewOverArrowCommand[tikz]{tikcodevec}{%
+  tikz command={\draw[Circle-Circle](0,0).. controls (0.5,0.3).. (1,0);},
+  shift left=-2, space after arrow=0.2ex,
+}
+\TestOverArrow*{tikcodevec}
+\end{dispExample}
+
+\section{Option \texttt{pstarrows}}
+
+\begin{dispExample}
+\NewOverArrowCommand[picture]{picvec}{}
+\TestOverArrow*{picvec}
+\end{dispExample}
+
+\section{Option \texttt{subscripts}}
+
+\begin{dispExample}
+\NewOverArrowCommand{subvec}{min length=30}
+\NewOverArrowCommand{nosubvec}{min length=30, detect subscripts=false}
+\TestOverArrow*{subvec}
+\TestOverArrow*{nosubvec}
+\end{dispExample}
+
+\end{document}

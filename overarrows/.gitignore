@@ -1,0 +1,19 @@
+##############################
+# gitignore
+##############################
+
+*.aux
+*.glo
+*.idx
+*.log
+*.toc
+*.gls
+*.ilg
+*.ind
+*.out
+*.fdb_latexmk
+*.listing
+*.fls
+*.mst
+*.tcbtemp
+.auctex-auto/

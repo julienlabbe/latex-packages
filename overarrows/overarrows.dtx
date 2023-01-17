@@ -1,0 +1,3703 @@
+% \iffalse meta-comment
+%
+% Copyright (C) 2022 by Julien Labbé <Julien.Labbe@univ-grenoble-alpes.fr>
+%
+%
+% This file may be distributed and/or modified under the conditions of the LaTeX
+% Project Public License, either version 1.3 of this license or (at your option)
+% any later version. The latest version of this license is in:
+%
+% http://www.latex-project.org/lppl.txt
+%
+% and version 1.3 or later is part of all distributions of LaTeX version
+% 2005/12/01 or later.
+%
+% \fi
+%
+% \iffalse
+%<*driver>
+\ProvidesFile{overarrows.dtx}
+%</driver>
+%<package>\NeedsTeXFormat{LaTeX2e}
+%<package>\ProvidesPackage{overarrows}
+%<*package>
+[2023/01/17 v1.0 Custom extensible arrows over math expressions, mainly for vectors.]
+%</package>
+%
+%<*driver>
+\documentclass[nohyperref]{ltxdoc}
+
+\usepackage{overarrows-doc} %^^A defined at end of this file, with guard <docstyle>
+\usepackage[old-arrows, esvect, tikz, pstarrows, allcommands]{overarrows}
+
+\EnableCrossrefs
+\PageIndex
+% \CodelineIndex
+\RecordChanges
+% \OnlyDescription
+
+%% symbols
+\newcommand*{\symb}[1]{\colorbox{yellow!50}{\rule{0pt}{1ex}$#1$}}
+
+%% Arrows used in doc
+\usepackage{amssymb}% for \twoheadrightarrow
+\NewOverArrowCommand{amsoverrightarrow}{amsmath=strict, end={\rightarrow}}
+\NewOverArrowCommand{overrightnewarrow}{%
+    amsmath, middle config=relbar,  end=\rightarrow,
+    right arrow,
+  }
+\DeclareMathSymbol{\fldra}{\mathrel}{esvector}{'021}
+\DeclareMathSymbol{\fldrb}{\mathrel}{esvector}{'022}
+\DeclareMathSymbol{\fldrc}{\mathrel}{esvector}{'023}
+\DeclareMathSymbol{\fldrd}{\mathrel}{esvector}{'024}
+\DeclareMathSymbol{\fldre}{\mathrel}{esvector}{'025}
+\DeclareMathSymbol{\fldrf}{\mathrel}{esvector}{'026}
+\DeclareMathSymbol{\fldrg}{\mathrel}{esvector}{'027}
+\DeclareMathSymbol{\fldrh}{\mathrel}{esvector}{'030}
+\NewOverArrowCommand{esveca}{esvect=strict, end={\fldra}}
+\NewOverArrowCommand{esvecb}{esvect=strict, end={\fldrb}}
+\NewOverArrowCommand{esvecc}{esvect=strict, end={\fldrc}}
+\NewOverArrowCommand{esvecd}{esvect=strict, end={\fldrd}}
+\NewOverArrowCommand{esvece}{esvect=strict, end={\fldre}}
+\NewOverArrowCommand{esvecg}{esvect=strict, end={\fldrg}}
+\NewOverArrowCommand{esvech}{esvect=strict, end={\fldrh}}
+\NewOverArrowCommand{vva}{esvect, middle config=auto, end=\fldra}
+\NewOverArrowCommand{esvecf}{esvect=strict, end={\fldrf}}
+\NewOverArrowCommand{vvb}{esvect, middle config=auto, end=\fldrb}
+\NewOverArrowCommand{vvc}{esvect, middle config=auto, end=\fldrc}
+\NewOverArrowCommand{vvd}{esvect, middle config=auto, end=\fldrd}
+\NewOverArrowCommand{vve}{esvect, middle config=auto, end=\fldre}
+\NewOverArrowCommand{vvf}{esvect, middle config=auto, end=\fldrf}
+\NewOverArrowCommand{vvg}{esvect, middle config=auto, end=\fldrg}
+\NewOverArrowCommand{vvh}{esvect, middle config=auto, end=\fldrh}
+
+\makeatletter
+\newcommand{\unsetoldarrows}{
+  \let\ovar@rightarrow\rightarrow
+  \let\ovar@leftarrow\leftarrow
+}
+\newcommand{\setoldarrows}{
+  \let\ovar@rightarrow\varrightarrow
+  \let\ovar@leftarrow\varleftarrow
+}
+\makeatother
+
+\begin{document}
+
+\DocInput{overarrows.dtx}
+
+\PrintIndex
+\PrintChanges
+
+\end{document}
+%</driver>
+% \fi
+%
+% \changes{v1.0}{2023/01/17}{Initial version.}
+%
+% \GetFileInfo{\jobname.dtx}
+%
+% \title{The \pkg{overarrows} package\thanks{This document
+% corresponds to \pkg{overarrows}~\fileversion, dated \filedate.}}
+% \author{Julien Labb\'e \\ \texttt{Julien.Labbe@univ-grenoble-alpes.fr}}
+%
+% \maketitle
+%
+% \begin{abstract}
+%   A \LaTeX{} package to create custom arrows over (and under) math
+%   expressions, mainly for vectors. Arrows stretch with content, scale with
+%   math styles, and have a correct kerning when a subscript follows.
+%
+% \bigskip
+%
+% Short example:
+% \iffalse
+%<*example>
+% \fi
+\begin{dispExample}
+\NewOverArrowCommand{overrightharpoon}{%
+  end=\rightharpoonup
+}
+
+\begin{align*}
+  &\overrightharpoon{v} && \overrightharpoon{v}_{subscript} \\
+  &\overrightharpoon{ABCD} && \overrightharpoon*{v}_{subscript}
+\end{align*}
+\end{dispExample}
+% \iffalse
+%</example>
+% \fi
+%
+%\bigskip
+%
+% Predefined commands are also provided:
+% \begin{itemize}
+%  \item to typeset vectors:
+%   $$ \vv{v} \qquad \vv{AB}, $$
+%
+% \item to draw arrows of various shapes above math expressions:
+% \begin{align*}
+%   \overrightarrow{AB}
+%   && \overleftarrow{AB}
+%   && \overleftrightarrow{AB}
+%   && \overrightharpoonup{AB}
+%   && \overleftharpoonup{AB}
+%   && \overrightharpoondown{AB}
+%   && \overleftharpoondown{AB}
+%   && \overbar{AB},
+% \end{align*}
+%
+% \item to draw arrows of various shapes under math expressions:
+% \begin{align*}
+%   \underrightarrow{AB}
+%   && \underleftarrow{AB}
+%   && \underleftrightarrow{AB}
+%   && \underrightharpoonup{AB}
+%   && \underleftharpoonup{AB}
+%   && \underrightharpoondown{AB}
+%   && \underleftharpoondown{AB}
+%   && \underbar{AB}.
+% \end{align*}
+% \end{itemize}
+%
+% \end{abstract}
+%
+% \clearpage
+%
+% \tableofcontents{}
+%\clearpage
+%
+% \section{Presentation of the package}
+% \label{sec:package-description}
+%
+% The \pkg{overarrows} package allows to create commands for drawing arrows over
+% math expressions. These arrows:
+% \begin{itemize}
+%  \item are fully customisable, at command definition, through a key-value
+%   interface;
+%  \item stretch with the content and can cover many characters, like in $\vv{AB}$;
+%  \item scale with math styles\footnotemark{}, like in
+%  $\vv*{v}_{\vv*{u}_{\vv*{w}}}$.
+% \footnotetext{\cs{displaystyle}, \cs{textstyle},  \cs{scriptstyle} and
+% \cs{scriptscriptstyle}.}
+% \end{itemize}
+%
+% Commands created with the \pkg{overarrows} package are provided with a starred
+% variant, that removes the extra end space generated by the arrow. This is
+% particularly useful when the command is followed by a subscript. For example,
+% the velocity of the center of mass can be written with exactly the same
+% kerning when scalar $v_{\text{cm}}$ or vector $\vv*{v}_{\text{cm}}$ (no extra
+% space before the subscript, unlike the output of the unstarred variant:
+% $\vv{v}_{\text{cm}}$).
+%
+% The \pkg{overarrows} package was primitively written for vectors, but in
+% a highly customisable way. It can be used to define a large variety of arrows,
+% using math symbols, or PGF/TikZ commands. It's also possible to create
+% commands that draw the arrows under. Some predefined commands are provided,
+% giving\footnotemark{}, for arrow over:
+% \footnotetext{Displayed here with the \refOpt{old-arrows} option.}
+% \begin{align*}
+%   \overrightarrow{\alpha+\beta}
+%   && \overleftarrow{\alpha+\beta}
+%   && \overleftrightarrow{\alpha+\beta}
+%   && \overrightharpoonup{\alpha+\beta}
+%   && \overleftharpoonup{\alpha+\beta}
+%   && \overrightharpoondown{\alpha+\beta}
+%   && \overleftharpoondown{\alpha+\beta}
+%   && \overbar{\alpha+\beta}
+% \end{align*}
+% and for arrow under :
+% \begin{align*}
+%   \underrightarrow{\alpha+\beta}
+%   && \underleftarrow{\alpha+\beta}
+%   && \underleftrightarrow{\alpha+\beta}
+%   && \underrightharpoonup{\alpha+\beta}
+%   && \underleftharpoonup{\alpha+\beta}
+%   && \underrightharpoondown{\alpha+\beta}
+%   && \underleftharpoondown{\alpha+\beta}
+%   && \underbar{\alpha+\beta}.
+% \end{align*}
+%
+% \section{Introduction}
+%
+% \subsection{Vector arrows}
+%
+% Vectors are commonly typeset in bold face, or with an arrow
+% above\footnotemark{}. For this second convention, \TeX/\LaTeX provides the
+% command \cs{vec}, which accents its content (using the \cs{mathaccent}
+% command) with the character~\symb{\mathchar "017E\relax}
+% (\cs{mathchar}|"017E| in Computer Modern font).
+% But \symb{\mathchar "017E\relax} isn't extensible, and gives: $\vec{v}$,
+% $\vec{AB}$ or $\vec{\text{grad}}$ (there's no command \cs{widevec} analogous
+% to \cs{widehat}).
+%
+% \footnotetext{See, for example: International Organization for
+% Standardization. (2019). \emph{Quantities and units -- Part 2: Mathematics}
+% (ISO Standard No. 80000-2:2019).
+% \url{https://www.iso.org/standard/64973.html}.}
+%
+% An extensible alternative is given by the command \cs{overrightarrow},
+% available in \TeX/\LaTeX, and which is redefined by the commonly used
+% \pkg{amsmath} package. But its arrow, built with the \cs{rightarrow} symbol
+% \symb{\rightarrow}, is too large with the default \emph{Computer Modern} font:
+% $\amsoverrightarrow{AB}$. Another alternative is the \pkg{esvect} package,
+% which provides the \cs{vv} command and a set of custom arrows: $\esveca{AB}$,
+% $\esvecb{AB}$, $\esvecc{AB}$, $\esvecd{AB}$, $\esvece{AB}$, $\esvecf{AB}$,
+% $\esvecg{AB}$, $\esvech{AB}$.
+%
+% \subsection{Stack and arrow macros}
+%
+% It worth looking at the definition of \pkg{amsmath} \cs{overrightarrow}
+% command:
+% \iffalse
+%<*example>
+% \fi
+\begin{dispListing}
+  \long macro:->\mathpalette {\overarrow@ \rightarrowfill@ }
+\end{dispListing}
+% \iffalse
+%</example>
+% \fi
+% \noindent Three macros are used here:
+% \begin{description}
+%    \item[\cs{mathpalette}] adapts the output to the current math style;
+%    \item[\cs{overarrow@}] is the \emph{stack macro}, that puts the arrow above
+%    the content;
+%    \item[\cs{rightarrowfill@}] is the \emph{arrow macro}, that holds the
+%    content of the arrow.
+% \end{description}
+% The command \cs{vv} from \pkg{esvec} is defined with a very similar way, using
+% its own stack macro (\cs{overvect@}) and arrow macro (\cs{vectfill@}).
+%
+% \medskip
+%
+% The \pkg{overarrows} package uses the same mechanism. Arrow and stack macros
+% are set, at command creation, through a key-value interface provided by the
+% \pkg{pgfkeys} package (after creation, however, the command definition is
+% static and the key-value interface is not used).
+%
+% \subsection{Extensible arrows}
+% \label{sec:extensible-arrows}
+%
+% Arrows drawn by the commands \cs{overrightarrow} or \cs{vv} are built by
+% joining math symbols, and made extensible by repetition of the central
+% symbol\footnotemark{}. Thus, the line of the macro \cs{overrightarrow} is made
+% by repetition of command \cs{relbar} \symb{\relbar} (which simply corresponds
+% to the minus sign), while \cs{vv} use its own command \cs{relbareda}
+% \symb{\relbareda}.
+%
+%\footnotetext{Using the \TeX{} \cs{cleaders} command.}
+%
+% This method may generate some undesirable spacing issues, when symbols
+% badly overlap. See, for example, the output of \pkg{amsmath}
+% \cs{overrightarrow} (left) and \pkg{esvect} \cs{vv} (right) in
+% \cs{scriptscriptstyle} math style (scaled by a factor~ 4):
+% \begin{center}
+%   \scalebox{4}{$\scriptscriptstyle \amsoverrightarrow{long~vector}$}
+%   \qquad
+%   \scalebox{4}{$\scriptscriptstyle \esvectvv{long~vector}$}.
+% \end{center}
+% While the arrow on the left lets guess where the symbols \symb{\relbar}
+% overlap, the arrow on the right present unwanted spaces and show clearly its
+% composition as association of the symbols \symb{\relbaredd}, \symb{\relbareda}
+% and \symb{\fldr}.
+%
+% \medskip
+%
+% By default, the \pkg{overarrows} package uses the same mechanism to extend
+% arrows according to their contents. Settings and tools are provided to perform
+% fine tuning and avoid spacing issues. As example, see below the
+% \cs{overrightarrow} and \cs{vv} commands, as redefined by \pkg{overarrows} (in
+% \cs{scriptscriptstyle} and scaled by a factor~4):
+% \begin{center}
+%   \scalebox{4}{$\scriptscriptstyle \overrightnewarrow{long~vector}$}
+%   \qquad
+%   \scalebox{4}{$\scriptscriptstyle \vv{long~vector}$}
+% \end{center}
+%
+% The \pkg{overarrows} package also provides an alternative mechanism.
+% When used, the length \cs{overarrowlength} is set, according to the arrow
+% command content, and can be employed, for example, to draw arrows using
+% PGF/TikZ or the \LaTeX{} picture environment.
+%
+% \section{Quick start}
+%
+% \subsection{Loading the package \pkg{overarrows}}
+%
+% To load the \pkg{overarrows}, simply add in preamble, before the
+% ``\cs{begin}|{document}|":
+% \iffalse
+%<*example>
+% \fi
+\begin{dispListing}
+\usepackage{overarrows}
+\end{dispListing}
+% \iffalse
+%</example>
+% \fi
+%
+% Options can be given, in a comma-separated list. For example, to use the
+% predefined commands shown in the section~\ref{sec:package-description},
+% page~\pageref{sec:package-description}, write:
+% \iffalse
+%<*example>
+% \fi
+\begin{dispListing}
+\usepackage[allcommands, old-arrows]{overarrows}
+\end{dispListing}
+% \iffalse
+%</example>
+% \fi
+% \noindent This define the commands (described in
+% section~\ref{sec:predefined-commands},
+% page~\pageref{sec:predefined-commands}):
+% \begin{center}
+% \begin{minipage}{0.5\linewidth}
+%   \begin{itemize}
+%   \item \refCom{overrightarrow}
+%   \item \refCom{overleftarrow}
+%   \item \refCom{overleftrightarrow}
+%   \item \refCom{overrightharpoonup}
+%   \item \refCom{overrightharpoondown}
+%   \item \refCom{overleftharpoonup}
+%   \item \refCom{overleftharpoondown}
+%   \item \refCom{overbar}
+%   \end{itemize}
+% \end{minipage}\hfill
+% \begin{minipage}{0.5\linewidth}
+%   \begin{itemize}
+%   \item \refCom{underrightarrow}
+%   \item \refCom{underleftarrow}
+%   \item \refCom{underleftrightarrow}
+%   \item \refCom{underrightharpoonup}
+%   \item \refCom{underrightharpoondown}
+%   \item \refCom{underleftharpoonup}
+%   \item \refCom{underleftharpoondown}
+%   \item \refCom{underbar}
+%   \end{itemize}
+% \end{minipage}
+% \end{center}
+% Note that the \refOpt{old-arrows} option may give bad results, if math fonts
+% have been changed. Simply remove the option in this case.
+%
+% Many other options are available. See the complete list,
+% page~\pageref{sec:package-options}.
+%
+% \subsection{Commands creation}
+%
+% Commands are created with \refCom{NewOverArrowCommand}. This macro take two
+% mandatory arguments : the name of the command (without backslash), and the
+% arrow configuration as comma-separated list of key-values. By default, a right
+% arrow is set:
+% \iffalse
+%<*example>
+% \fi
+\begin{dispExample}
+\NewOverArrowCommand{myovercmd}{}
+$\myovercmd{test}$
+\end{dispExample}
+% \iffalse
+%</example>
+% \fi
+% \noindent Commands are defined with a starred variant, designed to handle
+% subscripts:
+% \iffalse
+%<*example>
+% \fi
+\begin{dispExample}
+$ v_{sub} \qquad \myovercmd{v}_{sub} \qquad \myovercmd*{v}_{sub} $
+\end{dispExample}
+% \iffalse
+%</example>
+% \fi
+%
+% \subsection{Start and end of the arrow}
+%
+% Extremities of the arrow are set by the keys \refKey{start} and \refKey{end}.
+% For example, an arrow starting with a hook (symbols \cs{lhook} \symb{\lhook})
+% and ending with two heads (symbol \cs{twoheadrightarrow}
+% \symb{\twoheadrightarrow}) is defined by:
+% \iffalse
+%<*example>
+% \fi
+\begin{dispListing}
+\NewOverArrowCommand{overhooktwoheadrightarrow}{%
+  start=\lhook, end=\twoheadrightarrow,
+}
+\end{dispListing}
+% \iffalse
+%</example>
+% \fi
+% \noindent Note that \cs{twoheadrightarrow} must be defined, as it is not in
+% \LaTeX{}. This can be done with the package \pkg{amssymb}, by adding in
+% preamble:
+% \iffalse
+%<*example>
+% \fi
+\begin{dispListing}
+\usepackage{amssymb}
+\end{dispListing}
+% \iffalse
+%</example>
+% \fi
+% With the previous definition, the result of the command
+% \cs{overhooktwoheadrightarrow} is faulty:
+% \iffalse
+%<*example>
+% \fi
+\NewOverArrowCommand{overhooktwoheadrightarrow}{%
+  start=\lhook, end=\twoheadrightarrow,
+}
+\begin{dispExample}
+$ \overhooktwoheadrightarrow{v} \qquad \overhooktwoheadrightarrow{AB} $
+\end{dispExample}
+% \iffalse
+%</example>
+% \fi
+% \noindent The problem comes from symbols junction and the trimming used to
+% obtain their overlap. It can be solved with the keys \refKey{trim start} and
+% \refKey{trim end}, which are numbers and set the corresponding trimming in
+% math units (typically |1/18 em|). Appropriate values gives better results:
+% \iffalse
+%<*example>
+% \fi
+\csundef{overhooktwoheadrightarrow}
+\begin{dispExample}
+\NewOverArrowCommand{overhooktwoheadrightarrow}{%
+  start=\lhook, end=\twoheadrightarrow,
+  trim start=1.5, trim end=2,
+}
+$ \overhooktwoheadrightarrow{v} \qquad \overhooktwoheadrightarrow{AB} $
+\end{dispExample}
+% \iffalse
+%</example>
+% \fi
+%
+% \medskip
+%
+% If the math font differs from the default \emph{Computer Modern}, the central
+% part of the arrow may have inappropriate position or line width. This is
+% because the default symbol used for the arrow line is \cs{relbareda}
+% \symb{\relbareda} from the \pkg{esvect} package. If needed, try to set the
+% \refKey{middle} key with the symbol \cs{relbar} \symb{\relbar}. The trimming
+% should also be adapted:
+% \iffalse
+%<*example>
+% \fi
+\csundef{overhooktwoheadrightarrow}
+\begin{dispExample}
+\NewOverArrowCommand{overhooktwoheadrightarrow}{%
+  start=\lhook, end=\twoheadrightarrow, middle=\relbar, %
+  trim start=0, trim end=3, trim middle=5,
+}
+$ \overhooktwoheadrightarrow{v} \qquad \overhooktwoheadrightarrow{AB} $
+\end{dispExample}
+% \iffalse
+%</example>
+% \fi
+%
+% Finding the correct values for \refKey{trim start}, \refKey{trim end} and
+% \refKey{trim middle} may need many trials. For this purpose, the macro
+% \refCom{TestOverArrow} displays the result of a command for different lengths
+% and math styles:
+% \iffalse
+%<*example>
+% \fi
+\begin{dispExample}
+\TestOverArrow{overhooktwoheadrightarrow}
+\end{dispExample}
+% \iffalse
+%</example>
+% \fi
+%
+% \subsection{Size and position of the arrow}
+%
+% A command \cs{OverRightarrow}, built with the symbols \cs{Relbar}
+% \symb{\Relbar} and \cs{Rightarrow} \symb{\Rightarrow}, gives:
+%\iffalse
+%<*example>
+% \fi
+\begin{dispExample}
+\NewOverArrowCommand{OverRightarrow}{%
+  start=\Relbar,
+  middle=\Relbar,
+  end=\Rightarrow,
+  trim=4,
+}
+$ \OverRightarrow{v} \qquad \OverRightarrow{AB} $
+\end{dispExample}
+% \iffalse
+%</example>
+% \fi
+%\noindent The key \refKey{trim} sets \refKey{trim start}, \refKey{trim middle} and
+%\refKey{trim end} with the same value.
+%
+% The previous arrow is visually too big. The macro \refCom{smallermathstyle}
+% allows to obtain a better result:
+% \iffalse
+%<*example>
+% \fi
+\csundef{OverRightarrow}
+\begin{dispExample}
+\NewOverArrowCommand{OverRightarrow}{%
+  start={\smallermathstyle\Relbar},
+  middle={\smallermathstyle\Relbar},
+  end=\Rightarrow,
+  trim=4,
+}
+$ \OverRightarrow{v} \qquad \OverRightarrow{AB} $
+\end{dispExample}
+% \iffalse
+%</example>
+% \fi
+% \noindent Note that \refCom{smallermathstyle} should not be used for
+% \refKey{end}, because this last is formatted with the same math style as
+% \refKey{start}.
+%
+% It would be better to add an extra space between the arrow and the content of
+% the command. This can be done with the key \refKey{space after arrow}:
+% \iffalse
+%<*example>
+% \fi
+\csundef{OverRightarrow}
+\begin{dispExample}
+\NewOverArrowCommand{OverRightarrow}{%
+  start={\smallermathstyle\Relbar},
+  middle={\smallermathstyle\Relbar},
+  end=\Rightarrow,
+  trim=4,
+  space after arrow=0.25ex,
+}
+$ \OverRightarrow{v} \qquad \OverRightarrow{AB} $
+\end{dispExample}
+% \iffalse
+%</example>
+% \fi
+%
+% \medskip
+%
+% Default arrows are slightly shifted to the right. For a left arrow, this
+% should be reversed, using the keys \refKey{shift left} and \refKey{shift
+% right}. These keys set the corresponding shifts, in math units. Example:
+% \iffalse
+%<*example>
+% \fi
+\begin{dispExample}
+\NewOverArrowCommand{OverLeftarrow}{%
+  start={\smallermathstyle\Leftarrow},
+  middle={\smallermathstyle\Relbar},
+  end=\Relbar,
+  trim=4,
+  space after arrow=0.25ex,
+  shift left=0, shift right=2,
+}
+$ \OverLeftarrow{v} \qquad \OverLeftarrow{AB} $
+\end{dispExample}
+% \iffalse
+%</example>
+% \fi
+%
+% \medskip
+%
+% Finally, the key \refKey{arrow under} places the arrow below the content,
+% instead of above (and \refKey{space before arrow} sets the space upon it):
+% \iffalse
+%<*example>
+% \fi
+\begin{dispExample}
+\NewOverArrowCommand{OverLeftRightarrow}{%
+  start={\smallermathstyle\Leftarrow},
+  middle={\smallermathstyle\Relbar},
+  end=\Rightarrow,
+  trim=4,
+  arrow under,
+  space before arrow=0.5ex,
+  shift left=0, shift right=0,
+}
+$ \OverLeftRightarrow{v} \qquad \OverLeftRightarrow{AB} $
+\end{dispExample}
+% \iffalse
+%</example>
+% \fi
+%
+% \subsection{Symbols assemblage}
+%
+% Many \LaTeX{} math symbols are built by assemblage, using the macro
+% \cs{joinrel}\footnotemark{} which remove 3 math units of horizontal space.
+% The \pkg{overarrows} package provides a flexible version of \cs{joinrel},
+% called \refCom{xjoinrel}, which remove an arbitrary number of math units,
+% given as optional argument.
+%
+%\footnotetext{For example, the symbol \cs{models}
+% \smash{\symb{\models}} is defined as
+% \cs{mathrel}\texttt{\{\textbar\}}\cs{joinrel}\cs{Relbar} and corresponds to
+% the assemblage of a  vertical line \symb{\vert} and the symbol \cs{Relbar}
+% \symb{\Relbar}. The command \cs{mathrel} modifies the spacing according to the
+% math relation class ; \cs{Relbar} corresponds to the equal sign (it's
+% definition is \cs{mathrel}\texttt{\{=\}}).}
+%
+% Symbols association is then simple. As example, one can define a triple tail
+% macro \cs{tttail} from the symbol \cs{succ} \symb{\succ}:
+% \iffalse
+%<*example>
+% \fi
+\begin{dispExample}
+\newcommand*{\tttail}{\succ\xjoinrel[10]\succ\xjoinrel[10]\succ}
+$ \tttail $
+\end{dispExample}
+\newcommand*{\tttail}{\succ\xjoinrel[10]\succ\xjoinrel[10]\succ}
+% \iffalse
+%</example>
+% \fi
+% \noindent Thus defined, the macro \cs{tttail} can be used in arrow definition:
+%\iffalse
+%<*example>
+% \fi
+\begin{dispExample}
+\NewOverArrowCommand{overtttailrightarrow}{%
+  start={\tttail},
+  end={\rightarrow},
+  trim start=12,
+  shift left=0, shift right=0,
+  space after arrow=.2ex,
+  min length=24,
+}
+$ \overtttailrightarrow{v} \qquad \overtttailrightarrow{AB} $
+\end{dispExample}
+% \iffalse
+%</example>
+% \fi
+% \noindent Here the \refKey{min length} key was added to ensure a minimum length
+% (in math units) when the content of the command is small (as for a single
+% character).
+%
+% \medskip
+%
+% The previous arrow would be better with a smaller tail, and this can be done
+% with the macro \refCom{smallermathstyle}. But a small tail and a normal sized
+% head are not aligned; as |{\smallermathstyle\tttail}\xjoinrel[8]\rightarrow}|
+% gives:
+% \begin{center}
+%      \scalebox{2}{${\smallermathstyle\tttail}\xjoinrel[8]\rightarrow$}
+% \end{center}
+% \noindent The solution comes from the command \cs{vcenter} which centers
+% materials on math axis. The tail must then be wrapped in a \cs{hbox}:
+% \iffalse
+%<*example>
+% \fi
+\csundef{overtttailrightarrow}
+\begin{dispExample}
+\NewOverArrowCommand{overtttailrightarrow}{%
+  start={\vcenter{\hbox{$\smallermathstyle\tttail$}}},
+  end={\rightarrow},
+  trim start=12,
+  shift left=0, shift right=0,
+  space after arrow=.2ex,
+  min length=24,
+}
+$ \overtttailrightarrow{v} \qquad \overtttailrightarrow{AB} $
+\end{dispExample}
+% \iffalse
+%</example>
+% \fi
+%
+% \medskip
+%
+% Text symbols, namely symbols that are not defined in math mode, can also be
+% used. They should yet be enclosed in the \cs{text} macro, from the
+% \pkg{amsmath} package, to be correctly displayed and correctly scaled
+% according to math style. With, for example, the arrow heads given by the
+% symbols 40 and 41 of the \emph{lasy} font:
+% \iffalse
+%<*example>
+% \fi
+\begin{dispExample}
+\newcommand*{\leftarrowhead}{\usefont{U}{lasy}{m}{n}\symbol{40}}
+\newcommand*{\righttarrowhead}{\usefont{U}{lasy}{m}{n}\symbol{41}}
+\NewOverArrowCommand{overrightleftarrow}{%
+  start=\text{\righttarrowhead},
+  end=\text{\leftarrowhead},
+  trim start=0.7,  trim end=0.7,
+  min length=20,
+  shift leftright=-2,
+}
+$ \overrightleftarrow{AB} \qquad \scriptstyle\overrightleftarrow{AB} $
+\end{dispExample}
+% \iffalse
+%</example>
+% \fi
+%
+% \subsection{Drawing the arrow with TikZ}
+%
+% In addition to the default method presented previously (assemblage of symbols,
+% as described in section~\ref{sec:extensible-arrows},
+% page~\pageref{sec:extensible-arrows}), the \pkg{overarrows} package has an
+% alternative method to draw the arrow. This one allows the use of graphic
+% languages such as PGF/TikZ.
+%
+% Drawing arrows with TikZ requires to load the \pkg{tikz} package and its
+% library |arrows.meta|. This can be simply done by passing the \refOpt{tikz}
+% option to the \pkg{overarrows} package\footnotemark{}:
+%
+% \footnotetext{Note that the \refOpt{tikz} option isn't mandatory to use TikZ
+% commands in \pkg{overarrows}. The \pkg{tikz} package and its library
+% |arrows.meta| can be loaded independently.}
+% \iffalse
+%<*example>
+% \fi
+\begin{dispListing}
+\usepackage[tikz]{overarrows}
+\end{dispListing}
+% \iffalse
+%</example>
+% \fi
+%
+% \medskip
+%
+% To use PGF/TikZ language, the optional argument |tikz| must be passed to
+% \refCom{NewOverArrowCommand} . TikZ picture are not extensible. That's why the
+% \pkg{overarrows} package provides three lengths that can be used in TikZ
+% commands:
+% \begin{itemize}
+%  \item \refCom{overarrowlength} for the arrow length,
+%  \item \refCom{overarrowthickness} and \refCom{overarrowsmallerthickness} for
+%   the arrow thickness.
+% \end{itemize}
+% These lengths are computed at each utilisation of a command created with the
+% |tikz| optional argument.
+%
+% Without any other configuration, a right arrow is drawn:
+% \iffalse
+%<*example>
+% \fi
+\begin{dispExample}
+\NewOverArrowCommand[tikz]{overtikzarrow}{}
+$ \overtikzarrow{v} \qquad \overtikzarrow{AB} $
+\end{dispExample}
+% \iffalse
+%</example>
+% \fi
+%
+% \medskip
+%
+% Keys to use Tikz are described in section~\ref{sec:tikz-keys},
+% page~\pageref{sec:tikz-keys}. Main keys are: \refKey{tikz options},
+% \refKey{path options} and \refKey{path}. It's also possible to append settings
+% with \refKey{add tikz options} and \refKey{add path options}. The full TikZ
+% command used to draw the arrow can as well be entirely redefined
+% with the key \refKey{tikz command}
+%
+% Here is a example of an arrow drawn with TikZ\footnotemark{}:
+%
+% \footnotetext{TikZ arrows are very powerfull, but much slower to draw than the
+% default method using assemblage of math symbols.}
+% \iffalse
+%<*example>
+% \fi
+\begin{dispExample}
+\NewOverArrowCommand[tikz]{overarchedleftrightarrow}{%
+  add tikz options={y=\overarrowlength},
+  add tikz options={line width={\overarrowsmallerthickness}},
+  path options={arrows={<[scale=0.5]->[scale=0.5]}},
+  path={(0,0) arc (-250:70:0.5 and 0.1)},
+  center arrow,
+  min length=25,
+  space after arrow=0.4ex,
+}
+$ \overarchedleftrightarrow{v} \qquad \overarchedleftrightarrow{ABCD} $
+
+\end{dispExample}
+% \iffalse
+%</example>
+% \fi
+%
+% \subsection{Drawing the arrow with \LaTeX{} picture environment}
+%
+% As well as TikZ, the \LaTeX{} |picture| environment can be used to draw the
+% arrow. For this, the optional argument |picture| must be passed to
+% \refCom{NewOverArrowCommand}. Like for TikZ, the three lengths
+% \refCom{overarrowlength}, \refCom{overarrowthickness} and
+% \refCom{overarrowsmallerthickness} can be used in |picture| commands.
+% By default, a right vector is drawn:
+% \iffalse
+%<*example>
+% \fi
+\ltxarrows%^^A classic arrows
+\begin{dispExample}
+\NewOverArrowCommand[picture]{overpictarrow}{}
+$ \overpictarrow{v} \qquad \overpictarrow{AB} $
+\end{dispExample}
+% \iffalse
+%</example>
+% \fi
+% \noindent If \pkg{overarrows} is loaded with the option \refOpt{pstarrows},
+% the package \pkg{pict2e} is used and a PSTricks style vector arrows is set.
+% This gives:
+% \iffalse
+%<*example>
+% \fi
+\pstarrows%^^A pst arrows
+\csundef{overpictarrow}
+\begin{dispExample}
+\NewOverArrowCommand[picture]{overpictarrow}{}
+$ \overpictarrow{v} \qquad \overpictarrow{AB} $
+\end{dispExample}
+% \iffalse
+%</example>
+% \fi
+%
+% Keys to use \LaTeX{} |picture| environment are described in
+% section~\ref{sec:picture-keys}, page~\pageref{sec:picture-keys}. The main keys
+% are \refKey{picture command}, \refKey{geometry} an \refDoc{key:picture}{line
+% thickness}. Here is an example:
+% \iffalse
+%<*example>
+% \fi
+\begin{dispExample}
+\NewOverArrowCommand[picture]{overbandedarrow}{
+  picture command={%
+    \qbezier
+    (0.0\overarrowlength,0)
+    (0.5\overarrowlength,0)
+    (0.9\overarrowlength,0.2\overarrowlength)
+    \put(0.9\overarrowlength,0.2\overarrowlength)
+    {\vector(2,1){0.2\overarrowlength}}
+  },
+  geometry={(\overarrowlength,0.4\overarrowlength)(0,0)},
+  line thickness={\overarrowsmallerthickness},
+  center arrow,
+  space after arrow=0.4ex,
+}
+$ \overbandedarrow{v} \qquad \overbandedarrow{AB} $
+\end{dispExample}
+% \iffalse
+%</example>
+% \fi
+%
+% \section{User interface}
+%
+% \subsection{Package options}
+% \label{sec:package-options}
+%
+%
+% The \pkg{overarrows} package accepts many options, given as a comma-separated
+% list \meta{options} at package loading:
+% \cs{usepackage}|[|\meta{options}|]{overarrows}|.
+%
+% The option \refOpt*{esvect} is set by default. This can be overridden with
+% \refOpt*{noesvect}.
+%
+% \subsubsection{\pkg{esvect} configuration}
+% \label{sec:esvect-conf}
+%
+% \begin{docOption}{esvect}
+%   Loads the \pkg{esvect} package and redefines its vector commands \refCom{vv}
+%   through the \pkg{overarrows} mechanism. Original \pkg{esvect} \cs{vv} macro
+%   is still available with \refCom{esvectvv}.
+%
+%   The \pkg{esvect} package provides the symbol \cs{relbareda} \symb{\relbareda}
+%   which is smaller and often more flexible than the classic one \cs{relbar}
+%   \symb{\relbar}. \cs{relbareda} fits with the standard \emph{Computer Modern}
+%   math font, but can be unsuitable with other fonts.
+%
+%   The \pkg{esvect} package also provides the right arrow command \cs{fldr}.
+%   The shape of the arrow depends on the option passed to the \pkg{esvect}
+%   package: \symb{\fldra} (option~|a|), \symb{\fldrb} (option~|b|), \symb{\fldrc}
+%   (option~|c|), \symb{\fldrd} (option~|d|), \symb{\fldre} (option~|e|),
+%   \symb{\fldrf} (option~|f|), \symb{\fldrg} (option~|g|) or \symb{\fldrh}
+%   (option~|h|). Note that by default \pkg{overarrows} loads the \pkg{esvect}
+%   package with the option~|f| (while \pkg{esvect} default is~|d|). This can be
+%   changed with one of the eight options described bellow: \refOpt*{esvecta},
+%   \refOpt*{esvectb}, \refOpt*{esvectc}, \refOpt*{esvectd}, \refOpt*{esvecte},
+%   \refOpt*{esvectf}, \refOpt*{esvectg} and \refOpt*{esvecth}.
+%
+%   This option is set by default and can be unset with \refOpt*{noesvect}.
+% \end{docOption}
+%
+% \begin{docOption}{noesvect}
+%   Prevents the loading of the \pkg{esvect} package and the definition of the
+%   command \refCom{vv}.
+% \end{docOption}
+%
+% \begin{docOption}{esvecta}
+%   Loads the \pkg{esvect} package with the |a| option.
+%
+%   \cs{fldr} corresponds the to the symbol \symb{\fldra}. \cs{vv} command
+%   gives : $\vva{v} \quad \vva{AB} \quad \vva{\mathrm{grad}}$.
+% \end{docOption}
+%
+% \begin{docOption}{esvectb}
+%   Loads the \pkg{esvect} package with the |b| option.
+%
+%   \cs{fldr} corresponds the to the symbol \symb{\fldrb}. \cs{vv} command
+%   gives : $\vvb{v} \quad \vvb{AB} \quad \vvb{\mathrm{grad}}$.
+% \end{docOption}
+%
+% \begin{docOption}{esvectc}
+%   Loads the \pkg{esvect} package with the |c| option.
+%
+%   \cs{fldr} corresponds the to the symbol \symb{\fldrc}. \cs{vv} command
+%   gives : $\vvc{v} \quad \vvc{AB} \quad \vvc{\mathrm{grad}}$.
+% \end{docOption}
+%
+% \begin{docOption}{esvectd}
+%   Loads the \pkg{esvect} package with the |d| option.
+%
+%   \cs{fldr} corresponds the to the symbol \symb{\fldrd}. \cs{vv} command
+%   gives : $\vvd{v} \quad \vvd{AB} \quad \vvd{\mathrm{grad}}$.
+% \end{docOption}
+%
+% \begin{docOption}{esvecte}
+%   Loads the \pkg{esvect} package with the |e| option.
+%
+%   \cs{fldr} corresponds the to the symbol \symb{\fldre}. \cs{vv} command
+%   gives : $\vve{v} \quad \vve{AB} \quad \vve{\mathrm{grad}}$.
+% \end{docOption}
+%
+% \begin{docOption}{esvectf}
+%   Loads the \pkg{esvect} package with the |f| option.
+%
+%   \cs{fldr} corresponds the to the symbol \symb{\fldrf}. \cs{vv} command
+%   gives : $\vvf{v} \quad \vvf{AB} \quad \vvf{\mathrm{grad}}$.
+% \end{docOption}
+%
+% \begin{docOption}{esvectg}
+%   Loads the \pkg{esvect} package with the |g| option.
+%
+%   \cs{fldr} corresponds the to the symbol \symb{\fldrg}. \cs{vv} command
+%   gives : $\vvg{v} \quad \vvg{AB} \quad \vvg{\mathrm{grad}}$.
+% \end{docOption}
+%
+% \begin{docOption}{esvecth}
+%   Loads the \pkg{esvect} package with the |h| option.
+%
+%   \cs{fldr} corresponds the to the symbol \symb{\fldrh}. \cs{vv} command
+%   gives : $\vvh{v} \quad \vvh{AB} \quad \vvh{\mathrm{grad}}$.
+% \end{docOption}
+%
+% \subsubsection{Predefined commands}
+%\label{sec:predefined-commands-opt}
+%
+% The \pkg{overarrows} package provides sixteen predefined commands, eight with
+% the arrow over, and eight with the arrow under. By default, theses commands
+% are not defined, and must be activated by the corresponding option.
+% Beware that commands are created without checking if already defined by
+% another package (\cs{overleftarrow}, \cs{overrightarrow},
+% \cs{overleftrightarrow}, \cs{underleftarrow}, \cs{underrightarrow} and
+% \cs{underleftrightarrow} are, for example, part of the \pkg{amsmath} package).
+%
+% Three options are also available to define set of commands.
+%
+% \medskip
+% \unsetoldarrows
+%
+% \noindent\textbf{Set of commands}
+%
+% \begin{docOption}{allcommands}
+%   Defines all sixteen predefined commands.
+%\end{docOption}
+% \begin{docOption}{overcommands}
+%   Defines all eight predefined commands with arrow over.
+%\end{docOption}
+% \begin{docOption}{undercommands}
+%   Defines all eight predefined commands with arrow under.
+% \end{docOption}
+%
+% \medskip
+%
+% \noindent\textbf{Over arrows}
+%
+% \begin{docOption}{overrightarrow}
+%   Defines the \refCom{overrightarrow} command: $\overrightarrow{v}$,
+%   $\overrightarrow{AB}$, $\overrightarrow{\textrm{grad}}$.
+% \end{docOption}
+% \begin{docOption}{overleftarrow}
+%   Defines the \refCom{overleftarrow} command: $\overleftarrow{v}$, $\overleftarrow{AB}$, $\overleftarrow{\textrm{grad}}$.
+% \end{docOption}
+% \begin{docOption}{overleftrightarrow}
+%   Defines the \refCom{overleftrightarrow} command: $\overleftrightarrow{v}$,
+%   $\overleftrightarrow{AB}$, $\overleftrightarrow{\textrm{grad}}$.
+% \end{docOption}
+% \begin{docOption}{overrightharpoonup}
+%   Defines the \refCom{overrightharpoonup} command: $\overrightharpoonup{v}$,
+%   $\overrightharpoonup{AB}$, $\overrightharpoonup{\textrm{grad}}$.
+% \end{docOption}
+% \begin{docOption}{overrightharpoondown}
+%   Defines the \refCom{overrightharpoondown} command:
+%   $\overrightharpoondown{v}$, $\overrightharpoondown{AB}$,
+%   $\overrightharpoondown{\textrm{grad}}$.
+% \end{docOption}
+% \begin{docOption}{overleftharpoonup}
+%   Defines the \refCom{overleftharpoonup} command: $\overleftharpoonup{v}$,
+%   $\overleftharpoonup{AB}$, $\overleftharpoonup{\textrm{grad}}$.
+% \end{docOption}
+% \begin{docOption}{overleftharpoondown}
+%   Defines the \refCom{overleftharpoondown} command: $\overleftharpoondown{v}$,
+%   $\overleftharpoondown{AB}$, $\overleftharpoondown{\textrm{grad}}$.
+% \end{docOption}
+% \begin{docOption}{overbar}
+%   Defines the \refCom{overbar} command: $\overbar{v}$, $\overbar{AB}$,
+%   $\overbar{\textrm{grad}}$.
+% \end{docOption}
+%
+% \medskip
+%
+% \noindent\textbf{Under arrows}
+%
+% \begin{docOption}{underrightarrow}
+%   Defines the \refCom{underrightarrow} command: $\underrightarrow{v}$,
+%   $\underrightarrow{AB}$, $\underrightarrow{\textrm{grad}}$.
+% \end{docOption}
+% \begin{docOption}{underleftarrow}
+%   Defines the \refCom{underleftarrow} command: $\underleftarrow{v}$,
+%   $\underleftarrow{AB}$, $\underleftarrow{\textrm{grad}}$.
+% \end{docOption}
+% \begin{docOption}{underleftrightarrow}
+%   Defines the \refCom{underleftrightarrow} command: $\underleftrightarrow{v}$,
+%   $\underleftrightarrow{AB}$, $\underleftrightarrow{\textrm{grad}}$.
+% \end{docOption}
+% \begin{docOption}{underrightharpoonup}
+%   Defines the \refCom{underrightharpoonup} command: $\underrightharpoonup{v}$,
+%   $\underrightharpoonup{AB}$, $\underrightharpoonup{\textrm{grad}}$.
+% \end{docOption}
+% \begin{docOption}{underrightharpoondown}
+%   Defines the \refCom{underrightharpoondown} command:
+%   $\underrightharpoondown{v}$, $\underrightharpoondown{AB}$,
+%   $\underrightharpoondown{\textrm{grad}}$.
+% \end{docOption}
+% \begin{docOption}{underleftharpoonup}
+%   Defines the \refCom{underleftharpoonup} command: $\underleftharpoonup{v}$,
+%   $\underleftharpoonup{AB}$, $\underleftharpoonup{\textrm{grad}}$.
+% \end{docOption}
+% \begin{docOption}{underleftharpoondown}
+%   Defines the \refCom{underleftharpoondown} command:
+%   $\underleftharpoondown{v}$, $\underleftharpoondown{AB}$,
+%   $\underleftharpoondown{\textrm{grad}}$.
+% \end{docOption}
+% \begin{docOption}{underbar}
+%   Defines the \refCom{underbar} command: $\underbar{v}$, $\underbar{AB}$,
+%   $\underbar{\textrm{grad}}$.
+% \end{docOption}
+%
+% \subsubsection{Other options}
+%
+% \begin{docOption}{old-arrows}\setoldarrows
+%   Loads the \pkg{old-arrows} package with its option |old|. This provides the
+%   symbols \cs{varleftarrow} \symb{\varleftarrow} and \cs{varrightarrow}
+%   \symb{\varrightarrow}, used then by default for predefined command.
+%
+%   When the \refOpt*{old-arrows} option is set, the commands
+%   \refCom{overrightarrow}, \refCom{overleftarrow},
+%   \refCom{overleftrightarrow}, \refCom{underrightarrow},
+%   \refCom{underleftarrow} and \refCom{underleftrightarrow} give respectively :
+%   $\overrightarrow{AB}$, $\overleftarrow{AB}$, $\overleftrightarrow{AB}$,
+%   $\underrightarrow{AB}$, $\underleftarrow{AB}$ and $\underleftrightarrow{AB}$
+% \end{docOption}
+%
+% \begin{docOption}{tikz}
+%   Loads the package \pkg{tikz} with its library |arrows.meta|.
+%
+%   Note that TikZ arrows, drawn with the |tikz| method, are always available,
+%   even if this option is not set, provided the \pkg{tikz} package and its
+%   library are loaded independently.
+% \end{docOption}
+%
+% \begin{docOption}{pstarrows}
+%   Loads the \pkg{pict2e} package, with its option |pstarrows|. Vectors using
+%   \LaTeX{} |picture| environment gives then \pstarrows$\overpictarrow{AB}$
+%   instead of \ltxarrows$\overpictarrow{AB}$.
+%
+%   Note that this affect all vectors drawn in \LaTeX{} |picture| environments,
+%   and that this setting can be changed on the fly with the commands \cs{pstarrows}
+%   and \cs{ltxarrows} from the \pkg{pict2e} package.
+% \end{docOption}
+%
+% \begin{docOption}{subscripts}
+%   Sets the default value of the key \refKey{detect subscripts} to |true|.
+%
+%   This option also impacts the command \refCom{vv} and all predefined
+%   commands, so that they automatically use their starred variant when
+%   a subscript follows.
+% \end{docOption}
+%
+% \begin{docOption}{debug}
+%   Writes the meaning of defined commands in \LaTeX{} log.
+% \end{docOption}
+%
+% \subsection{Commands}
+%
+% \subsubsection{Macro for commands creation}
+% \label{sec:macro-for-commands-creation}
+%
+% \begin{docCommands}{%
+%   {
+%     doc name=NewOverArrowCommand,
+%     doc parameter=\oarg{method}\marg{name}\marg{keys},
+%   },
+%   {
+%     doc name=RenewOverArrowCommand,
+%     doc parameter=\oarg{method}\marg{name}\marg{keys},
+%   },
+%   {
+%     doc name=ProvideOverArrowCommand,
+%     doc parameter=\oarg{method}\marg{name}\marg{keys},
+%   },
+%   {
+%     doc name=DeclareOverArrowCommand,
+%     doc parameter=\oarg{method}\marg{name}\marg{keys},
+%   },
+% }
+%   Creates the command \cs{\meta{name}} and its starred variant
+%   \cs{\meta{name}*}. The starred variant \cs{\meta{name}*} removes the extra
+%   end space generated by the arrow, which is suitable, as example, when
+%   a subscript follows.
+%
+% \begin{description}
+%   \item[\cs{NewOverArrowCommand}] raises an error if \cs{\meta{name}} is
+%   already defined.
+%
+%   \item[\cs{RenewOverArrowCommand}] raises an error if \cs{\meta{name}} is undefined.
+%
+%   \item[\cs{ProvideOverArrowCommand}] sets \cs{\meta{name}} if the command is
+%   undefined and does nothing if it is already defined, without raising
+%   any error.
+%
+%   \item[\cs{DeclareOverArrowCommand}] sets \cs{\meta{name}}, whether the
+%   command is already defined
+%   or not, without raising any error.
+%   \end{description}
+%
+%   The \meta{method} used to draw the arrow must be:
+%   \begin{description}
+%    \item[|symb|] to draw the arrow by symbols assemblage (default);
+%    \item[|tikz|] to draw the arrow with PGF/TikZ;
+%    \item[|picture|] to draw the arrow with the \LaTeX{}
+%     |picture| environment.
+%   \end{description}
+%   With no \meta{method} argument, the |symb| method is chosen.
+%
+%   \smallskip
+%
+%   \meta{keys} is a comma-separated list of keys-values. Available keys depends
+%   of the \meta{method} chosen and are described in section~\ref{sec:keys},
+%   page~\pageref{sec:keys}.
+%
+%\iffalse
+%<*example>
+% \fi
+\begin{dispExample}
+\NewOverArrowCommand[tikz]{myoverarrow}{arrows={Bar-Bar}, center arrow}
+$ \myoverarrow{v} \qquad \myoverarrow{ABCD} $
+\end{dispExample}
+% \iffalse
+%</example>
+% \fi
+% \end{docCommands}
+%
+% \begin{docCommands}{%
+%   {
+%     doc name=TestOverArrow,
+%     doc parameter=\oarg{pattern}\marg{name},
+%   },
+%   {
+%     doc name=TestOverArrow*,
+%     doc parameter=\oarg{pattern}\marg{name},
+%   },
+% }
+%   Displays the result of the command \meta{name} for patterns of various
+%   lengths and for the four math styles. A custom \meta{pattern} can be added
+%   to the predefined ones.
+%
+%   The starred variant \cs{TestOverArrow*} displays a full report, including
+%   kerning tests of the commands \cs{\meta{name}} and \cs{\meta{name}*} .
+%
+% \iffalse
+%<*example>
+% \fi
+\begin{dispExample}
+\TestOverArrow*[my~pattern]{vv}
+\end{dispExample}
+% \iffalse
+%</example>
+% \fi
+%
+% \end{docCommands}
+%
+% \subsubsection{Useful macros for symbols assemblage}
+%
+% Math symbols assemblage is the default method used to draw arrows. The macros
+% \refCom*{xjoinrel} and \refCom*{smallermathstyle} are designed to help combine
+% and format math symbols.
+%
+% \begin{docCommand}{xjoinrel}{\oarg{number}}
+%   Removes an horizontal space of \meta{number} math units (|3.5 mu| by
+%   default). Must be used in math mode. Useful to assemble math symbols and
+%   create new ones.
+%
+% \iffalse
+%<*example>
+% \fi
+\begin{dispExample}
+\newcommand*{\triplebar}{\Relbar\xjoinrel[14]\relbar}
+\newcommand*{\triplebararrow}{\Relbar\xjoinrel[15]\rightarrow}
+\scalebox{2}{$ \triplebar \quad \triplebararrow $} \par
+\scalebox{2}{$ \triplebar\xjoinrel\triplebararrow $}
+\end{dispExample}
+% \iffalse
+%</example>
+% \fi
+% \end{docCommand}
+%
+% \begin{docCommand}{smallermathstyle}{}
+%   Applies the next math style, smaller than the current. That is:
+% \begin{itemize}
+%     \item sets \cs{scriptstyle} if the current math style is \cs{displaystyle}
+%           or \cs{textstyle};
+%     \item sets \cs{scriptscriptstyle} if the current math style is
+%           \cs{scriptstyle};
+%     \item does nothing if the current math style is \cs{scriptscriptstyle}.
+% \end{itemize}
+%
+%\iffalse
+%<*example>
+% \fi
+\begin{dispExample}
+$ \displaystyle AB \quad \textstyle AB
+ \quad \scriptstyle AB \quad \scriptscriptstyle AB $\par
+$ \displaystyle AB \quad \smallermathstyle AB
+ \quad \smallermathstyle AB \quad \smallermathstyle AB $
+\end{dispExample}
+% \iffalse
+%</example>
+% \fi
+%
+% \end{docCommand}
+%
+% \subsubsection{Useful lengths for TikZ or \texttt{picture} environment}
+%
+% Arrows drawn with graphic languages, like PGF/TikZ or the \LaTeX{} |picture|
+% environment, are not extensible. The three lengths \refLen*{overarrowlength},
+% \refLen*{overarrowthickness} and \refLen*{overarrowsmallerthickness} are
+% computed at each utilisation of a command set with the |tikz| or |picture|
+% method, so they can be used in drawing commands.
+%
+% \iffalse
+%<*example>
+% \fi
+\begin{dispExample*}{grow to left by=-2em}
+\NewOverArrowCommand[tikz]{overparabola}{%
+  path options={x=\overarrowlength, line width=\overarrowsmallerthickness},
+  path={(0,0) parabola[parabola height=0.2\overarrowlength] (1,0)},
+  arrows={-}, center arrow, min length=30,
+}
+$\displaystyle \overparabola{v} \qquad \overparabola{ABCD} $ \par
+$\scriptstyle \overparabola{v} \qquad \overparabola{ABCD} $ \par
+\end{dispExample*}
+% \iffalse
+%</example>
+% \fi
+%
+% \begin{docLength}{overarrowlength}
+%   Is set to the width of the arrow command content, or, if larger, to the
+%   minimal arrow length set through the key \refKey{min length}.
+% \end{docLength}
+%
+% \begin{docLength}{overarrowthickness}
+%   Is set to the default rule thickness of the current math style. That is:
+%   \begin{itemize}
+%    \item |\fontdimen 8 \textfont 3| in \cs{displaystyle} or \cs{textstyle};
+%    \item |\fontdimen 8 \scriptfont 3| in \cs{scriptstyle};
+%    \item |\fontdimen 8 \scriptscriptfont 3| in
+%     \cs{scriptscriptstyle}.
+%   \end{itemize}
+% \end{docLength}
+%   
+%  \begin{docLength}{overarrowsmallerthickness}
+%    Is set to the default rule thickness of the next smaller math style.
+%    That is:
+%    \begin{itemize}
+%     \item |\fontdimen 8 \scriptfont 3| in \cs{displaystyle} or \cs{textstyle};
+%     \item |\fontdimen 8 \scriptscriptfont 3| in \cs{scriptstyle} or
+%      \cs{scriptscriptstyle}.
+%    \end{itemize}
+%  \end{docLength}
+%
+% \subsubsection{Vectors macros}
+%
+% The macro \cs{vv}, dedicated to vectors, is automatically defined when the
+% option \refOpt{esvect} is set (which is the default). It is a clone of the
+% \cs{vv} command provided by the \pkg{esvect} package, but its starred variant
+% has a correct kerning when followed by a subscript.
+%
+% \begin{docCommands}{%
+%   {
+%     doc name=vv,
+%     doc parameter=\marg{content},
+%   },
+%   {
+%     doc name=vv*,
+%     doc parameter=\marg{content},
+%   },
+% }
+%   Draws a vector arrow upon math \meta{content}. The shape of the arrow
+%   depends on the corresponding options described in
+%   section~\ref{sec:esvect-conf}, page~\pageref{sec:esvect-conf} :
+%   \refOpt{esvecta}, \refOpt{esvectb}, \refOpt{esvectc}, \refOpt{esvectd},
+%   \refOpt{esvecte}, \refOpt{esvectf}, \refOpt{esvectg}, \refOpt{esvecth}.
+%
+%   The starred variant \cs{vv*} suppresses the end space created by the arrow.
+%
+% \iffalse
+%<*example>
+% \fi
+\begin{dispExample}
+$ \vv{\imath}_{0}  \quad \vv{e}_r \quad \vv{L}_\Delta $\par
+$ \vv*{\imath}_{0}  \quad \vv*{e}_r \quad \vv*{L}_\Delta $
+\end{dispExample}
+% \iffalse
+%</example>
+% \fi
+%
+%\end{docCommands}
+%
+% \begin{docCommand}{esvectvv}{}
+%   Is simply the backup of the original \pkg{esvect} \cs{vv} command.
+% \iffalse
+%<*example>
+% \fi
+\begin{dispExample}
+$ \esvectvv{\imath}_{0}  \quad \esvectvv{e}_{r} \quad \esvectvv{L}_\Delta $\par
+$ \esvectvv*{\imath}{0}  \quad \esvectvv*{e}{r} \quad \esvectvv*{L}{\Delta} $
+\end{dispExample}
+% \iffalse
+%</example>
+% \fi
+%
+% \end{docCommand}
+%
+% \subsubsection{Predefined commands}
+% \label{sec:predefined-commands}
+%
+% Predefined commands are defined if the corresponding option is set (see
+% section~\ref{sec:predefined-commands-opt},
+% page~\pageref{sec:predefined-commands-opt}). The commands
+% \refCom*{overrightarrow}, \refCom*{overleftarrow},
+% \refCom*{overleftrightarrow}, \refCom*{underrightarrow},
+% \refCom*{underleftarrow} and \refCom*{underleftrightarrow} are affected by the
+% option \refOpt{old-arrows}.
+%
+% \medskip
+%
+% \noindent\textbf{Over arrows}
+%
+%  \begin{docCommand}{overrightarrow}{}
+%    $$\overrightarrow{v} \qquad \overrightarrow{AB} \qquad \overrightarrow{\mathrm{grad}}$$
+%
+%   The shape of the arrow is smaller if the option \refOpt{old-arrows} is set.
+%  \end{docCommand}
+%
+%  \begin{docCommand}{overleftarrow}{}
+%    $$\overleftarrow{v} \qquad \overleftarrow{AB} \qquad \overleftarrow{\mathrm{grad}}$$
+%
+%   The shape of the arrow is smaller if the option \refOpt{old-arrows} is set.
+%  \end{docCommand}
+%
+%  \begin{docCommand}{overleftrightarrow}{}
+%  $$\overleftrightarrow{v} \qquad \overleftrightarrow{AB} \qquad\overleftrightarrow{\mathrm{grad}}$$
+%
+%   The shape of the arrows is smaller if the option \refOpt{old-arrows} is set.%
+%  \end{docCommand}
+%
+%\begin{docCommand}{overrightharpoonup}{}
+%  $$\overrightharpoonup{v} \qquad \overrightharpoonup{AB} \qquad \overrightharpoonup{\mathrm{grad}}$$
+%  \end{docCommand}
+%
+%  \begin{docCommand}{overrightharpoondown}{}
+%  $$\overrightharpoondown{v} \qquad \overrightharpoondown{AB} \qquad \overrightharpoondown{\mathrm{grad}}$$
+%  \end{docCommand}
+%
+%  \begin{docCommand}{overleftharpoonup}{}
+%    $$\overleftharpoonup{v} \qquad \overleftharpoonup{AB} \qquad \overleftharpoonup{\mathrm{grad}}$$
+%  \end{docCommand}
+%
+%  \begin{docCommand}{overleftharpoondown}{}
+%  $$\overleftharpoondown{v} \qquad \overleftharpoondown{AB} \qquad \overleftharpoondown{\mathrm{grad}}$$
+%  \end{docCommand}
+%
+%  \begin{docCommand}{overbar}{}
+%  $$\overbar{v} \qquad \overbar{AB} \qquad \overbar{\mathrm{grad}}$$
+%  \end{docCommand}
+%
+%
+% \medskip
+%
+% \noindent\textbf{Under arrows}
+%
+%  \begin{docCommand}{underrightarrow}{}
+%    $$\underrightarrow{v} \qquad \underrightarrow{AB} \qquad \underrightarrow{\mathrm{grad}}$$
+%
+%   The shape of the arrow is smaller if the option \refOpt{old-arrows} is set.
+%  \end{docCommand}
+%
+%  \begin{docCommand}{underleftarrow}{}
+%    $$\underleftarrow{v} \qquad \underleftarrow{AB} \qquad \underleftarrow{\mathrm{grad}}$$
+%
+%   The shape of the arrow is smaller if the option \refOpt{old-arrows} is set.
+%  \end{docCommand}
+%
+%  \begin{docCommand}{underleftrightarrow}{}
+%  $$\underleftrightarrow{v} \qquad \underleftrightarrow{AB} \qquad \underleftrightarrow{\mathrm{grad}}$$
+%
+%   The shape of the arrows is smaller if the option \refOpt{old-arrows} is set.
+%  \end{docCommand}
+%
+%  \begin{docCommand}{underrightharpoonup}{}
+%  $$\underrightharpoonup{v} \qquad \underrightharpoonup{AB} \qquad \underrightharpoonup{\mathrm{grad}}$$
+%  \end{docCommand}
+%
+%  \begin{docCommand}{underrightharpoondown}{}
+%  $$\underrightharpoondown{v} \qquad \underrightharpoondown{AB} \qquad \underrightharpoondown{\mathrm{grad}}$$
+%  \end{docCommand}
+%
+%  \begin{docCommand}{underleftharpoonup}{}
+%  $$\underleftharpoonup{v} \qquad \underleftharpoonup{AB} \qquad \underleftharpoonup{\mathrm{grad}}$$
+%  \end{docCommand}
+%
+%  \begin{docCommand}{underleftharpoondown}{}
+%  $$\underleftharpoondown{v} \qquad \underleftharpoondown{AB} \qquad \underleftharpoondown{\mathrm{grad}}$$
+%  \end{docCommand}
+%
+%  \begin{docCommand}{underbar}{}
+%  $$\underbar{v} \qquad \underbar{AB} \qquad \underbar{\mathrm{grad}}$$
+%  \end{docCommand}
+%
+% \subsection{Keys}
+%\label{sec:keys}
+%
+% The customisation of arrows is done at command creation through a key-value
+% interface provided by the \pkg{pgfkeys} package (with |/overarrows/| as key
+% path).
+%
+% \subsubsection{Arrow position and length settings}
+%
+% These keys are available whatever the method chosen at command creation (see
+% section~\ref{sec:macro-for-commands-creation},
+% page~\pageref{sec:macro-for-commands-creation} for the documentation of
+% commands creation).
+%
+% \medskip\par\noindent\textbf{Length}
+%
+% \begin{docKey}{min length}{=\marg{number}}
+% {no default, see below for the initial value}
+% Sets the minimal arrow length to \meta{number} math units. The arrow length is
+% set from content width, or, if larger, to this value.
+%
+% The initial value of \refKey*{min length} depends on the \meta{method} chosen
+% at command creation (see section~\ref{sec:macro-for-commands-creation},
+% page~\pageref{sec:macro-for-commands-creation} for the documentation of
+% commands creation):
+% \begin{itemize}
+%  \item \meta{number}| = 0 | for the |symb| method (default);
+%  \item \meta{number}| = 12| for the |tikz| method;
+%  \item \meta{number}| = 18| for the |picture| method.
+% \end{itemize}
+%
+%\iffalse
+%<*example>
+% \fi
+\begin{dispExample}
+\NewOverArrowCommand{overlongarrow}{min length=50}
+$ \overlongarrow{v} \qquad \overlongarrow{ABCDEF} $
+\end{dispExample}
+% \iffalse
+%</example>
+% \fi
+%\end{docKey}
+%
+% \medskip\par\noindent\textbf{Placement}
+%
+% \begin{docKeys}{
+%   {
+%       doc name={arrow under},
+%       doc description={default |autoconfig|, initially unset},
+%   },
+%   {
+%       doc name={arrow under},
+%       doc parameter={=autoconfig\textbar noconfig},
+%       doc no index,
+%   }
+% }
+% Places the arrow under, instead of over.
+% \begin{description}
+%  \item[\refKey*{arrow under} or \refKey*{arrow under}|=autoconfig|] also
+%   configures suitably the key \refKey{detect subscripts} to |false| and the
+%   key \refKey{before arrow} to get an additional space over the arrow.
+%  \item[\refKey*{arrow under}|=noconfig|] does not do any
+%   additional configuration.
+% \end{description}
+%
+% \iffalse
+%<*example>
+% \fi
+\begin{dispExample}
+\NewOverArrowCommand{underhooks}{%
+  start={\lhook}, end={\rhook},  trim=1,
+  arrow under, shift leftright=-4,
+}
+$ \underhooks{v} \qquad \underhooks{AB} $
+\end{dispExample}
+% \iffalse
+%</example>
+% \fi
+%
+% \end{docKeys}
+%
+% \medskip\par\noindent\textbf{Horizontal shifts}
+%
+% \begin{docKey}{shift left}{=\marg{number}}
+% {no default, initially |2|}
+% Shifts the left side of the arrow by \meta{number} math units (positive number
+% means a shift to the right).
+%\end{docKey}
+%
+% \begin{docKey}{shift right}{=\marg{number}}
+% {no default, see below for the initial value}
+% Shifts the right side of the arrow by \meta{number} math units (positive
+% number means a shift to the left).
+%
+% The initial value of \refKey*{shift right} depends on the \meta{method} chosen
+% at command creation (see section~\ref{sec:macro-for-commands-creation},
+% page~\pageref{sec:macro-for-commands-creation} for the documentation of
+% commands creation):
+% \begin{itemize}
+%  \item \meta{number}| = 0 | for the |symb| method  (default);
+%  \item \meta{number}| = -2| for the |tikz| and |picture| methods.
+% \end{itemize}
+%
+%\end{docKey}
+%
+%\iffalse
+%<*example>
+% \fi
+\begin{dispExample*}{grow to left by=-2em}
+\NewOverArrowCommand{lookback}{%
+  start={\leftarrow}, end={\rightharpoondown},
+  shift left=-50, shift right=-10,
+}
+$ \lookback{\text{look back}} $
+\end{dispExample*}
+% \iffalse
+%</example>
+% \fi
+%
+%
+% \begin{docKey}{shift leftright}{=\oarg{number}}{no default}
+%   Sets \refKey{shift left} and \refKey{shift right} to the same
+%   \meta{number} value.
+%\end{docKey}
+%
+%
+% \begin{docKey}{center arrow}{}{}
+%   Sets \refKey{shift left} and \refKey{shift right} to zero.
+%\end{docKey}
+%
+% \begin{docKey}{left arrow}{}{default |2|}
+%   Sets \refKey{shift left} to zero and \refKey{shift right} to \meta{number}.
+% \end{docKey}
+%
+% \begin{docKey}{right arrow}{}{default |2|}
+%   Sets \refKey{shift right} to zero and \refKey{shift left} to \meta{number}.
+% \end{docKey}
+%
+% \medskip\par\noindent\textbf{Vertical adjunct}
+%
+% \begin{docKeys}{
+%   {
+%       doc name={before arrow},
+%       doc parameter={=\marg{vertical material}},
+%       doc description={initially empty},
+%   },
+%   {
+%       doc name={after arrow},
+%       doc parameter={=\marg{vertical material}},
+%       doc description={initially empty},
+%   },
+% }
+%   Adds the \meta{vertical material} before or after the arrow.
+%
+%   Over and under arrow commands are typeset through the \TeX{} \cs{ialign}
+%   command, which aligns contents, like a tabular. The \meta{vertical material}
+%   is inserted \emph{between} the rows, with \TeX{} \cs{noalign} command.
+%
+%   These keys are essentially used to add some extra space between the arrow
+%   and the content of the command. They can be set in a handier way with the
+%   keys \refKey{space before arrow} and \refKey{space after arrow}.
+% \end{docKeys}
+%
+% \begin{docKey}{space before arrow}{=\marg{length}}{no default}
+%   Adds a space of \meta{length} before the arrow. This sets the keys
+%   \refKey{before arrow}.
+% \end{docKey}
+%
+% \begin{docKey}{space after arrow}{=\marg{length}}{no default}
+%   Adds a space of \meta{length} after the arrow. This sets the keys
+%   \refKey{after arrow}.
+% \end{docKey}
+%
+% \iffalse
+%<*example>
+% \fi
+\begin{dispExample*}{grow to left by=-2em}
+\NewOverArrowCommand{overharpoonsdown}{%
+  start=\leftharpoondown, end=\rightharpoondown, center arrow,
+  space before arrow=-0.2ex, space after arrow=0.3ex,
+}
+$ \dot{\overharpoonsdown{v}} \qquad \ddot{\overharpoonsdown{AB}}$
+\end{dispExample*}
+% \iffalse
+%</example>
+% \fi
+%
+% \subsubsection{Subscripts detection setting}
+%
+% This key is available whatever the method chosen at command creation (see
+% section~\ref{sec:macro-for-commands-creation},
+% page~\pageref{sec:macro-for-commands-creation} for the documentation of
+% commands creation).
+%
+% \begin{docKey}{detect subscripts}{=true\textbar{}false}
+% {default |true|, see below for the initial value}
+%
+% Removes automatically the extra end space created by the arrow, if a subscript
+% immediately follows the command.
+%
+% By default, the initial value of \refKey*{detect subscripts} is |false|.
+% When the option \refOpt{subscripts} is set, the initial value of
+% \refKey*{detect subscripts} is |true|.
+%
+% \iffalse
+%<*example>
+% \fi
+\begin{dispExample}
+\NewOverArrowCommand{autosub}{detect subscripts}
+$ \imath_0 \qquad \autosub{\imath}_0 \qquad
+ {\autosub{\imath}}_0 \qquad {\autosub*{\imath}}_0 $
+\end{dispExample}
+% \iffalse
+%</example>
+% \fi
+%
+%\end{docKey}
+%
+% \subsubsection{Symbols assemblage settings}
+%
+% The following keys are available for arrows drawn with the default |symb|
+% method (see section~\ref{sec:macro-for-commands-creation},
+% page~\pageref{sec:macro-for-commands-creation} for the documentation of
+% commands creation).
+%
+% \begin{docKeys}{
+%   {
+%       doc name={start},
+%       doc parameter={=\marg{command}},
+%       doc description={no default, initially \cs{relbar}},
+%   },
+%   {
+%       doc name={middle},
+%       doc parameter={=\marg{command}},
+%       doc description={no default, initially set by \refKey*{middle config}|=auto|},
+%   },
+%   {
+%       doc name={end},
+%       doc parameter={=\marg{command}},
+%       doc description={no default, see below for the initial value},
+%   },
+% }
+%   Sets the \meta{command} used to draw the start (left), middle (center) or
+%   end (right) part of the arrow. The \refKey*{middle} one is repeated, if
+%   necessary, to extend the arrow. It is set, initially by \refKey*{middle
+%   config}|=auto|.
+%   By default, the \refKey*{end} symbols is initially \cs{rightarrow}
+%   \symb{\rightarrow}. When the option \refOpt{old-arrows} is set, the initial
+%   value of \refKey*{end} is \cs{varrightarrow} \symb{\varrightarrow}.
+%
+%   \refKey*{start} and \refKey*{end} symbols are typeset in the same group.
+%   \refKey*{middle} is typeset alone. This means that, if a command, like
+%   \refCom{smallermathstyle}, is used to alter the symbols, it should be
+%   applied both to \refKey*{start} and \refKey*{middle} (but not to
+%   \refKey*{end}).
+%
+%\iffalse
+%<*example>
+% \fi
+\begin{dispExample}
+\NewOverArrowCommand{smalleroverrightarrow}{%
+  start={\smallermathstyle\relbar},
+  middle={\smallermathstyle\relbareda},
+  end={\rightarrow},
+  space after arrow={0.2ex},
+}
+$ \smalleroverrightarrow{v} \qquad \smalleroverrightarrow{AB} $
+\end{dispExample}
+% \iffalse
+%</example>
+% \fi
+%\end{docKeys}
+%
+%
+%\begin{docKey}{trim start}{=\marg{number}}{no default, initially |7|}
+%  Trims \meta{number} math units from the right side of the
+%  \refKey{start} symbol.
+% \end{docKey}
+%
+% \begin{docKey}{trim middle}{=\marg{number}}
+% {no default, initially set by \refKey*{middle config}|=auto|}
+%   Trims \meta{number} math units from both left and right sides of the
+%   \refKey{middle} symbol.
+% \end{docKey}
+%
+% \begin{docKey}{trim end}{=\marg{number}}{no default, initially |7|}
+%   Trims \meta{number} math units from the left side of the
+%   \refKey{end} symbol.
+% \end{docKey}
+%
+% \begin{docKey}{trim}{=\marg{number}}{no default}
+%   Sets \refKey{trim start}, \refKey{trim middle} and \refKey{trim end} to the
+%   same \meta{number} value.
+% \end{docKey}
+%
+% \begin{docKey}{no trimming}{}{}
+%   Clears \refKey{trim start}, \refKey{trim middle} and \refKey{trim end}.
+% \end{docKey}
+%
+%\begin{docKey}{middle config}{=auto\textbar relbar\textbar relbareda}{no default}
+%  Sets a suitable configuration for the keys \refKey{middle} and \refKey{trim middle}:
+%  \begin{description}
+%   \item[For \refKey*{middle config}| = relbar|,] \refKey{middle} is set to
+%    \cs{relbar} \symb{\relbar} and \refKey{trim middle} to |2.5|.
+%   \item[For \refKey*{middle config}| = relbareda|,] \refKey{middle} is set to
+%    \cs{relbareda} \symb{\relbareda} and \refKey{trim middle} to |1|.
+%   \item[For \refKey*{middle config}| = auto|,] \refKey{middle} is set with
+%   \refKey*{middle config}| = relabareda| if the option \refOpt{esvect} is set
+%   (which is the default) and \refKey*{middle config}| = relabar| if not.
+%   \end{description}
+%\end{docKey}
+%
+% \begin{docKeys}{
+%   {
+%       doc name={amsmath},
+%       doc description={default |mimic|},
+%   },
+%   {
+%       doc name={amsmath},
+%       doc parameter={=mimic\textbar strict},
+%       doc no index,
+%   }
+% }
+%   Loads a configuration coherent with \pkg{amsmath}
+%   \cs{overrightarrow} command.
+% \begin{description}
+%  \item[\refKey*{amsmath} or \refKey*{amsmath}|=mimic|] sets the corresponding
+%   keys suitably:
+%   \begin{center}
+%     \begin{tabular*}{\linewidth}{ @{\extracolsep{\fill}}lll }
+%     \refKey*{start}|={\relbar}|
+%     & \refKey*{middle}=|{\relbar}|
+%     & \refKey*{end}|={\rightarrow}| \\
+%     \refKey*{trim start}|=7|
+%     & \refKey*{trim middle}|=2|
+%     & \refKey*{trim end}|=7| \\
+%     \refKey*{shift leftright}|=0|
+%     & \refKey*{after arrow}|={}|
+%     & \refKey*{before arrow}|={}|
+%       \end{tabular*}
+%   \end{center}
+%  \item[\refKey*{amsmath}|=strict|] makes, in addition, the command uses the
+%  internal macros of  \pkg{amsmath}
+%  \cs{overrightarrow} (\refKey*{no trimming}, \refKey*{fill
+%  macro}|={\arrowfill@}|, \refKey*{stack macro}|={\overarrow@}|). Note that
+%  many configuration keys becomes ineffective.
+% \end{description}
+% \end{docKeys}
+%
+% \begin{docKeys}{
+%   {
+%       doc name={esvect},
+%       doc description={default |mimic|},
+%   },
+%   {
+%       doc name={esvect},
+%       doc parameter={=mimic\textbar strict},
+%       doc no index,
+%   }
+% }
+%   Loads a configuration coherent with \pkg{amsmath}
+%   \cs{vv} command.
+% \begin{description}
+%  \item[\refKey*{esvect} or \refKey*{esvect}|=mimic|] sets the corresponding
+%   keys suitably:
+%   \begin{center}
+%     \begin{tabular*}{\linewidth}{ @{\extracolsep{\fill}}lll }
+%     \refKey*{start}|={\relbaredd}|
+%     & \refKey*{middle}=|{\relbareda}|
+%     & \refKey*{end}|={\fldr}| \\
+%     \refKey*{trim start}|=1.5|
+%     & \refKey*{trim middle}|=0|
+%     & \refKey*{trim end}|=1.5| \\
+%     \refKey*{space before arrow}|=-.7pt|
+%     & \refKey*{space after arrow}|=-.3pt|
+%     &\refKey*{right arrow}|=2|
+%       \end{tabular*}
+%   \end{center}
+%  \item[\refKey*{esvect}|=strict|] makes, in addition, the command uses the
+%  internal macros of  \pkg{esvect}
+%  \cs{vv} (\refKey*{no trimming}, \refKey*{fill
+%  macro}|={\traitfill@}|, \refKey*{stack macro}|={\overvect@}|). Note that
+%  many configuration keys becomes ineffective.
+% \end{description}
+%
+%\end{docKeys}
+%
+% \subsubsection{TikZ settings}
+% \label{sec:tikz-keys}
+%
+% If, at command creation (see section~\ref{sec:macro-for-commands-creation},
+% page~\pageref{sec:macro-for-commands-creation} for the documentation of
+% commands creation), the |tikz| method is chosen, then the arrow is drawn by
+% the command:
+% \begin{center}
+%   \cs{tikz}|[|\refKey*{tikz options}|]{|\refKey*{tikz command}|}|
+% \end{center}
+% \noindent where \refKey{tikz options} and \refKey{tikz command} are two keys
+% described below. When \refKey*{tikz command} is let unset, the drawing command
+% turns into:
+% \begin{center}
+%   \cs{tikz}|[|\refKey*{tikz options}|]{|\cs{draw}|[|\refKey*{path options}|]|
+%   \refKey*{path}|;}|
+% \end{center}
+%
+% The best way to customise |tikz| arrows is then to set the keys \refKey{tikz
+% options}, \refKey{path options} and \refKey{path}, preferably through the
+% handy alternatives: \refKey{add tikz options}, \refKey{add path options},
+% \refKey{arrows}, \refKey{line thickness} or \refKey{thinner}.
+%
+%\iffalse
+%<*example>
+% \fi
+\begin{dispExample*}{grow to left by=-2em}
+\NewOverArrowCommand[tikz]{overdotteddoublearrow}{%
+  add tikz options={blue}, add path options={densely dotted},
+  arrows={->[scale=0.5]>[scale=0.5]}, thinner,
+  min length=20, space after arrow={0.3ex},
+}
+$ \overdotteddoublearrow{v} \qquad \overdotteddoublearrow{AB} $
+\end{dispExample*}
+% \iffalse
+%</example>
+% \fi
+%
+% The following keys are available when the |tikz| method is chosen.
+%
+% \begin{docKey}[][before lower=\medskip\par]
+% {tikz options}{=\marg{TikZ options}}
+% {no default, initially |x=|\cs{overarrowlength}|, line
+% width=|\cs{overarrowthickness}}
+%   Sets TikZ options to \meta{TikZ options}.
+%\end{docKey}
+%
+% \begin{docKey}[][before lower=\medskip\par]
+% {path options}{=\marg{path options}}
+% {no default, initially |arrows={-Classical TikZ Rightarrow}, cap=round|}
+%   Sets TikZ path options to \meta{path options}.
+% \end{docKey}
+% \begin{docKey}{path}{=\marg{path specification}}
+% {no default, initially |(0,0)--(1,0)|}
+% Sets TikZ path specification to \meta{path} (the ending semicolon is
+% automatically appended).
+%\end{docKey}
+%
+% \begin{docKey}{add tikz options}{=\marg{TikZ options}}{no default}
+%   Appends the options \meta{TikZ options} to the key \refKey{tikz options}.
+% \end{docKey}
+%
+% \begin{docKey}{add path options}{=\marg{path options}}{no default}
+%   Appends the options \meta{path options} to the key \refKey{path options}.
+% \end{docKey}
+%
+% \begin{docKey}{arrows}{=\marg{arrow specification}}{no default}
+%   Appends the option |arrows={|\meta{arrow specification}|}| to the key
+%   \refKey{path options}.
+% \end{docKey}
+%
+% \begin{docKey}{line thickness}{=\marg{length}}{no default}
+%   Appends the option |line width={|\meta{length}|}| to the key \refKey{path
+%   options}.
+% \end{docKey}
+%
+% \begin{docKey}{thinner}{}{}
+%   Sets the keys \refKey{line thickness} with \cs{overarrowsmallerthickness}.
+% \end{docKey}
+%
+% \begin{docKey}{tikz command}{=\marg{TikZ command}}{initially unset}
+%   Sets the \meta{TikZ command} used to draw the arrow. If left unset, the
+%   value \cs{draw}|[|\refKey*{path options}|] |\refKey*{path}|;| is used.
+%\end{docKey}
+%
+% \subsubsection{Picture environment settings}
+% \label{sec:picture-keys}
+%
+% If, at command creation (see section~\ref{sec:macro-for-commands-creation},
+% page~\pageref{sec:macro-for-commands-creation} for the documentation of
+% commands creation), the |picture| method is chosen, then the arrow is drawn
+% with by:
+% \begin{flushleft}\leftskip=3cm
+%   \cs{begin}|{picture}|\refKey*{geometry}|%|\\
+%    \quad\cs{linethickness}|{|\refDoc{key:picture}*{line thickness}|}%|\\
+%    \quad\refKey*{picture command}|%|\par
+%   \cs{end}|{picture}%|
+% \end{flushleft}
+% \noindent where \refKey{geometry}, \refDoc{key:picture}{line thickness} and
+% \refKey*{picture command} are three keys described below.
+%
+%\iffalse
+%<*example>
+% \fi
+\begin{dispExample*}{grow to left by=-2em}
+  % ^^A \arc and \roundcap commands are from the pict2e package
+  % ^^A this example needs \usepackage{pict2e} in the preamble
+  \NewOverArrowCommand[picture]{overarc}{%
+    picture command={%
+      \roundcap
+      \put(0.5\overarrowlength,0){\arc[180,0]{0.6\overarrowlength}}
+    },
+    geometry={%
+      (1.2\overarrowlength,0.5\overarrowlength)(-0.1\overarrowlength,0.2ex)
+    },
+    thinner, center arrow,
+  }
+  $ \overarc{v} \qquad \overarc{AB} $
+\end{dispExample*}
+% \iffalse
+%</example>
+% \fi
+% The following keys are available when the |picture| method is chosen.
+%
+% \begin{docKey}[][before lower=\medskip\par]
+% {picture command}{=\marg{picture command}}
+% {no default, initially \cs{put}|(0,0)\{|\cs{vector}|(1,0)\{|\refCom*{overarrowlength}|\}\}|}
+%   Sets picture command to \meta{picture command}.
+% \end{docKey}
+%
+% \begin{docKey}[][before lower=\medskip\par]
+% {geometry}{=\marg{picture geometry specification}}
+% {no default, initially |(|\refCom*{overarrowlength}|,1ex)(0,-0.5ex)|}
+%   Sets picture geometry to \meta{picture geometry specification}.
+% \end{docKey}
+%
+% \begin{docKey}[][doc label={picture:line thickness}]%^^A same name as for TikZ
+% {line thickness}{=\marg{length}}{no default}
+% Sets the picture line thickness to \meta{length}.
+% \end{docKey}
+%
+% \begin{docKey}[][doc label={picture:thinner}]%^^A same name as for TikZ
+% {thinner}{}{no default}
+% Sets the keys \refDoc{key:picture}{line thickness} with
+% \cs{overarrowsmallerthickness}.
+% \end{docKey}
+%
+% \subsection{Advanced commands and keys}
+%
+% The following commands and keys are used in the implementation of the
+% \pkg{overarrows} package. They can also be employed for an advanced
+% configuration of the commands created, although unnecessary in the vast
+% majority of cases.
+%
+% \subsubsection{Advanced commands}
+%
+% \begin{docCommands}{%
+%   {
+%     doc name=SetOverArrowsMethod,
+%     doc parameter=\oarg{stack mechanism}\marg{name}\oarg{pre code}\marg{keys def},
+%   },
+%   {
+%     doc name=SetOverArrowsMethod*,
+%     doc parameter=\marg{name}\oarg{pre code}\marg{keys def},
+%   },
+% }
+%   Defines the method \meta{name}, to be used in commands
+%   \refCom{NewOverArrowCommand}, \refCom{RenewOverArrowCommand},
+%   \refCom{ProvideOverArrowCommand} or \refCom{DeclareOverArrowCommand}.
+%   When the \meta{name} method is chosen, corresponding keys are defined by
+%   \meta{keys def}. This must set, in particular, the keys \refKey{no stack
+%   macro hook} and \refKey{no arrow macro hook}. Optional code \meta{pre code}
+%   is evaluated before the keys definition.
+%
+%   The unstarred variant automatically defines the key \refKey{no stack macro
+%   hook}, according to the value of the optional \meta{stack mechanism}.
+%   This one must be:
+%   \begin{description}
+%    \item[|fill|] if \refKey{arrow macro} creates extensible arrows (typically
+%     with \cs{cleaders}). In this case, the arrow macro (defined by \refKey{no
+%     arrow macro hook}) is called with the math style, passed as argument (it
+%     can be, for example, the macro \cs{rightarrowfill@} used by \pkg{amsmath}
+%     \cs{overrightarrow}). |fill| is the mechanism used by the |symb| method.
+%    \item[|lens|] if \refKey{arrow macro} creates fixed-length arrows, and
+%     needs the computation of lengths \refLen{overarrowlength}, \refLen{overarrowthickness}
+%     and \refLen{overarrowsmallerthickness}. In this case, the arrow macro
+%     (defined by \refKey{no arrow macro hook}) is called without argument.
+%     |lens| is the mechanism used by the |tikz| and |picture| methods.
+%   \end{description}
+%   Without optional \meta{stack mechanism}, |fill| is used. The starred variant
+%   does not set the key \refKey{no stack macro hook}.
+% \end{docCommands}
+%
+% \subsubsection{Advanced keys}
+%
+% \begin{docKey}{stack macro}{=\marg{stack definition}}
+% {no default, initially unset}
+% Defines the stack macro to be \meta{stack definition}. Stack macro is
+% a command which takes three arguments: the arrow macro set by \refKey{arrow
+% macro}, the math style, and the command content (under or over the arrow).
+% \meta{stack definition} can be, for example, the macro \cs{overarrow@} used by
+% \pkg{amsmath} \cs{overrightarrow}.
+% \end{docKey}
+%
+% \begin{docKey}{arrow macro}{=\marg{arrow definition}}
+% {no default, initially unset}
+% Defines the arrow macro (used in the stack macro) by to be \meta{arrow
+% definition}.
+% \end{docKey}
+%
+% \begin{docKey}{no stack macro hook}{=\marg{code}}{no default}
+%   Sets the \meta{code} executed if \refKey{stack macro} is left unset, after
+%   user evaluation of \meta{keys} in \refCom{NewOverArrowCommand},
+%   \refCom{RenewOverArrowCommand}, \refCom{ProvideOverArrowCommand} or
+%   \refCom{DeclareOverArrowCommand}.
+%
+%   \meta{code} must configure \refKey{stack macro} accordingly to the user
+%   keys setting.
+% \end{docKey}
+%
+% \begin{docKey}{no arrow macro hook}{=\marg{code}}{no default}
+%   Sets the \meta{code} executed if \refKey{arrow macro} is left unset, after
+%   user evaluation of \meta{keys} in \refCom{NewOverArrowCommand},
+%   \refCom{RenewOverArrowCommand}, \refCom{ProvideOverArrowCommand} or
+%   \refCom{DeclareOverArrowCommand}.
+%
+%   \meta{code} must configure \refKey{arrow macro} accordingly to the user
+%   keys setting.
+% \end{docKey}
+%
+% \begin{docKey}{fill macro}{=\marg{definition}}{no default, initially unset}
+%   Defines the fill macro to be \meta{definition}. The fill macro is used by
+%   arrows created with the |symb| method, to set \refKey{arrow macro} in
+%   \refKey{no arrow macro hook}. It is called with fours arguments: start,
+%   middle and end symbols used to draw the arrow, and the math style.
+%   \meta{definition} can be, for example, the macro \cs{arrowfill@} used by
+%   \pkg{amsmath} \cs{overrightarrow}.
+% \end{docKey}
+%
+% \section{Complements}
+%
+% \subsection{Math font issue}
+%
+% If the math font differs from the default \emph{Computer Modern}, arrow drawn
+% with the |symb| method may have a central part of the arrow with inappropriate
+% position or line width. This is
+% because the default symbol used for the arrow line is \cs{relbareda}
+% \symb{\relbareda} from the \pkg{esvect} package. This can be fixed with the
+% \refOpt{noesvect} option.
+%
+% \subsection{Package dependencies}
+%
+% The following packages are used by \pkg{overarrows}:
+% \begin{itemize}
+%  \item \pkg{amsmath}
+%  \item \pkg{etoolbox}
+%  \item \pkg{pgfkeys}
+%  \item \pkg{esvect} (unless the option \refOpt{noesvect} is used)
+%  \item \pkg{old-arrows} (when the option \refOpt{old-arrows} is used)
+%  \item \pkg{tikz} (when the |tikz| method or the option \refOpt{tikz} is used)
+%  \item \pkg{pict2e} (when the option \refOpt{pstarrows} is used)
+% \end{itemize}
+%
+% \LaTeX{} distributions prior to 2020/10/01 must load the \pkg{xparse} package
+% before \pkg{overarrows}.
+%
+% \subsection{Alternatives}
+%
+% \begin{description}
+%  \item[\textsf{esvect} package]
+%   (\url{https://www.ctan.org/pkg/esvect}), by Eddie Saudrais, provides the
+%   fine vector macro \cs{vv}. This package is loaded by default by
+%   \pkg{overarrows}.
+%
+%  \item[\pkg{letterswitharrows} package]
+%   (\url{https://www.ctan.org/pkg/letterswitharrows}), by Max Teegen, provides
+%   left and right over arrows commands, which can extend to
+%   multiple characters.
+%
+%  \item[\pkg{overrightarrow} package]
+%   (\url{https://www.ctan.org/pkg/overrightarrow}), by Robin Fairbairns,
+%   provides the \cs{Overrightarrow} which is an amalgam of \cs{overrightarrow}
+%   and \cs{Rightarrow}.
+%
+%  \item[\pkg{harpoon} package] (\url{https://ctan.org/pkg/harpoon}), by Tobias
+%   Kuipers, provides over- and under-harpoon symbol commands.
+% \end{description}
+%
+% \subsection{Changelog}
+%
+% \begin{description}
+%  \item[v1.0] Initial version.
+% \end{description}
+%
+% \StopEventually{}
+%
+% \section{Implementation}
+%
+%\iffalse
+%<*package>
+%\fi
+%
+% \setlength{\parindent}{0em}
+% \setlength{\parskip}{\smallskipamount}
+%
+%\subsection*{Management of options}
+%
+% \subsubsection*{Declaration of conditionals}
+%
+%    \begin{macrocode}
+\newif\ifovar@option@oldarrows@
+\newif\ifovar@option@esvect@ \ovar@option@esvect@true \PassOptionsToPackage{f}{esvect}
+\newif\ifovar@option@tikz@
+\newif\ifovar@option@pstarrows@
+\newif\ifovar@detectsubscripts@
+\newif\ifovar@option@debug@
+%    \end{macrocode}
+%
+% Following conditionals are for predefined commands.
+%
+%    \begin{macrocode}
+\newif\ifovar@option@overrightarrow@
+\newif\ifovar@option@underrightarrow@
+\newif\ifovar@option@overleftarrow@
+\newif\ifovar@option@underleftarrow@
+\newif\ifovar@option@overleftrightarrow@
+\newif\ifovar@option@underleftrightarrow@
+\newif\ifovar@option@overrightharpoonup@
+\newif\ifovar@option@underrightharpoonup@
+\newif\ifovar@option@overrightharpoondown@
+\newif\ifovar@option@underrightharpoondown@
+\newif\ifovar@option@overleftharpoonup@
+\newif\ifovar@option@underleftharpoonup@
+\newif\ifovar@option@overleftharpoondown@
+\newif\ifovar@option@underleftharpoondown@
+\newif\ifovar@option@overbar@
+\newif\ifovar@option@underbar@
+%    \end{macrocode}
+%
+% \subsubsection*{Declaration of options}
+%
+%    \begin{macrocode}
+\DeclareOption{esvect}{\ovar@option@esvect@true}
+\DeclareOption{noesvect}{\ovar@option@esvect@false}
+\DeclareOption{esvecta}{\ovar@option@esvect@true\PassOptionsToPackage{a}{esvect}}
+\DeclareOption{esvectb}{\ovar@option@esvect@true\PassOptionsToPackage{b}{esvect}}
+\DeclareOption{esvectc}{\ovar@option@esvect@true\PassOptionsToPackage{c}{esvect}}
+\DeclareOption{esvectd}{\ovar@option@esvect@true\PassOptionsToPackage{d}{esvect}}
+\DeclareOption{esvecte}{\ovar@option@esvect@true\PassOptionsToPackage{e}{esvect}}
+\DeclareOption{esvectf}{\ovar@option@esvect@true\PassOptionsToPackage{f}{esvect}}
+\DeclareOption{esvectg}{\ovar@option@esvect@true\PassOptionsToPackage{g}{esvect}}
+\DeclareOption{esvecth}{\ovar@option@esvect@true\PassOptionsToPackage{h}{esvect}}
+\DeclareOption{old-arrows}{\ovar@option@oldarrows@true}
+\DeclareOption{tikz}{\ovar@option@tikz@true}
+\DeclareOption{pstarrows}{\ovar@option@pstarrows@true}
+\DeclareOption{subscripts}{\ovar@detectsubscripts@true}
+\DeclareOption{debug}{\ovar@option@debug@true}
+%    \end{macrocode}
+%
+% Following options are for predefined commands.
+%
+%    \begin{macrocode}
+\DeclareOption{overrightarrow}{\ovar@option@overrightarrow@true}
+\DeclareOption{underrightarrow}{\ovar@option@overrightarrow@true}
+\DeclareOption{overleftarrow}{\ovar@option@overleftarrow@true}
+\DeclareOption{underleftarrow}{\ovar@option@overleftarrow@true}
+\DeclareOption{overleftrightarrow}{\ovar@option@overleftrightarrow@true}
+\DeclareOption{underleftrightarrow}{\ovar@option@overleftrightarrow@true}
+\DeclareOption{overrightharpoonup}{\ovar@option@overrightharpoonup@true}
+\DeclareOption{underrightharpoonup}{\ovar@option@overrightharpoonup@true}
+\DeclareOption{overrightharpoondown}{\ovar@option@overrightharpoondown@true}
+\DeclareOption{underrightharpoondown}{\ovar@option@overrightharpoondown@true}
+\DeclareOption{overleftharpoonup}{\ovar@option@overleftharpoonup@true}
+\DeclareOption{underleftharpoonup}{\ovar@option@overleftharpoonup@true}
+\DeclareOption{overleftharpoondown}{\ovar@option@overleftharpoondown@true}
+\DeclareOption{underleftharpoondown}{\ovar@option@overleftharpoondown@true}
+\DeclareOption{overbar}{\ovar@option@overbar@true}
+\DeclareOption{underbar}{\ovar@option@overbar@true}
+%    \end{macrocode}
+%
+% Following options are for sets of predefined commands.
+%
+%    \begin{macrocode}
+\DeclareOption{overcommands}{%
+  \ovar@option@overrightarrow@true
+  \ovar@option@overleftarrow@true
+  \ovar@option@overleftrightarrow@true
+  \ovar@option@overrightharpoonup@true
+  \ovar@option@overrightharpoondown@true
+  \ovar@option@overleftharpoonup@true
+  \ovar@option@overleftharpoondown@true
+  \ovar@option@overbar@true
+}
+\DeclareOption{undercommands}{%
+  \ovar@option@underrightarrow@true
+  \ovar@option@underleftarrow@true
+  \ovar@option@underleftrightarrow@true
+  \ovar@option@underrightharpoonup@true
+  \ovar@option@underrightharpoondown@true
+  \ovar@option@underleftharpoonup@true
+  \ovar@option@underleftharpoondown@true
+  \ovar@option@underbar@true
+}
+\DeclareOption{allcommands}{%
+  \ovar@option@overrightarrow@true
+  \ovar@option@underrightarrow@true
+  \ovar@option@overleftarrow@true
+  \ovar@option@underleftarrow@true
+  \ovar@option@overleftrightarrow@true
+  \ovar@option@underleftrightarrow@true
+  \ovar@option@overrightharpoonup@true
+  \ovar@option@underrightharpoonup@true
+  \ovar@option@overrightharpoondown@true
+  \ovar@option@underrightharpoondown@true
+  \ovar@option@overleftharpoonup@true
+  \ovar@option@underleftharpoonup@true
+  \ovar@option@overleftharpoondown@true
+  \ovar@option@underleftharpoondown@true
+  \ovar@option@overbar@true
+  \ovar@option@underbar@true
+}
+%    \end{macrocode}
+%
+% \subsubsection*{Options processing}
+%
+%    \begin{macrocode}
+\DeclareOption*{\PackageWarning{overarrows}{Unknown option: '\CurrentOption'}}
+\ProcessOptions\relax
+%    \end{macrocode}
+%
+% \subsection*{Package dependencies}
+%
+% \LaTeX{} distributions prior to 2020/10/01 must add the \pkg{xparse} package.
+%
+%    \begin{macrocode}
+\RequirePackage{amsmath}
+\RequirePackage{etoolbox}
+%    \end{macrocode}
+% Option \refOpt{old-arrows}. Configuration of arrows used for
+% predefined commands.
+%    \begin{macrocode}
+\let\ovar@rightarrow\rightarrow
+\let\ovar@leftarrow\leftarrow
+\ifovar@option@oldarrows@
+  \RequirePackage[old]{old-arrows}
+  \let\ovar@rightarrow\varrightarrow
+  \let\ovar@leftarrow\varleftarrow
+\fi
+%    \end{macrocode}
+% Option \refOpt{esvect}.
+%    \begin{macrocode}
+\ifovar@option@esvect@
+  \RequirePackage{esvect}
+\fi
+%    \end{macrocode}
+% Option \refOpt{tikz}.
+%    \begin{macrocode}
+\ifovar@option@tikz@
+  \RequirePackage{tikz}
+  \usetikzlibrary{arrows.meta}
+\fi
+%    \end{macrocode}
+% Option \refOpt{pstarrows}.
+%    \begin{macrocode}
+\ifovar@option@pstarrows@
+  \RequirePackage[pstarrows]{pict2e}
+\fi
+%    \end{macrocode}
+%
+% \subsection*{Management of keys}
+%
+% \subsubsection*{Family declaration and setters}
+%
+%    \begin{macrocode}
+\RequirePackage{pgfkeys}
+\pgfkeys{overarrows/.is family}
+%    \end{macrocode}
+%
+% \begin{macro}{\ovar@set}
+%    \begin{macrocode}
+\newcommand{\ovar@set}[1]{\pgfqkeys{/overarrows}{#1}}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\SetOverArrowsMethod}
+%    \begin{macrocode}
+\NewDocumentCommand{\SetOverArrowsMethod}{ s O{fill} m O{} m }{%
+  \IfBooleanTF{#1}{%
+    \csgdef{ovar@set@#3}{#4\ovar@set{#5}}%
+  }{%
+    \csgdef{ovar@set@#3}{#4\ovar@set{%
+        no stack macro hook/.code={%
+          \ovar@set{stack macro/.expanded={%
+              \expandafter\expandonce\csname ovar@stack@#2\endcsname%
+              {\expandonce\ovar@length@min}%
+              {\expandonce\ovar@before@arrow}{\expandonce\ovar@after@arrow}%
+            }}%
+        },#5}}%
+  }%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \subsubsection*{Common keys}
+%
+%    \begin{macrocode}
+\SetOverArrowsMethod*{common}[\undef{\ovar@macro@stack}\undef{\ovar@macro@arrow}]{%
+  detect subscripts/.is if=ovar@detectsubscripts@,
+%    \end{macrocode}
+%
+% \refKey{stack macro} and \refKey{arrow macro}.
+%
+%    \begin{macrocode}
+  stack macro/.store in=\ovar@macro@stack,
+  arrow macro/.store in=\ovar@macro@arrow,
+  stack macro/.value required,
+  arrow macro/.value required,
+%    \end{macrocode}
+%
+% \refKey{no stack macro hook}, \refKey{no arrow macro hook}. These two keys
+% must be redefined by the command \cs{ovar@set@}\meta{method}.
+%
+%    \begin{macrocode}
+  no stack macro hook/.code={%
+    \PackageError{overarrows}{Undefined stack macro}
+    {The requested method is perhaps mispelled}
+  },
+  no arrow macro hook/.code={%
+    \PackageError{overarrows}{Undefined arrow macro}
+    {The requested method is perhaps mispelled}
+  },
+%    \end{macrocode}
+%
+% \refKey{min length}.
+%
+%    \begin{macrocode}
+  min length/.store in=\ovar@length@min,
+  min length/.value required,
+  min length=0,
+%    \end{macrocode}
+%
+% \refKey{before arrow}, \refKey{after arrow}, \refKey{space before arrow},
+% \refKey{space after arrow}.
+%
+%    \begin{macrocode}
+  before arrow/.store in=\ovar@before@arrow,
+  after arrow/.store in=\ovar@after@arrow,
+  before arrow/.value required,
+  after arrow/.value required,
+  before arrow=\empty,
+  after arrow=\empty,
+  space before arrow/.code=\pgfkeysalso{before arrow={\kern ##1}},
+  space after arrow/.code=\pgfkeysalso{after arrow={\kern ##1}},
+%    \end{macrocode}
+%
+% \refKey{shift left}, \refKey{shift right}, \refKey{shift leftright},
+% \refKey{center arrow}, \refKey{left arrow}, \refKey{right arrow}.
+%
+%    \begin{macrocode}
+  shift left/.store in=\ovar@shift@left,
+  shift right/.store in=\ovar@shift@right,
+  shift left/.value required,
+  shift right/.value required,
+  shift leftright/.code=\pgfkeysalso{%
+    shift left=##1, shift right=##1,
+  },
+  center arrow/.code=\pgfkeysalso{shift leftright=0},
+  shift leftright/.value required,
+  center arrow/.value forbidden,
+  left arrow/.code=\pgfkeysalso{%
+    shift left=0, shift right=##1,
+  },
+  right arrow/.code=\pgfkeysalso{%
+    shift left=##1, shift right=0,
+  },
+  left arrow/.default=2,
+  right arrow/.default=2,
+  right arrow,
+%    \end{macrocode}
+%
+% \refKey{arrow under}.
+%
+%    \begin{macrocode}
+  arrow under/.is choice,
+  arrow under/noconfig/.code={
+    \def\ovar@stack@fill{\ovar@stackunder@fill}
+    \def\ovar@stack@lens{\ovar@stackunder@lens}
+  },
+  arrow under/autoconfig/.code={
+    \pgfkeysalso{%
+      arrow under=noconfig,
+      detect subscripts=false,
+      before arrow={\kern 1.3\ex@\relax},% like underarrow@ from amsmath
+    }
+  },
+  arrow under/.default=autoconfig,
+}
+%    \end{macrocode}
+%
+% \subsubsection*{Keys for the \texttt{symb} method}
+%
+%    \begin{macrocode}
+\SetOverArrowsMethod{symb}[\undef{\ovar@macro@arrowfill}]{%
+%    \end{macrocode}
+% Fill macro.
+%    \begin{macrocode}
+  fill macro/.store in=\ovar@macro@arrowfill,
+  fill macro/.value required,
+%    \end{macrocode}
+% Arrow macro.
+%    \begin{macrocode}
+  no arrow macro hook/.code={%
+    \ifdef{\ovar@macro@arrowfill}{}{%
+      \ovar@set{%
+        fill macro/.expanded={%
+          \noexpand\ovar@arrow@fill%
+          {\expandonce\ovar@shift@left}{\expandonce\ovar@shift@right}%
+        }
+      }
+    }
+    \ovar@set{%
+      arrow macro/.expanded={%
+        \expandonce{\ovar@macro@arrowfill}%
+        {\expandonce{\ovar@arrow@start}\expandonce{\ovar@trim@start}}%
+        {\expandonce{\ovar@trim@middle}\expandonce{\ovar@arrow@middle}%
+          \expandonce{\ovar@trim@middle}}%
+        {\expandonce{\ovar@trim@end}\expandonce{\ovar@arrow@end}}%
+      }
+    }
+  },
+%    \end{macrocode}
+% \refKey{start}, \refKey{middle}, \refKey{end}.
+%    \begin{macrocode}
+  start/.store in=\ovar@arrow@start,
+  middle/.store in=\ovar@arrow@middle,
+  end/.store in=\ovar@arrow@end,
+  start/.value required,
+  middle/.value required,
+  end/.value required,
+%    \end{macrocode}
+% \refKey{trim start}, \refKey{trim middle}, \refKey{trim end}, \refKey{trim},
+% \refKey{no trimming}.
+%    \begin{macrocode}
+  trim start/.code={\def\ovar@trim@start{\xjoinrel[##1]}},
+  trim middle/.code={\def\ovar@trim@middle{\xjoinrel[##1]}},
+  trim end/.code={\def\ovar@trim@end{\xjoinrel[##1]}},
+  trim start/.value required,
+  trim middle/.value required,
+  trim end/.value required,
+  trim/.code={\pgfkeysalso{trim start={##1}, trim middle={##1}, trim end={##1}}},
+  trim/.value required,
+  no trimming/.code={%
+    \let\ovar@trim@start\empty
+    \let\ovar@trim@middle\empty
+    \let\ovar@trim@end\empty
+  },
+  no trimming/.value forbidden,
+%    \end{macrocode}
+% \refKey{middle config}.
+%    \begin{macrocode}
+  middle config/.is choice,
+  middle config/.value required,
+  middle config/relbar/.code=\pgfkeysalso{%
+    middle={\relbar},
+    trim middle={2.5},
+  },
+  middle config/relbareda/.code={%
+    \ifundef{\relbareda}{%
+      \PackageWarning{overarrows}{Key 'middle config=relbareda' used,
+        \MessageBreak%
+        but \protect\relbareda\space is undefined; ignored.
+        \MessageBreak%
+        Load 'esvect' package, or use 'esvect' option \MessageBreak%
+        to remove this warning}
+    }{%
+      \pgfkeysalso{%
+        middle={\relbareda},
+        trim middle={1},
+      }
+    }
+  },
+  middle config/auto/.code={%
+    \ifovar@option@esvect@
+    \pgfkeysalso{middle config=relbareda}
+    \else
+    \pgfkeysalso{middle config=relbar}
+    \fi
+  },
+%    \end{macrocode}
+% \refKey{amsmath}.
+%    \begin{macrocode}
+  amsmath/.is choice,%
+  amsmath/mimic/.code=\pgfkeysalso{%
+    start={\relbar}, middle={\relbar}, end={\rightarrow},
+    trim start=7,
+    trim middle=2,
+    trim end=7,
+    shift leftright=0,
+    after arrow={}, before arrow={},
+  },
+  amsmath/strict/.code=\pgfkeysalso{%
+    amsmath=mimic,
+    no trimming,
+    fill macro={\arrowfill@}, stack macro={\overarrow@},
+  },
+  amsmath/.default=mimic,
+%    \end{macrocode}
+% \refKey{esvect}.
+%    \begin{macrocode}
+  esvect/.is choice,%
+  esvect/mimic/.code=\pgfkeysalso{%
+    start={\relbaredd}, middle={\relbareda}, end={\fldr},
+    trim start=1.5,
+    trim end=1.5,
+    trim middle=0,
+    right arrow=2,
+    space before arrow=-.7pt,
+    space after arrow=-.3pt,
+  },
+  esvect/strict/.code=\pgfkeysalso{%
+    esvect=mimic,
+    no trimming,
+    fill macro={\traitfill@}, stack macro={\overvect@},
+  },
+  esvect/.default=mimic,
+%    \end{macrocode}
+% Initial configuration.
+%    \begin{macrocode}
+  amsmath, middle config=auto, end=\ovar@rightarrow, right arrow,
+}
+%    \end{macrocode}
+%
+% \subsubsection*{Keys for the \texttt{tikz} method}
+%
+%    \begin{macrocode}
+\SetOverArrowsMethod[lens]{tikz}[\undef{\ovar@tikz@command}]{%
+%    \end{macrocode}
+% Arrow macro.
+%    \begin{macrocode}
+  no arrow macro hook/.code={%
+    \ifdef{\ovar@tikz@command}{}{%
+      \pgfkeysgetvalue{/overarrows/path options}{\ovar@tikz@pathoptions}
+      \ovar@set{%
+        tikz command/.expanded={%
+          \noexpand\draw[\expandonce\ovar@tikz@pathoptions]\expandonce\ovar@tikz@path;
+        }
+      }
+    }
+    \pgfkeysgetvalue{/overarrows/tikz options}{\ovar@tikz@options}
+    \ovar@set{%
+      arrow macro/.expanded={%
+        $\noexpand\mkern \expandonce{\ovar@shift@left} mu\noexpand\relax$%
+        \noexpand\tikz[\expandonce{\ovar@tikz@options}]{\expandonce{\ovar@tikz@command}}%
+        $\noexpand\mkern \expandonce{\ovar@shift@right} mu\noexpand\relax$%
+      }
+    }
+  },
+%    \end{macrocode}
+% TikZ parts: \refKey{tikz command}, \refKey{tikz options}, \refKey{path
+% options}, \refKey{path}.
+%    \begin{macrocode}
+  tikz command/.store in=\ovar@tikz@command,
+  tikz options/.initial={x=\overarrowlength, line width=\overarrowthickness},
+  path options/.initial={arrows={-Classical TikZ Rightarrow}, cap=round},
+  path/.store in=\ovar@tikz@path,
+  path={(0,0)--(1,0)},
+  tikz command/.value required,
+  tikz options/.value required,
+  path options/.value required,
+  path/.value required,
+%    \end{macrocode}
+% TikZ handy keys: \refKey{add path options}, \refKey{add tikz options},
+% \refKey{arrows}, \refKey{line thickness}, \refKey{thinner}.
+%    \begin{macrocode}
+  add path options/.code=\pgfkeysalso{%
+    path options/.append={, ##1}},%
+  add tikz options/.code=\pgfkeysalso{%
+    tikz options/.append={, ##1}},%
+  arrows/.code=\pgfkeysalso{add path options={arrows={##1}}},%
+  line thickness/.code=\pgfkeysalso{add path options={line width=##1}},%
+  thinner/.code=\pgfkeysalso{line thickness={\overarrowsmallerthickness}},%
+  add path options/.value required,%
+  add tikz options/.value required,%
+  arrows/.value required,%
+  line thickness/.value required,%
+  thinner/.value forbidden,%
+%    \end{macrocode}
+% Initial configuration.
+%    \begin{macrocode}
+  shift right=-2,
+  min length=12,
+}
+%    \end{macrocode}
+%
+% \subsubsection*{Keys for the \texttt{picture} method}
+%
+%    \begin{macrocode}
+\SetOverArrowsMethod[lens]{picture}{%
+%    \end{macrocode}
+% Arrow macro.
+%    \begin{macrocode}
+  no arrow macro hook/.code={%
+    \ovar@set{%
+      arrow macro/.expanded={%
+        $\noexpand\mkern \expandonce{\ovar@shift@left} mu\noexpand\relax$%
+        \noexpand\begin{picture}\expandonce{\ovar@picture@geometry}%
+          \noexpand\linethickness{\expandonce{\ovar@picture@linethickness}}%
+          \expandonce{\ovar@picture@command}%
+          \noexpand\end{picture}%
+        $\noexpand\mkern \expandonce{\ovar@shift@right} mu\noexpand\relax$%
+      }
+    }
+  },
+%    \end{macrocode}
+% Picture parts: \refKey{picture command}, \refKey{geometry},
+% \refDoc{key:picture}{line thickness}.
+%    \begin{macrocode}
+  picture command/.store in=\ovar@picture@command,
+  geometry/.store in=\ovar@picture@geometry,
+  line thickness/.store in=\ovar@picture@linethickness,
+  picture command/.value required,
+  geometry/.value required,
+  line thickness/.value required,
+%    \end{macrocode}
+% Picture handy key: \refDoc{key:picture}{thinner}.
+%    \begin{macrocode}
+  thinner/.code=\pgfkeysalso{line thickness={\overarrowsmallerthickness}},
+%    \end{macrocode}
+% Initial configuration.
+%    \begin{macrocode}
+  shift right=-2,
+  min length=18,
+  geometry={(\overarrowlength,1ex)(0,-0.5ex)},%
+  line thickness={\overarrowthickness},%
+  picture command={\put(0,0){\vector(1,0){\overarrowlength}}},%
+}
+%    \end{macrocode}
+%
+% \subsection*{Commands}
+%
+% \subsubsection*{Macros for symbols assemblage}
+%
+% \begin{macro}{\xjoinrel}
+%    \begin{macrocode}
+\ifdef{\xjoinrel}{%
+  \PackageWarning{overarrows}{Command \protect\xjoinrel\space already defined.
+    \MessageBreak%
+    Previous definition will be overridden}
+}{}
+%    \end{macrocode}
+%  Use a default value of |3.5 mu|, as recommended by egreg (see
+%  \url{https://tex.stackexchange.com/a/471736}). \cs{joinrel}
+%  uses a value of 3 mu.
+%    \begin{macrocode}
+\DeclareRobustCommand{\xjoinrel}[1][3.5]{\mathrel{\mkern-#1mu}}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\smallermathstyle}
+%    \begin{macrocode}
+\newcommand*{\smallermathstyle}{%
+  \mathchoice{\scriptstyle}{\scriptstyle}{\scriptscriptstyle}{}
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\ovar@arrow@fill}
+% Macro used for default \refKey{fill macro}.\\
+% |#1|: left shift\\
+% |#2|: right shift\\
+% |#3|: arrow start\\
+% |#4|: arrow middle\\
+% |#5|: arrow end\\
+% |#6|: math style
+%    \begin{macrocode}
+\def\ovar@arrow@fill#1#2#3#4#5#6{%
+  $\m@th\thickmuskip0mu\medmuskip\thickmuskip\thinmuskip\thickmuskip\relax%
+  \mkern #1 mu\relax#6#3%
+  \cleaders\hbox{$#6#4$}\hfill%
+  #5\mkern #2 mu\relax$%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \subsubsection*{Macros for fixed length arrows}
+%
+% Lengths declaration.
+%    \begin{macrocode}
+\newlength{\overarrowlength}
+\newlength{\overarrowthickness}
+\newlength{\overarrowsmallerthickness}
+\newlength{\ovar@extralength}
+\newlength{\ovar@tempdim}
+%    \end{macrocode}
+%
+% \begin{macro}{\ovar@set@arrowlength}
+% Sets \refLen{overarrowlength}.\\
+% |#1|: min length, in math units\\
+% |#2|: math style\\
+% |#3|: content
+%    \begin{macrocode}
+\def\ovar@set@arrowlength#1#2#3{%
+  \settowidth{\ovar@tempdim}{$\m@th#2\mskip #1 mu\relax$}%
+  \settowidth{\overarrowlength}{$\m@th#2#3$}%
+  \ifdim \overarrowlength < \ovar@tempdim \overarrowlength=\ovar@tempdim\fi%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\ovar@set@arrowthickness}
+% Sets \refLen{overarrowthickness} and \refLen{overarrowsmallerthickness}.\\
+% |#1|: arrow length\\
+% |#2|: math style
+%    \begin{macrocode}
+\def\ovar@set@arrowthickness#1{% use rule thickness=\fontdimen 8 font family 3
+  \ifx#1\displaystyle%
+    \overarrowthickness =        \fontdimen 8 \textfont 3%
+    \overarrowsmallerthickness = \fontdimen 8 \scriptfont 3%
+  \else\ifx#1\textstyle%
+    \overarrowthickness =        \fontdimen 8 \textfont 3%
+    \overarrowsmallerthickness = \fontdimen 8 \scriptfont 3%
+  \else\ifx#1\scriptstyle%
+    \overarrowthickness =        \fontdimen 8 \scriptfont 3%
+    \overarrowsmallerthickness = \fontdimen 8 \scriptscriptfont 3%
+  \else%
+    \overarrowthickness =        \fontdimen 8 \scriptscriptfont 3%
+    \overarrowsmallerthickness = \overarrowthickness%
+  \fi\fi\fi%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \subsubsection*{Stack macros}
+%
+% \begin{macro}{\ovar@stackover@@}
+% \begin{macro}{\ovar@stackunder@@}
+% Bases of all stack macros.\\
+% |#1|: min length, in math units\\
+% |#2|: vertical mode material before arrow\\
+% |#3|: vertical mode material after arrow\\
+% |#4|: arrow\\
+% |#5|: math style\\
+% |#6|: content
+%    \begin{macrocode}
+\def\ovar@stackover@@#1#2#3#4#5#6{\vbox{\ialign{##\crcr%
+      $#5\mskip #1 mu\relax$\crcr%
+      \noalign{#2\nointerlineskip}#4\crcr%
+      \noalign{#3\nointerlineskip}%
+      $\m@th\hfil#5#6\hfil$\crcr%
+    }%
+  }%
+}
+\def\ovar@stackunder@@#1#2#3#4#5#6{\vtop{\ialign{##\crcr%
+      $\m@th\hfil#5#6\hfil$\crcr%
+      \noalign{#2\nointerlineskip}#4\crcr%
+      \noalign{#3\nointerlineskip}%
+      $#5\mskip #1 mu\relax$\crcr%
+    }%
+  }%
+}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\ovar@stackover@}
+% \begin{macro}{\ovar@stackunder@}
+% Stack macros without min arrow length.\\
+% |#1|: vertical mode material before arrow\\
+% |#2|: vertical mode material after arrow\\
+% |#3|: arrow macro\\
+% |#4|: math style\\
+% |#5|: content
+%    \begin{macrocode}
+\def\ovar@stackover@#1#2#3#4#5{\ovar@stackover@@{0}{#1}{#2}{#3}{#4}{#5}}
+\def\ovar@stackunder@#1#2#3#4#5{\ovar@stackunder@@{0}{#1}{#2}{#3}{#4}{#5}}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\ovar@stackover@fill}
+% \begin{macro}{\ovar@stackunder@fill}
+% \begin{macro}{\ovar@stack@fill}
+% Stack macros for extensible arrows.\\
+% |#1|: min length, in math units\\
+% |#2|: vertical mode material before arrow\\
+% |#3|: vertical mode material after arrow\\
+% |#4|: arrow filler macro\\
+% |#5|: math style\\
+% |#6|: content
+%    \begin{macrocode}
+\def\ovar@stackover@fill#1#2#3#4#5#6{\ovar@stackover@@{#1}{#2}{#3}{#4#5}{#5}{#6}}
+\def\ovar@stackunder@fill#1#2#3#4#5#6{\ovar@stackunder@@{#1}{#2}{#3}{#4#5}{#5}{#6}}
+%    \end{macrocode}
+% \cs{ovar@stack@fill} matches the macro \cs{ovar@stackover@fill} by default, or
+% \cs{ovar@stackunder@fill} with \refKey{arrow under}.
+%    \begin{macrocode}
+\def\ovar@stack@fill{\ovar@stackover@fill}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\ovar@stackover@lens}
+% \begin{macro}{\ovar@stackunder@lens}
+% \begin{macro}{\ovar@stack@lens}
+% Stack macros for fixed-length arrows (these call \cs{ovar@set@arrowlength} and
+% \cs{ovar@set@arrowthickness}).\\
+% |#1|: min length, in math units\\
+% |#2|: vertical mode material before arrow\\
+% |#3|: vertical mode material after arrow\\
+% |#4|: arrow content macro\\
+% |#5|: math style\\
+% |#6|: content
+%    \begin{macrocode}
+\def\ovar@stackover@lens#1#2#3#4#5#6{%
+  \ovar@set@arrowlength{#1}{#5}{#6}%
+  \ovar@set@arrowthickness{#5}%
+  \ovar@stackover@{#2}{#3}{#4}{#5}{#6}%
+}
+\def\ovar@stackunder@lens#1#2#3#4#5#6{%
+  \ovar@set@arrowlength{#1}{#5}{#6}%
+  \ovar@set@arrowthickness{#5}%
+  \ovar@stackunder@{#2}{#3}{#4}{#5}{#6}%
+}
+%    \end{macrocode}
+% \cs{ovar@stack@lens} matches the macro \cs{ovar@stackover@lens} by default, or
+% \cs{ovar@stackunder@lens} with \refKey{arrow under}.
+%    \begin{macrocode}
+\def\ovar@stack@lens{\ovar@stackover@lens}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \subsubsection*{Macro for commands creation}
+%
+% \begin{macro}{\DeclareOverArrowCommand}
+%    \begin{macrocode}
+\NewDocumentCommand{\DeclareOverArrowCommand}{ O{symb} m m }{%
+  \begingroup
+  \ovar@set@common
+  \ifcsdef{ovar@set@#1}{%
+    \csuse{ovar@set@#1}
+  }{%
+    \PackageError{overarrows}{Unknown method #1}
+    {Try with 'symb', 'tikz' or 'picture'}
+  }
+  \ovar@set{#3 }
+  \ifdef{\ovar@macro@arrow}{}{%
+    \ovar@set{no arrow macro hook}
+  }
+  \ifdef{\ovar@macro@stack}{}{%
+    \ovar@set{no stack macro hook}
+  }
+  \csxdef{ovar@#2@normal}{%
+    \noexpand\mathpalette{%
+      \expandonce{\ovar@macro@stack}{\expandonce{\ovar@macro@arrow}}%
+    }
+  }
+  \csxdef{ovar@#2@starred}{%
+    \noexpand\mathpalette{%
+      \noexpand\ovar@starversion{%
+        \expandonce{\ovar@macro@stack}{\expandonce{\ovar@macro@arrow}}%
+      }
+    }
+  }
+  \ifovar@detectsubscripts@%
+  \csgdef{ovar@#2@auto}##1{%
+    \@ifnextchar _{%
+      \csuse{ovar@#2@starred}{##1}%
+    }{%
+      \csuse{ovar@#2@normal}{##1}%
+    }%
+  }
+  \csgdef{#2}{%
+    \@ifstar{\csuse{ovar@#2@starred}}{\csuse{ovar@#2@auto}}%
+  }
+  \else
+  \csgdef{#2}{%
+    \@ifstar{\csuse{ovar@#2@starred}}{\csuse{ovar@#2@normal}}%
+  }
+  \fi
+  \ifovar@option@debug@
+  \PackageInfo{overarrows}{%
+    Meaning of \protect\ovar@#2@normal\MessageBreak
+    used for \@backslashchar#2:\MessageBreak%
+      \expandafter\meaning\csname ovar@#2@normal\endcsname}
+  \fi
+  \endgroup
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\ProvideOverArrowCommand}
+%    \begin{macrocode}
+\NewDocumentCommand{\ProvideOverArrowCommand}{ O{symb} m m }{%
+  \ifcsdef{#2}{}{
+    \DeclareOverArrowCommand[#1]{#2}{#3}
+  }
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\NewOverArrowCommand}
+%    \begin{macrocode}
+\NewDocumentCommand{\NewOverArrowCommand}{ O{symb} m m }{%
+  \ifcsdef{#2}{%
+    \PackageError{overarrows}{Command \csname #2\endcsname already defined}%
+    {You have used \protect\NewOverArrowCommand\space with a command that
+      already has a definition. \MessageBreak%
+      Choose another name, or use instead \protect\DeclareOverArrowCommand.}
+  }{%
+    \DeclareOverArrowCommand[#1]{#2}{#3}
+  }
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\RenewOverArrowCommand}
+%    \begin{macrocode}
+\NewDocumentCommand{\RenewOverArrowCommand}{ O{symb} m m }{%
+  \ifcsundef{#2}{%
+    \PackageError{overarrows}{Command  \csname #2\endcsname undefined}%
+    {You have used \protect\RenewOverArrowCommand\space with a command that was
+      never defined. \MessageBreak%
+      Check the requested name, or use instead \protect\NewOverArrowCommand.}
+  }{%
+    \DeclareOverArrowCommand[#1]{#2}{#3}
+  }
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \subsubsection*{Starred variant}
+%
+% \begin{macro}{\ovar@starversion}
+% |#1|: definition (stack macro + arrow macro)\\
+% |#2|: math style\\
+% |#3|: content
+%    \begin{macrocode}
+\def\ovar@starversion#1#2#3{%
+  #1#2{#3}%
+  \settowidth{\ovar@extralength}{$\m@th#1#2{#3}$}
+  \settowidth{\ovar@tempdim}{$\m@th#2{#3}$}
+  \deflength{\ovar@extralength}{0.5\ovar@extralength-0.5\ovar@tempdim}%
+  \kern-\ovar@extralength%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \subsubsection*{\cs{vv} vector command}
+%
+% \begin{macro}{\vv}
+% \begin{macro}{\esvectvv}
+% Backup and redefinition of \pkg{esvect} \refCom{vv} vector command.
+%    \begin{macrocode}
+\ifovar@option@esvect@
+  \let\esvectvv\vv
+  \undef\vv
+  \NewOverArrowCommand{vv}{esvect, middle config=auto}
+\fi
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \subsubsection*{Predefined commands}
+%
+% \begin{macro}{\overrightarrow}
+%    \begin{macrocode}
+\ifovar@option@overrightarrow@
+  \DeclareOverArrowCommand{overrightarrow}{%
+    amsmath, middle config=relbar,
+    end=\ovar@rightarrow,
+    right arrow,
+  }
+\fi
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\underrightarrow}
+%    \begin{macrocode}
+\ifovar@option@underrightarrow@
+  \DeclareOverArrowCommand{underrightarrow}{%
+    amsmath, middle config=relbar,
+    end=\ovar@rightarrow,
+    right arrow,
+    arrow under,
+  }
+\fi
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\overleftarrow}
+%    \begin{macrocode}
+\ifovar@option@overleftarrow@
+  \DeclareOverArrowCommand{overleftarrow}{%
+    amsmath, middle config=relbar,
+    start=\ovar@leftarrow,
+    end=\relbar,
+    left arrow,
+  }
+\fi
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\underleftarrow}
+%    \begin{macrocode}
+\ifovar@option@underleftarrow@
+  \DeclareOverArrowCommand{underleftarrow}{%
+    amsmath, middle config=relbar,
+    start=\ovar@leftarrow,
+    end=\relbar,
+    left arrow,
+    arrow under,
+  }
+\fi
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\overleftrightarrow}
+%    \begin{macrocode}
+\ifovar@option@overleftrightarrow@
+  \DeclareOverArrowCommand{overleftrightarrow}{%
+    amsmath, middle config=relbar,
+    start=\ovar@leftarrow,
+    end=\ovar@rightarrow,
+    center arrow,
+  }
+\fi
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\underleftrightarrow}
+%    \begin{macrocode}
+\ifovar@option@underleftrightarrow@
+  \DeclareOverArrowCommand{underleftrightarrow}{%
+    amsmath, middle config=relbar,
+    start=\ovar@leftarrow,
+    end=\ovar@rightarrow,
+    center arrow,
+    arrow under,
+  }
+\fi
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\overrightharpoonup}
+%    \begin{macrocode}
+\ifovar@option@overrightharpoonup@
+  \DeclareOverArrowCommand{overrightharpoonup}{%
+    amsmath, middle config=relbar,
+    end=\rightharpoonup,
+    right arrow,
+  }
+\fi
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\underrightharpoonup}
+%    \begin{macrocode}
+\ifovar@option@underrightharpoonup@
+  \DeclareOverArrowCommand{underrightharpoonup}{%
+    amsmath, middle config=relbar,
+    end=\rightharpoonup,
+    right arrow,
+    arrow under,
+  }
+\fi
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\overrightharpoondown}
+%    \begin{macrocode}
+\ifovar@option@overrightharpoondown@
+  \DeclareOverArrowCommand{overrightharpoondown}{%
+    amsmath, middle config=relbar,
+    end=\rightharpoondown,
+    right arrow,
+  }
+\fi
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\underrightharpoondown}
+%    \begin{macrocode}
+\ifovar@option@underrightharpoondown@
+  \DeclareOverArrowCommand{underrightharpoondown}{%
+    amsmath, middle config=relbar,
+    end=\rightharpoondown,
+    right arrow,
+    arrow under,
+  }
+\fi
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\overleftharpoonup}
+%    \begin{macrocode}
+\ifovar@option@overleftharpoonup@
+  \DeclareOverArrowCommand{overleftharpoonup}{%
+    amsmath, middle config=relbar,
+    start=\leftharpoonup,
+    end=\relbar,
+    left arrow,
+  }
+\fi
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\underleftharpoonup}
+%    \begin{macrocode}
+\ifovar@option@underleftharpoonup@
+  \DeclareOverArrowCommand{underleftharpoonup}{%
+    amsmath, middle config=relbar,
+    start=\leftharpoonup,
+    end=\relbar,
+    left arrow,
+    arrow under,
+  }
+\fi
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\overleftharpoondown}
+%    \begin{macrocode}
+\ifovar@option@overleftharpoondown@
+  \DeclareOverArrowCommand{overleftharpoondown}{%
+    amsmath, middle config=relbar,
+    start=\leftharpoondown,
+    end=\relbar,
+    left arrow,
+  }
+\fi
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\underleftharpoondown}
+%    \begin{macrocode}
+\ifovar@option@underleftharpoondown@
+  \DeclareOverArrowCommand{underleftharpoondown}{%
+    amsmath, middle config=relbar,
+    start=\leftharpoondown,
+    end=\relbar,
+    left arrow,
+    arrow under,
+  }
+\fi
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\overbar}
+%    \begin{macrocode}
+\ifovar@option@overbar@
+  \DeclareOverArrowCommand{overbar}{%
+    amsmath, middle config=relbar,
+    start={\std@minus}, end={\std@minus},% \relbar is defined with \mathsm@sh
+    shift leftright=0,
+    space after arrow=-0.3ex,
+  }
+\fi
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\underbar}
+%    \begin{macrocode}
+\ifovar@option@underbar@
+  \DeclareOverArrowCommand{underbar}{%
+    amsmath, middle config=relbar,
+    start={\std@minus}, end={\std@minus},% \relbar is defined with \mathsm@sh
+    shift leftright=0,
+    arrow under,
+    space before arrow=-0.3ex,
+  }
+\fi
+%    \end{macrocode}
+% \end{macro}
+%
+% \subsubsection*{Test macros}
+%
+% \begin{macro}{\ovar@testmathstyles}
+% Tabular containing the output of a command for the four math styles and
+% different patterns.
+%    \begin{macrocode}
+\newcommand{\ovar@testmathstyles}[2][]{
+  \begingroup
+  \newcommand*{\ovar@row@teststyle}[1]{%
+    $\displaystyle ##1$
+    & $\textstyle ##1$
+    & $\scriptstyle ##1$
+    & $\scriptscriptstyle ##1$
+    \\
+  }
+  \renewcommand*{\arraystretch}{1.5}
+  \begin{tabular*}{0.95\linewidth}{@{\extracolsep{\fill}} cccc}
+    \hline
+    \footnotesize\texttt{\texttt{\textbackslash displaystyle}}
+    & \footnotesize\texttt{\texttt{\textbackslash textstyle}}
+    & \footnotesize\texttt{\texttt{\textbackslash scriptstyle}}
+    & \footnotesize\texttt{\texttt{\textbackslash scriptscriptstyle}}
+    \\
+    \hline
+    \ovar@row@teststyle{\csuse{#2}{v}}
+    \ovar@row@teststyle{\csuse{#2}{AB}}
+    \ovar@row@teststyle{\csuse{#2}{\mathrm{grad}}}
+    \ovar@row@teststyle{\csuse{#2}{my~long~vector}}
+    \IfValueT{#1}{\ovar@row@teststyle{\csuse{#2}{#1}}}
+    \hline
+  \end{tabular*}
+  \endgroup
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\TestOverArrow}
+%    \begin{macrocode}
+\NewDocumentCommand{\TestOverArrow}{ s o m }{
+  \ifcsdef{#3}{}{%
+    \PackageWarning{overarrows}{Unknown name '#3' passed to
+      \protect\TestOverArrow}
+  }
+  \IfBooleanTF{#1}{%
+    \noindent\framebox{%
+      \begin{minipage}{0.95\linewidth}
+        \centering
+        \noindent\textbf{\large%
+          Test of \texttt{\textbackslash#3} and \texttt{\textbackslash#3*} macros}
+        \bigskip\par
+        \textbf{\texttt{\textbackslash#3} for different math styles}
+        \smallskip\par
+        \ovar@testmathstyles[#2]{#3}%
+        \bigskip\par
+        \textbf{\texttt{\textbackslash#3} kerning}
+        \begin{displaymath}
+          \csuse{#3}{t}_{\csuse{#3}{u}_{\csuse{#3}{v}}}
+          \qquad
+          \csuse{#3}{\imath}_0
+          \qquad
+          \csuse{#3}{v}
+          = \csuse{#3}{v}_x + \csuse{#3}{v}_y + \csuse{#3}{v}_z
+          = v_x \csuse{#3}{\imath} + v_y \csuse{#3}{\jmath} + v_z \csuse{#3}{k}
+        \end{displaymath}
+        \textbf{\texttt{\textbackslash#3*} kerning}
+        \begin{displaymath}
+          \csuse{#3}*{t}_{\csuse{#3}*{u}_{\csuse{#3}*{v}}}
+          \qquad
+          \csuse{#3}*{\imath}_0
+          \qquad
+          \csuse{#3}*{v}
+          = \csuse{#3}*{v}_x + \csuse{#3}*{v}_y + \csuse{#3}*{v}_z
+          = v_x \csuse{#3}*{\imath} + v_y \csuse{#3}*{\jmath} + v_z \csuse{#3}*{k}
+        \end{displaymath}
+      \end{minipage}%
+    }\bigskip\par
+  }{%
+    \ovar@testmathstyles[#2]{#3}%
+  }
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%\iffalse
+%</package> ^^A End of package implementation.
+%\fi
+%
+% \iffalse % ^^A The following is not for doc
+%
+%<*docstyle>
+%
+% \section*{overarrows-doc package}
+%
+% The following define some styles used for documentation and should not be
+% included in the documentation itself.
+%
+% \subsection*{Packages}
+%
+%    \begin{macrocode}
+\RequirePackage{xcolor}
+\PassOptionsToPackage{hyperref}{xcolor}
+\RequirePackage[many]{tcolorbox}
+\tcbuselibrary{listings}
+\tcbuselibrary{documentation}
+\hypersetup{hidelinks}
+%    \end{macrocode}
+%
+% \subsection*{Colors}
+%
+%    \begin{macrocode}
+\definecolor{ovar_lavender}{rgb}{0.92,0.92,1}
+\definecolor{ovar_darkblue}{rgb}{0.1,0.2,0.5}
+\definecolor{ovar_darkgreen}{rgb}{0,0.39,0}
+\definecolor{ovar_beige}{rgb}{.96,.96,.86}
+\colorlet{ovar_commands}{ovar_darkblue}
+\colorlet{ovar_keys}{ovar_darkgreen}
+\colorlet{ovar_lengths}{violet}
+\colorlet{ovar_options}{Definition} % from tcolorbox documentation
+%    \end{macrocode}
+%
+% \subsection*{listings styles}
+%
+%    \begin{macrocode}
+\lstdefinestyle{lstovardoc}{%
+  language = [LaTeX]TeX,
+  columns         = flexible,
+  keywordstyle    = {\bfseries\color{ovar_darkblue}},
+  texcsstyle      = *{\bfseries\color{ovar_darkblue}},
+  commentstyle    = {\color{gray}},
+  identifierstyle = {\color{ovar_darkgreen}},
+  morekeywords    = {},% keywordsprefix needs a morekeywords before
+  keywordsprefix  = {\\},
+%    \end{macrocode}
+% For literate, the extra braces around the replacement text avoid the error: "Argument of |lst@FillFixed@| has an extra \}."
+%    \begin{macrocode}
+  literate        = *{\$}{{\textcolor{red}{\$}}}{1}
+                    {\&}{{\textcolor{red}{\&}}}{1}
+                    {\}}{{\textcolor{darkgray}{\}}}}{1}
+                    {\{}{{\textcolor{darkgray}{\{}}}{1}
+                    {\\\\}{{\textcolor{red}{\textbackslash\textbackslash}}}{2}
+%    \begin{macrocode}
+% One \% and four spaces to remove extra lines added by \cs{macrocode}
+%    \end{macrocode}
+                    {\%\ \ \ \ }{}0,
+  basicstyle      = \ttfamily\footnotesize,
+  frame           = none,
+  framesep        = 0pt,
+  aboveskip       = 0pt,
+  belowskip       = 0pt,
+}
+\lstdefinestyle{lstovarcode}{%
+  style           = lstovardoc,
+  backgroundcolor = \color{ovar_beige},
+  breakindent     = 1cm,
+  numbers         = left,
+  numberstyle     = \scriptsize\ttfamily\color{gray},
+  aboveskip       = \smallskipamount,
+  belowskip       = \smallskipamount,
+}
+%    \end{macrocode}
+%
+% \subsection*{tcolorbox}
+%
+%    \begin{macrocode}
+\tcbset{% copied and adapted from tcolorbox.doc.s_main.sty
+  documentation listing style=lstovardoc,%
+  doc keypath=overarrows,
+  size=small,%
+  % verbatim ignore percent,
+  %% styles
+  docexample/.style={%
+    bicolor jigsaw,
+    before skip balanced=\medskipamount,
+    after skip balanced=\medskipamount,
+    fonttitle=\bfseries,
+    fontlower=\normalfont,
+    halign lower=center,
+    colframe=ovar_darkblue,
+    colback=ovar_lavender,
+    colbacklower=white,
+    drop fuzzy shadow,
+  },
+  color key=ovar_keys,
+  color command=ovar_commands,
+  color length=ovar_lengths,
+  doc head key={fontlower=\footnotesize, collower=darkgray},
+  before doc body={\parskip=\smallskipamount},
+}
+%    \end{macrocode}
+%
+% \subsection*{Index}
+%
+% To deal with internal macros, use '=' as index actual, in place of '@'.
+%    \begin{macrocode}
+\begin{filecontents*}{\jobname.mst}
+actual '='
+\end{filecontents*}
+\tcbset{%
+  index actual={=},
+  index colorize=true,
+  index gather all,
+  index format=pgfsection,
+}
+%    \end{macrocode}
+% Redefine \cs{tcb@doc@index@pgfsection} to add prologue (adapted from
+% tcbdocumentation.code.tex).
+%    \begin{macrocode}
+\def\tcb@doc@index@pgfsection{%
+  \def\index@prologue{%
+    \section*{\kvtcb@text@index}\addcontentsline{toc}{section}{\kvtcb@text@index}
+    {\small%
+      Entries listed in the categories ``commands", ``lengths", and
+      ``internal macros" also include references to package implementation. }
+    \bigskip\par\noindent%
+  }%
+  \tcb@doc@index@pgf@%
+}
+%    \end{macrocode}
+% Unset |\lst@UM| before indexing, to deals with comma (avoid |\unhbox \voidb@x
+% \kern \z@| in index file, see: \url{https://tex.stackexchange.com/a/510108}).
+%    \begin{macrocode}
+\newcommand{\indexmacro}[1]{%
+  \begingroup
+  \let\lst@UM\@empty%
+  \index{{Commands!#1=\tcbIndexPrintComC {#1}}}%
+  \endgroup
+}
+\newcommand{\indexmacrointernal}[1]{%
+  \begingroup
+  \let\lst@UM\@empty%
+  \index{{Internal macros!#1=\tcbIndexPrintComC {#1}}}%
+  \endgroup
+}
+\newcommand{\indexlength}[1]{%
+  \begingroup
+  \let\lst@UM\@empty%
+  \index{{Lengths!#1=\tcbIndexPrintLenC {#1}}}%
+  \endgroup
+}
+%    \end{macrocode}
+%
+% \subsection*{Redefinition of macrocode environment}
+%
+%    \begin{macrocode}
+\let\macrocode\relax
+\lstnewenvironment{macrocode}{%
+  \lstset{%
+    name=macrocode,
+    firstnumber=auto,
+    style       = lstovarcode,
+    showlines=false,
+%    \end{macrocode}
+% Commands and lengths identification and indexing
+%
+% Note: index works badly with inherited styles. It seems that "texcs" and
+% "index" keys should be set together.
+%    \begin{macrocode}
+    texcs       = [2]{% commands
+      DeclareOverArrowCommand, ProvideOverArrowCommand,%
+      NewOverArrowCommand, RenewOverArrowCommand,%
+      TestOverArrow, xjoinrel, smallermathstyle,%
+      esvectvv, vv,%
+      overrightarrow, overleftarrow, overleftrightarrow, overrightharpoonup,%
+      overrightharpoondown, overleftharpoonup, overleftharpoondown, overbar,%
+      underrightarrow, underleftarrow, underleftrightarrow, underrightharpoonup,%
+      underrightharpoondown, underleftharpoonup, underleftharpoondown, underbar,%
+      SetOverArrowsMethod,%
+    },
+    index       = [2][texcs2],%
+    indexstyle  = [2]\indexmacro,%
+    texcs       = [3]{% lengths
+      overarrowlength, overarrowthickness, overarrowsmallerthickness,%
+    },
+    index       = [3][texcs3],%
+    indexstyle  = [3]\indexlength,%
+%    \end{macrocode}
+% Internal macros identification and indexing
+%    \begin{macrocode}
+    texcs       = [4]{% internal macros
+      ovar@rightarrow, ovar@leftarrow, ifovar@option@oldarrows@,
+      ifovar@option@esvect@, ifovar@option@tikz@, ifovar@option@pstarrows@,
+      ifovar@detectsubscripts@, ifovar@option@debug@,
+      ifovar@option@overrightarrow@, ifovar@option@underrightarrow@,
+      ifovar@option@overleftarrow@, ifovar@option@underleftarrow@,
+      ifovar@option@overleftrightarrow@, ifovar@option@underleftrightarrow@,
+      ifovar@option@overrightharpoonup@, ifovar@option@underrightharpoonup@,
+      ifovar@option@overrightharpoondown@, ifovar@option@underrightharpoondown@,
+      ifovar@option@overleftharpoonup@, ifovar@option@underleftharpoonup@,
+      ifovar@option@overleftharpoondown@, ifovar@option@underleftharpoondown@,
+      ifovar@option@overbar@, ifovar@option@underbar@, ovar@set, ovar@length@min,
+      ovar@before@arrow, ovar@after@arrow, ovar@macro@stack, ovar@macro@arrow,
+      ovar@set@, ovar@shift@left, ovar@shift@right, ovar@stack@fill,
+      ovar@stackunder@fill, ovar@stack@lens, ovar@stackunder@lens,
+      ovar@macro@arrowfill, ovar@arrow@fill, ovar@arrow@start, ovar@trim@start,
+      ovar@trim@middle, ovar@arrow@middle, ovar@trim@end, ovar@arrow@end,
+      ovar@tikz@command, ovar@tikz@pathoptions, ovar@tikz@path,
+      ovar@tikz@options, ovar@picture@geometry, ovar@picture@linethickness,
+      ovar@picture@command, ovar@extralength, ovar@tempdim, ovar@set@arrowlength,
+      ovar@set@arrowthickness, ovar@stackover@@, ovar@stackunder@@,
+      ovar@stackover@, ovar@stackunder@, ovar@stackover@fill,
+      ovar@stackover@lens, ovar@set@common, ovar@starversion,
+      ovar@testmathstyles, ovar@row@teststyle,%
+    },
+    index       = [4][texcs4],%
+    indexstyle  = [4]\indexmacrointernal,%
+%    \end{macrocode}
+% Other macros identification
+%    \begin{macrocode}
+    moretexcs   = [5]{% other macros
+      Relbar, relbareda, relbaredd, rightarrow, Rightarrow, varleftarrow,
+      varrightarrow, twoheadrightarrow,%
+    },
+%    \end{macrocode}
+% Il would be nice to also index keys, but spaces are badly handled by listings.
+%    \begin{macrocode}
+%^^A    morekeywords = [2]{%
+%^^A      no stack macro hook, stack macro, arrow macro, no arrow macro hook, min
+%^^A      length, before arrow, after arrow, space before arrow, space after arrow,
+%^^A      shift left, shift right, shift leftright, center arrow, left arrow, right
+%^^A      arrow, arrow under, fill macro, start, middle, end, trim start, trim
+%^^A      middle, trim end, trim, no trimming, middle config, amsmath, esvect, tikz
+%^^A      command, tikz options, path options, path, add path options, add tikz
+%^^A      options, arrows, line thickness, thinner, picture command, geometry, detect subscripts,
+%^^A    },
+%^^A    index       = [3][keywords2],%
+%^^A    indexstyle  = [3]\lstindexmacro,%
+  }
+%    \end{macrocode}
+% Save and restore the line number (not done by environments defined with
+% |\lstnewenvironment|, see \url{https://tex.stackexchange.com/a/95048}):
+%    \begin{macrocode}
+  \csname\@lst @SetFirstNumber\endcsname
+}{%
+  \csname \@lst @SaveFirstNumber\endcsname
+}
+%    \end{macrocode}
+%
+% \subsection*{Redefinition of macro environment}
+%
+%    \begin{macrocode}
+\DeclareDocumentEnvironment{macro}{m}{%
+%    \end{macrocode}
+% Extraction of macro name. Save/restore current \cs{escapechar} in \cs{count@}.
+%    \begin{macrocode}
+ \count@\escapechar \escapechar=-1
+ \edef\macroname{\string#1}
+ \escapechar\count@
+ \marginpar{%
+   \parbox{0.88\linewidth}{%
+     \scriptsize\flushright\ifcsdef{r@com:\macroname}{\refCom*{\macroname}}{\cs{\macroname}}%
+   }%
+ }
+}{% end of macro environment
+}
+%    \end{macrocode}
+%
+% \subsection*{Documentation styles}
+%
+% \subsubsection*{Tool for references}
+%
+%    \begin{macrocode}
+\def\refDoc#1{\tcb@ref@doc{#1}}
+%    \end{macrocode}
+%
+% \subsubsection*{Package name}
+%
+%    \begin{macrocode}
+\newcommand{\pkg}[1]{\textsf{#1}}
+%    \end{macrocode}
+%
+% \subsubsection*{Package options}
+%
+% Definition of docOption environment to document package options, like keys.
+%    \begin{macrocode}
+\newrobustcmd{\tcbIndexPrintOptionCA}[1]{% adapted from \tcbIndexPrintKeyCA
+  \tcb@Index@Print@CA{#1}{ovar_options}{package option}%
+}
+\newrobustcmd{\tcbIndexPrintOptionC}[1]{% adapted from \tcbIndexPrintKeyCA
+  \tcb@Index@Print@C{#1}{ovar_options}%
+}
+\DeclareDocumentEnvironment{docOption}{ O{} m }{%
+  \begin{docKey*}[]
+    [doc name={#2}, doc label={opt:#2}, color key=ovar_options, #1]
+    {#2}{}{}%
+    \kvtcb@index@command{%
+      \kvtcb@doc@sortindex\idx@actual\tcbIndexPrintOptionCA{#2}%
+    }%
+    \kvtcb@index@command{%
+      {Package options}\idx@level\kvtcb@doc@sortindex\idx@actual%
+      \tcbIndexPrintOptionC{#2}%
+    }%
+}{%
+  \end{docKey*}%
+}
+\def\refOpt{\refDoc{key:opt}}
+%    \end{macrocode}
+%
+% \subsubsection*{Lengths}
+%
+% Definition of docLength environment to document lengths, like commands.
+%    \begin{macrocode}
+\let\tcbdocLength\docLength% save original definition
+\DeclareDocumentEnvironment{docLength}{ O{} m }{%
+  \begin{docCommand*}[doc name=#2, color command=ovar_lengths,#1]{#2}{}
+    \protected@edef\@currentlabel{\cs{#2}}%
+    \label{len:#2}%
+    %% add length index entry (from \docLength original definition)
+    \kvtcb@index@command{%
+      \kvtcb@doc@sortindex\idx@actual\tcbIndexPrintLenCA{\kvtcb@doc@index}%
+    }%
+    \kvtcb@index@command{%
+      \kvtcb@text@lengths\idx@level\kvtcb@doc@sortindex\idx@actual%
+      \tcbIndexPrintLenC{\kvtcb@doc@index}%
+    }%
+}{%
+  \end{docCommand*}%
+}
+\def\refLen{\refDoc{len}}
+%    \end{macrocode}
+%
+%</docstyle>
+%
+%<*comment>
+%
+% \section*{Notes}
+%
+% \subsection*{Bash commands reminder}
+%^^A the command |awk '!line[$0]++'| remove duplicate lines
+%
+% \subsubsection*{List of package options}
+%
+\begin{lstlisting}[language={bash}]
+rg -o -N 'DeclareOption\{\w+' overarrows.dtx | rg -o '\w+$'
+\end{lstlisting} %^^A dummy '|' for emacs
+%
+% \subsubsection*{List of commands}
+%
+\begin{lstlisting}[language={bash}]
+rg -o -N '^[[:blank:]]*\\(let|def|newcommand\*?|(New|Renew|Declare|Provides)\w*Command)[{\\]+[\w@]+' overarrows.sty | rg -o '[\w@]+$' | grep -v ovar@ | awk '!line[$0]++'
+\end{lstlisting} %^^A dummy '|' for emacs
+%
+% \subsubsection*{List of internal macros and lengths}
+%
+\begin{lstlisting}[language={bash}]
+  rg '\\(if)?ovar@[\w@]+' -o  -N overarrows.dtx | rg -v '(@true|@false)' | awk '!line[$0]++'
+\end{lstlisting} %^^A dummy '|' for emacs
+%
+% \subsubsection*{List of lengths}
+%
+\begin{lstlisting}[language={bash}]
+rg -o -N '^[[:blank:]]*\\(def|new)length[{\\]+[\w@]+' overarrows.sty | rg -o '[\w@]+$' | grep -v ovar@| awk '!line[$0]++'
+\end{lstlisting}
+%
+% \subsubsection*{List of keys}
+%
+\begin{lstlisting}[language={bash}]
+rg -o -N ".*/\." overarrows.sty | sed 's/\/\.$//' | sed -r 's/^([[:blank:]]|\\[[:alpha:]@]+\{)*//'  | awk '!line[$0]++'
+\end{lstlisting}
+%
+%</comment>
+%
+% \fi ^^A end of \iffalse
+%
+% \Finale
+%
+\endinput
