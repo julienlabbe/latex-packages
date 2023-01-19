@@ -12,6 +12,12 @@ $lualatex='lualatex -file-line-error -interaction nonstopmode %O %P';
 $new_viewer_always=1;
 $clean_ext="glo hd mst tcbtemp listing";
 
+## glossary
+add_cus_dep('glo', 'gls', 0, 'makeglo2gls');
+sub makeglo2gls {
+    system("makeindex -s gglo.ist -o '$_[0]'.gls '$_[0]'.glo");
+}
+
 ## output color
 use Term::ANSIColor;
 $color = 'magenta';

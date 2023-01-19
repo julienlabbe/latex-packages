@@ -16,7 +16,7 @@
 %<package>\NeedsTeXFormat{LaTeX2e}
 %<package>\ProvidesPackage{overarrows}
 %<*package>
-[2023/01/18 v1.0 Custom extensible arrows over math expressions, mainly for vectors.]
+[2023/01/19 v1.0.1 Custom extensible arrows over math expressions]
 %</package>
 %
 %<*driver>
@@ -88,7 +88,7 @@
 %</driver>
 % \fi
 %
-% \changes{v1.0}{2023/01/18}{Initial version.}
+% \changes{v1.0}{2023/01/18}{Initial version}
 %
 % \GetFileInfo{\jobname.dtx}
 %
@@ -2145,6 +2145,7 @@ $ \overdotteddoublearrow{v} \qquad \overdotteddoublearrow{AB} $
 % \subsection{Changelog}
 %
 % \begin{description}
+%  \item[v1.0.1] Bug fix for under* options.
 %  \item[v1.0] Initial version.
 % \end{description}
 %
@@ -2215,23 +2216,26 @@ $ \overdotteddoublearrow{v} \qquad \overdotteddoublearrow{AB} $
 %
 % Following options are for predefined commands.
 %
+% \changes{v1.0.1}{2023/01/19}{Bug fix for under* options}
+%
+%
 %    \begin{macrocode}
 \DeclareOption{overrightarrow}{\ovar@option@overrightarrow@true}
-\DeclareOption{underrightarrow}{\ovar@option@overrightarrow@true}
+\DeclareOption{underrightarrow}{\ovar@option@underrightarrow@true}
 \DeclareOption{overleftarrow}{\ovar@option@overleftarrow@true}
-\DeclareOption{underleftarrow}{\ovar@option@overleftarrow@true}
+\DeclareOption{underleftarrow}{\ovar@option@underleftarrow@true}
 \DeclareOption{overleftrightarrow}{\ovar@option@overleftrightarrow@true}
-\DeclareOption{underleftrightarrow}{\ovar@option@overleftrightarrow@true}
+\DeclareOption{underleftrightarrow}{\ovar@option@underleftrightarrow@true}
 \DeclareOption{overrightharpoonup}{\ovar@option@overrightharpoonup@true}
-\DeclareOption{underrightharpoonup}{\ovar@option@overrightharpoonup@true}
+\DeclareOption{underrightharpoonup}{\ovar@option@underrightharpoonup@true}
 \DeclareOption{overrightharpoondown}{\ovar@option@overrightharpoondown@true}
-\DeclareOption{underrightharpoondown}{\ovar@option@overrightharpoondown@true}
+\DeclareOption{underrightharpoondown}{\ovar@option@underrightharpoondown@true}
 \DeclareOption{overleftharpoonup}{\ovar@option@overleftharpoonup@true}
-\DeclareOption{underleftharpoonup}{\ovar@option@overleftharpoonup@true}
+\DeclareOption{underleftharpoonup}{\ovar@option@underleftharpoonup@true}
 \DeclareOption{overleftharpoondown}{\ovar@option@overleftharpoondown@true}
-\DeclareOption{underleftharpoondown}{\ovar@option@overleftharpoondown@true}
+\DeclareOption{underleftharpoondown}{\ovar@option@underleftharpoondown@true}
 \DeclareOption{overbar}{\ovar@option@overbar@true}
-\DeclareOption{underbar}{\ovar@option@overbar@true}
+\DeclareOption{underbar}{\ovar@option@underbar@true}
 %    \end{macrocode}
 %
 % Following options are for sets of predefined commands.
