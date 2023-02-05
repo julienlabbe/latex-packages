@@ -1,0 +1,40 @@
+;;;; Emacs Bookmark Format Version 1 ;;;; -*- coding: utf-8-emacs -*-
+;;; This format is meant to be slightly human-readable;
+;;; nevertheless, you probably don't want to edit it.
+;;; -*- End Of Bookmark File Format Version Stamp -*-
+(("overarrows.dtx/ending notes"
+ (filename . "~/Ressources/Projets/latex-packages/overarrows/overarrows.dtx")
+ (front-context-string . "% \\section*{Note")
+ (rear-context-string . "%\n%<*comment>\n%\n")
+ (position . 119961))
+("overarrows.dtx/doc package"
+ (filename . "~/Ressources/Projets/latex-packages/overarrows/overarrows.dtx")
+ (front-context-string . "% \\section*{over")
+ (rear-context-string . "\n%<*docstyle>\n%\n")
+ (position . 108530))
+("overarrows.dtx/User interface"
+ (filename . "~/Ressources/Projets/latex-packages/overarrows/overarrows.dtx")
+ (front-context-string . "% \\section{User ")
+ (rear-context-string . "xample>\n% \\fi\n%\n")
+ (position . 27981))
+("overarrows.dtx/Quick start"
+ (filename . "~/Ressources/Projets/latex-packages/overarrows/overarrows.dtx")
+ (front-context-string . "% \\section{Quick")
+ (rear-context-string . " environment.\n%\n")
+ (position . 11498))
+("overarrows.dtx/Introduction"
+ (filename . "~/Ressources/Projets/latex-packages/overarrows/overarrows.dtx")
+ (front-context-string . "% \\section{Intro")
+ (rear-context-string . " \\end{align*}\n%\n")
+ (position . 7009))
+("overarrows.dtx/Presentation"
+ (filename . "~/Ressources/Projets/latex-packages/overarrows/overarrows.dtx")
+ (front-context-string . "% \\section{Prese")
+ (rear-context-string . "}\n%\\clearpage\n%\n")
+ (position . 4795))
+("overarrows.dtx/Implementation"
+ (filename . "~/Ressources/Projets/latex-packages/overarrows/overarrows.dtx")
+ (front-context-string . "% \\section{Imple")
+ (rear-context-string . "pEventually{}\n%\n")
+ (position . 74180))
+)
