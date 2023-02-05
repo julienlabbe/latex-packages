@@ -3657,45 +3657,6 @@ actual '='
 %
 %</docstyle>
 %
-%<*comment>
-%
-% \section*{Notes}
-%
-% \subsection*{Bash commands reminder}
-%^^A the command |awk '!line[$0]++'| remove duplicate lines
-%
-% \subsubsection*{List of package options}
-%
-\begin{lstlisting}[language={bash}]
-rg -o -N 'DeclareOption\{\w+' overarrows.dtx | rg -o '\w+$'
-\end{lstlisting} %^^A dummy '|' for emacs
-%
-% \subsubsection*{List of commands}
-%
-\begin{lstlisting}[language={bash}]
-rg -o -N '^[[:blank:]]*\\(let|def|newcommand\*?|(New|Renew|Declare|Provides)\w*Command)[{\\]+[\w@]+' overarrows.sty | rg -o '[\w@]+$' | grep -v ovar@ | awk '!line[$0]++'
-\end{lstlisting} %^^A dummy '|' for emacs
-%
-% \subsubsection*{List of internal macros and lengths}
-%
-\begin{lstlisting}[language={bash}]
-  rg '\\(if)?ovar@[\w@]+' -o  -N overarrows.dtx | rg -v '(@true|@false)' | awk '!line[$0]++'
-\end{lstlisting} %^^A dummy '|' for emacs
-%
-% \subsubsection*{List of lengths}
-%
-\begin{lstlisting}[language={bash}]
-rg -o -N '^[[:blank:]]*\\(def|new)length[{\\]+[\w@]+' overarrows.sty | rg -o '[\w@]+$' | grep -v ovar@| awk '!line[$0]++'
-\end{lstlisting}
-%
-% \subsubsection*{List of keys}
-%
-\begin{lstlisting}[language={bash}]
-rg -o -N ".*/\." overarrows.sty | sed 's/\/\.$//' | sed -r 's/^([[:blank:]]|\\[[:alpha:]@]+\{)*//'  | awk '!line[$0]++'
-\end{lstlisting}
-%
-%</comment>
-%
 % \fi ^^A end of \iffalse
 %
 % \Finale
