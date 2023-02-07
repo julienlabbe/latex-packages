@@ -1,7 +1,7 @@
 ##############################
 # gitignore
 ##############################
-
+# latex temp files
 *.aux
 *.glo
 *.idx
@@ -11,4 +11,12 @@
 *.ilg
 *.ind
 *.out
-.auctex-auto/
+*.fdb_latexmk
+*.listing
+*.fls
+*.mst
+*.tcbtemp
+# emacs files
+**/.auctex-auto/
+.dir-locals.el
+.emacs-bookmarks
