@@ -18,5 +18,3 @@
 *.tcbtemp
 # emacs files
 **/.auctex-auto/
-.dir-locals.el
-.emacs-bookmarks
