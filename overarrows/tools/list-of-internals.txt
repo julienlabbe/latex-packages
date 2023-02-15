@@ -5,6 +5,8 @@
 \ifovar@option@tikz@
 \ifovar@option@pstarrows@
 \ifovar@detectsubscripts@
+\ifovar@option@subother@
+\ifovar@option@subactive@
 \ifovar@option@debug@
 \ifovar@option@overrightarrow@
 \ifovar@option@underrightarrow@
@@ -22,6 +24,7 @@
 \ifovar@option@underleftharpoondown@
 \ifovar@option@overbar@
 \ifovar@option@underbar@
+\ovar@subcmd
 \ovar@set
 \ovar@length@min
 \ovar@before@arrow
@@ -63,3 +66,4 @@
 \ovar@starversion
 \ovar@testmathstyles
 \ovar@row@teststyle
+\ovar@testkerning

@@ -1,0 +1,35 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Test of the LaTeX overarrows package
+% Package spbmark compatibility and support for non-standard subscripts.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass{article}
+\title{Test of the \textsf{overarrows} package\\with non-standard subscripts
+  (package \pkg{spbmark})}
+\author{Julien Labb\'e}
+
+%% test options subother and subactive
+\usepackage[subscripts]{overarrows}
+\usepackage{overarrows-doc}
+
+%% load package spbmark
+\usepackage{spbmark}
+
+\begin{document}
+
+\maketitle
+
+\section{Default config}
+
+\begin{dispExample}
+$ \vv{\imath}_{sub} \qquad \vv{\imath}\sub{spbmark}$
+\end{dispExample}
+
+\section{With suitable settings}
+
+\begin{dispExample}
+\SetOverArrowsSubscriptCommand{\sub}
+$ \vv{\imath}_{sub} \qquad \vv{\imath}\sub{spbmark}$
+\end{dispExample}
+
+\end{document}

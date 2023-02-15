@@ -12,6 +12,8 @@ old
 tikz
 pstarrows
 subscripts
+subother
+subactive
 debug
 overrightarrow
 underrightarrow

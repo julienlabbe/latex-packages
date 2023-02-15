@@ -16,7 +16,7 @@
 %<package>\NeedsTeXFormat{LaTeX2e}
 %<package>\ProvidesPackage{overarrows}
 %<*package>
-[2023/01/19 v1.0.1 Custom extensible arrows over math expressions]
+[2023/02/15 v1.1 Custom extensible arrows over math expressions]
 %</package>
 %
 %<*driver>
@@ -1116,6 +1116,20 @@ $ \overbandedarrow{v} \qquad \overbandedarrow{AB} $
 %   a subscript follows.
 % \end{docOption}
 %
+% \begin{docOption}{subother}
+%   Sets to 12 (\emph{other} catcode category) the catcode of the ``|_|" symbol
+%   used for subscript detection, when this is enabled by the key \refKey{detect
+%   subscripts} (see the section~\ref{sec:non-standard-subscripts},
+%   page~\pageref{sec:non-standard-subscripts}).
+% \end{docOption}
+%
+% \begin{docOption}{subactive}
+%   Sets to 13 (\emph{active} catcode category) the catcode of the ``|_|" symbol
+%   used for subscript detection, when this is enabled by the key \refKey{detect
+%   subscripts} (see the section~\ref{sec:non-standard-subscripts},
+%   page~\pageref{sec:non-standard-subscripts}).
+% \end{docOption}
+%
 % \begin{docOption}{debug}
 %   Writes the meaning of defined commands in \LaTeX{} log.
 % \end{docOption}
@@ -1671,6 +1685,10 @@ $ \dot{\overharpoonsdown{v}} \qquad \ddot{\overharpoonsdown{AB}}$
 % When the option \refOpt{subscripts} is set, the initial value of
 % \refKey*{detect subscripts} is |true|.
 %
+% Note that the detection may fail when the standard subscript command is
+% changed or altered (see the section~\ref{sec:non-standard-subscripts},
+% page~\pageref{sec:non-standard-subscripts}).
+%
 % \iffalse
 %<*example>
 % \fi
@@ -2010,6 +2028,13 @@ $ \overdotteddoublearrow{v} \qquad \overdotteddoublearrow{AB} $
 %
 % \subsubsection{Advanced commands}
 %
+% \begin{docCommand}{SetOverArrowsSubscriptCommand}{\marg{command}}
+%   Sets to \meta{command} the command used for subscript detection, when this
+%   is enabled by the key \refKey{detect subscripts} (see the
+%   section~\ref{sec:non-standard-subscripts},
+%   page~\pageref{sec:non-standard-subscripts}).
+% \end{docCommand}
+%
 % \begin{docCommands}{%
 %   {
 %     doc name=SetOverArrowsMethod,
@@ -2095,7 +2120,9 @@ $ \overdotteddoublearrow{v} \qquad \overdotteddoublearrow{AB} $
 %
 % \section{Complements}
 %
-% \subsection{Math font issue}
+% \subsection{Know issues}
+%
+% \subsubsection{Math font change}
 %
 % If the math font differs from the default \emph{Computer Modern}, arrow drawn
 % with the |symb| method may have a central part of the arrow with inappropriate
@@ -2103,6 +2130,60 @@ $ \overdotteddoublearrow{v} \qquad \overdotteddoublearrow{AB} $
 % because the default symbol used for the arrow line is \cs{relbareda}
 % \symb{\relbareda} from the \pkg{esvect} package. This can be fixed with the
 % \refOpt{noesvect} option.
+%
+% \subsubsection{Detection of non standard subscripts}
+% \label{sec:non-standard-subscripts}
+%
+% The subscript detection enabled by the key \refKey{detect subscripts} is based
+% on the \LaTeX{} macro \cs{@ifnextchar}. The detection may fail if the standard
+% subscript command is modified of altered. This is the case, as example:
+% \begin{itemize}
+%  \item with the \pkg{spbmark} package
+%   (\url{https://www.ctan.org/pkg/spbmark}), by Qu Yi, which allows a complete
+%   customisation of subscripts, through the \cs{sub} command;
+%  \item with the \pkg{altsubsup} package
+%   (\url{https://www.ctan.org/pkg/altsubsup}), by Julien Labb\'e, which
+%   provides an alternative subscript format, and changes, for this purpose, the
+%   catcode of the underscore symbol ``|_|" from 8 (\emph{subscript} catcode
+%   category) to 12 (\emph{other} catcode category).
+% \end{itemize}
+%
+% To handle theses cases, the command used for subscript detection can be
+% redefined with \refCom{SetOverArrowsSubscriptCommand}. Compatibility with the
+% \pkg{spbmark} package is then obtained by:
+% \iffalse
+%<*example>
+% \fi
+\begin{dispListing}
+\SetOverArrowsSubscriptCommand{\sub}
+\end{dispListing}
+% \iffalse
+%</example>
+% \fi
+% \noindent In the same way, with the \pkg{altsubsup} package, add:
+% \iffalse
+%<*example>
+% \fi
+\begin{dispListing}
+\SetOverArrowsSubscriptCommand{_}
+\end{dispListing}
+% \iffalse
+%</example>
+% \fi
+% \noindent after the \cs{begin}|{document}| (namely, after the catcode
+% redefinition done by \pkg{altsubsup}).
+%
+% \medskip
+%
+% Alternatively, two package options handle the cases where the catcode of the
+% underscore ``|_|" symbol is changed: \refOpt{subother} (for catcode 12, or
+% \emph{other}) and \refOpt{subactive} (for catcode 13, or \emph{active}).
+% Hence, setting the \refOpt{subother} option is sufficient for compatibility
+% with the \pkg{altsubsup} package (no need of
+% \refCom{SetOverArrowsSubscriptCommand}). Note, that with options
+% \refOpt{subother} and \refOpt{subactive}, the command \refCom{TestOverArrow*}
+% may give bad results for kerning test, as defined before the
+% catcode redefinition.
 %
 % \subsection{Package dependencies}
 %
@@ -2145,6 +2226,7 @@ $ \overdotteddoublearrow{v} \qquad \overdotteddoublearrow{AB} $
 % \subsection{Changelog}
 %
 % \begin{description}
+%  \item[v1.1] Support for non-standard subscripts
 %  \item[v1.0.1] Bug fix for under* options.
 %  \item[v1.0] Initial version.
 % \end{description}
@@ -2160,7 +2242,7 @@ $ \overdotteddoublearrow{v} \qquad \overdotteddoublearrow{AB} $
 % \setlength{\parindent}{0em}
 % \setlength{\parskip}{\smallskipamount}
 %
-%\subsection*{Management of options}
+% \subsection*{Management of options}
 %
 % \subsubsection*{Declaration of conditionals}
 %
@@ -2170,6 +2252,8 @@ $ \overdotteddoublearrow{v} \qquad \overdotteddoublearrow{AB} $
 \newif\ifovar@option@tikz@
 \newif\ifovar@option@pstarrows@
 \newif\ifovar@detectsubscripts@
+\newif\ifovar@option@subother@
+\newif\ifovar@option@subactive@
 \newif\ifovar@option@debug@
 %    \end{macrocode}
 %
@@ -2211,13 +2295,14 @@ $ \overdotteddoublearrow{v} \qquad \overdotteddoublearrow{AB} $
 \DeclareOption{tikz}{\ovar@option@tikz@true}
 \DeclareOption{pstarrows}{\ovar@option@pstarrows@true}
 \DeclareOption{subscripts}{\ovar@detectsubscripts@true}
+\DeclareOption{subother}{\ovar@option@subother@true}
+\DeclareOption{subactive}{\ovar@option@subactive@true}
 \DeclareOption{debug}{\ovar@option@debug@true}
 %    \end{macrocode}
 %
 % Following options are for predefined commands.
 %
 % \changes{v1.0.1}{2023/01/19}{Bug fix for under* options}
-%
 %
 %    \begin{macrocode}
 \DeclareOption{overrightarrow}{\ovar@option@overrightarrow@true}
@@ -2327,6 +2412,39 @@ $ \overdotteddoublearrow{v} \qquad \overdotteddoublearrow{AB} $
 \fi
 %    \end{macrocode}
 %
+% \subsection*{Configuration of subscripts detection}
+%
+% \changes{v1.1}{2023/02/15}{Support for non-standard subscripts}
+%
+% \begin{macro}{\SetOverArrowsSubscriptCommand}
+% Sets the subscript command.
+%    \begin{macrocode}
+\newcommand{\SetOverArrowsSubscriptCommand}[1]{\global\let\ovar@subcmd=#1}
+%    \end{macrocode}
+% \end{macro}
+%
+% Initial configuration.
+%    \begin{macrocode}
+\SetOverArrowsSubscriptCommand{_}
+%    \end{macrocode}
+% Option \refOpt{subother} for \emph{other} (catcode 12) subscript commands.
+%    \begin{macrocode}
+\ifovar@option@subother@
+  \begingroup
+    \catcode `_=12
+    \AddToHook{begindocument/end}{\SetOverArrowsSubscriptCommand{_}}
+  \endgroup
+\fi
+%    \end{macrocode}
+% Option \refOpt{subactive} for \emph{active} (catcode 13) subscript commands.
+%    \begin{macrocode}
+\ifovar@option@subactive@
+  \begingroup
+    \catcode `_=13
+    \AddToHook{begindocument/end}{\SetOverArrowsSubscriptCommand{_}}
+  \endgroup
+\fi
+%    \end{macrocode}
 % \subsection*{Management of keys}
 %
 % \subsubsection*{Family declaration and setters}
@@ -2365,6 +2483,11 @@ $ \overdotteddoublearrow{v} \qquad \overdotteddoublearrow{AB} $
 %
 %    \begin{macrocode}
 \SetOverArrowsMethod*{common}[\undef{\ovar@macro@stack}\undef{\ovar@macro@arrow}]{%
+%    \end{macrocode}
+%
+% \refKey{detect subscripts}.
+%
+%    \begin{macrocode}
   detect subscripts/.is if=ovar@detectsubscripts@,
 %    \end{macrocode}
 %
@@ -2926,7 +3049,11 @@ $ \overdotteddoublearrow{v} \qquad \overdotteddoublearrow{AB} $
   }
   \ifovar@detectsubscripts@%
   \csgdef{ovar@#2@auto}##1{%
-    \@ifnextchar _{%
+%    \end{macrocode}
+% \vspace{-2\smallskipamount}%^^A remove space between code blocs
+% \changes{v1.1}{2023/02/15}{Support for non-standard subscripts}
+%    \begin{macrocode}
+    \@ifnextchar \ovar@subcmd {%
       \csuse{ovar@#2@starred}{##1}%
     }{%
       \csuse{ovar@#2@normal}{##1}%
@@ -3271,6 +3398,28 @@ $ \overdotteddoublearrow{v} \qquad \overdotteddoublearrow{AB} $
 %    \end{macrocode}
 % \end{macro}
 %
+% \changes{v1.1}{2023/02/15}{Support for non-standard subscripts}
+%
+% \begin{macro}{\ovar@testkerning}
+%    \begin{macrocode}
+\begingroup
+\ifovar@option@subother@  \catcode `_=12 \fi
+\ifovar@option@subactive@ \catcode `_=13 \fi
+\gdef\ovar@testkerning#1{%
+  \begin{displaymath}
+    #1{t}_{#1{u}_{#1{v}}}
+    \qquad
+    #1{\imath}_0
+    \qquad
+    #1{v}
+    = #1{v}_x + #1{v}_y + #1{v}_z
+    = v_x #1{\imath} + v_y #1{\jmath} + v_z #1{k}
+  \end{displaymath}
+}
+\endgroup
+%    \end{macrocode}
+% \end{macro}
+%
 % \begin{macro}{\TestOverArrow}
 %    \begin{macrocode}
 \NewDocumentCommand{\TestOverArrow}{ s o m }{
@@ -3290,25 +3439,9 @@ $ \overdotteddoublearrow{v} \qquad \overdotteddoublearrow{AB} $
         \ovar@testmathstyles[#2]{#3}%
         \bigskip\par
         \textbf{\texttt{\textbackslash#3} kerning}
-        \begin{displaymath}
-          \csuse{#3}{t}_{\csuse{#3}{u}_{\csuse{#3}{v}}}
-          \qquad
-          \csuse{#3}{\imath}_0
-          \qquad
-          \csuse{#3}{v}
-          = \csuse{#3}{v}_x + \csuse{#3}{v}_y + \csuse{#3}{v}_z
-          = v_x \csuse{#3}{\imath} + v_y \csuse{#3}{\jmath} + v_z \csuse{#3}{k}
-        \end{displaymath}
+        \ovar@testkerning{\csuse{#3}}
         \textbf{\texttt{\textbackslash#3*} kerning}
-        \begin{displaymath}
-          \csuse{#3}*{t}_{\csuse{#3}*{u}_{\csuse{#3}*{v}}}
-          \qquad
-          \csuse{#3}*{\imath}_0
-          \qquad
-          \csuse{#3}*{v}
-          = \csuse{#3}*{v}_x + \csuse{#3}*{v}_y + \csuse{#3}*{v}_z
-          = v_x \csuse{#3}*{\imath} + v_y \csuse{#3}*{\jmath} + v_z \csuse{#3}*{k}
-        \end{displaymath}
+        \ovar@testkerning{\csuse{#3}*}
       \end{minipage}%
     }\bigskip\par
   }{%
@@ -3501,7 +3634,7 @@ actual '='
       overrightharpoondown, overleftharpoonup, overleftharpoondown, overbar,%
       underrightarrow, underleftarrow, underleftrightarrow, underrightharpoonup,%
       underrightharpoondown, underleftharpoonup, underleftharpoondown, underbar,%
-      SetOverArrowsMethod,%
+      SetOverArrowsMethod, SetOverArrowsSubscriptCommand,%
     },
     index       = [2][texcs2],%
     indexstyle  = [2]\indexmacro,%
@@ -3537,6 +3670,7 @@ actual '='
       ovar@stackover@, ovar@stackunder@, ovar@stackover@fill,
       ovar@stackover@lens, ovar@set@common, ovar@starversion,
       ovar@testmathstyles, ovar@row@teststyle,%
+      ifovar@option@subother@,ifovar@option@subactive@,ovar@subcmd,ovar@testkerning,%
     },
     index       = [4][texcs4],%
     indexstyle  = [4]\indexmacrointernal,%

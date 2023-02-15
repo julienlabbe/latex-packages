@@ -17,12 +17,14 @@
 %% 
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{overarrows}
-[2023/01/19 v1.0.1 Custom extensible arrows over math expressions]
+[2023/02/15 v1.1 Custom extensible arrows over math expressions]
 \newif\ifovar@option@oldarrows@
 \newif\ifovar@option@esvect@ \ovar@option@esvect@true \PassOptionsToPackage{f}{esvect}
 \newif\ifovar@option@tikz@
 \newif\ifovar@option@pstarrows@
 \newif\ifovar@detectsubscripts@
+\newif\ifovar@option@subother@
+\newif\ifovar@option@subactive@
 \newif\ifovar@option@debug@
 \newif\ifovar@option@overrightarrow@
 \newif\ifovar@option@underrightarrow@
@@ -54,6 +56,8 @@
 \DeclareOption{tikz}{\ovar@option@tikz@true}
 \DeclareOption{pstarrows}{\ovar@option@pstarrows@true}
 \DeclareOption{subscripts}{\ovar@detectsubscripts@true}
+\DeclareOption{subother}{\ovar@option@subother@true}
+\DeclareOption{subactive}{\ovar@option@subactive@true}
 \DeclareOption{debug}{\ovar@option@debug@true}
 \DeclareOption{overrightarrow}{\ovar@option@overrightarrow@true}
 \DeclareOption{underrightarrow}{\ovar@option@underrightarrow@true}
@@ -129,6 +133,20 @@
 \fi
 \ifovar@option@pstarrows@
   \RequirePackage[pstarrows]{pict2e}
+\fi
+\newcommand{\SetOverArrowsSubscriptCommand}[1]{\global\let\ovar@subcmd=#1}
+\SetOverArrowsSubscriptCommand{_}
+\ifovar@option@subother@
+  \begingroup
+    \catcode `_=12
+    \AddToHook{begindocument/end}{\SetOverArrowsSubscriptCommand{_}}
+  \endgroup
+\fi
+\ifovar@option@subactive@
+  \begingroup
+    \catcode `_=13
+    \AddToHook{begindocument/end}{\SetOverArrowsSubscriptCommand{_}}
+  \endgroup
 \fi
 \RequirePackage{pgfkeys}
 \pgfkeys{overarrows/.is family}
@@ -479,7 +497,7 @@
   }
   \ifovar@detectsubscripts@%
   \csgdef{ovar@#2@auto}##1{%
-    \@ifnextchar _{%
+    \@ifnextchar \ovar@subcmd {%
       \csuse{ovar@#2@starred}{##1}%
     }{%
       \csuse{ovar@#2@normal}{##1}%
@@ -695,6 +713,21 @@
   \end{tabular*}
   \endgroup
 }
+\begingroup
+\ifovar@option@subother@  \catcode `_=12 \fi
+\ifovar@option@subactive@ \catcode `_=13 \fi
+\gdef\ovar@testkerning#1{%
+  \begin{displaymath}
+    #1{t}_{#1{u}_{#1{v}}}
+    \qquad
+    #1{\imath}_0
+    \qquad
+    #1{v}
+    = #1{v}_x + #1{v}_y + #1{v}_z
+    = v_x #1{\imath} + v_y #1{\jmath} + v_z #1{k}
+  \end{displaymath}
+}
+\endgroup
 \NewDocumentCommand{\TestOverArrow}{ s o m }{
   \ifcsdef{#3}{}{%
     \PackageWarning{overarrows}{Unknown name '#3' passed to
@@ -712,25 +745,9 @@
         \ovar@testmathstyles[#2]{#3}%
         \bigskip\par
         \textbf{\texttt{\textbackslash#3} kerning}
-        \begin{displaymath}
-          \csuse{#3}{t}_{\csuse{#3}{u}_{\csuse{#3}{v}}}
-          \qquad
-          \csuse{#3}{\imath}_0
-          \qquad
-          \csuse{#3}{v}
-          = \csuse{#3}{v}_x + \csuse{#3}{v}_y + \csuse{#3}{v}_z
-          = v_x \csuse{#3}{\imath} + v_y \csuse{#3}{\jmath} + v_z \csuse{#3}{k}
-        \end{displaymath}
+        \ovar@testkerning{\csuse{#3}}
         \textbf{\texttt{\textbackslash#3*} kerning}
-        \begin{displaymath}
-          \csuse{#3}*{t}_{\csuse{#3}*{u}_{\csuse{#3}*{v}}}
-          \qquad
-          \csuse{#3}*{\imath}_0
-          \qquad
-          \csuse{#3}*{v}
-          = \csuse{#3}*{v}_x + \csuse{#3}*{v}_y + \csuse{#3}*{v}_z
-          = v_x \csuse{#3}*{\imath} + v_y \csuse{#3}*{\jmath} + v_z \csuse{#3}*{k}
-        \end{displaymath}
+        \ovar@testkerning{\csuse{#3}*}
       \end{minipage}%
     }\bigskip\par
   }{%

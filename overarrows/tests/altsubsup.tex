@@ -1,0 +1,57 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Test of the LaTeX overarrows package
+% Package altsubsup compatibility and support for non-standard subscripts.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass{article}
+\title{Test of the \textsf{overarrows} package\\with non-standard subscripts (package \pkg{altsubsup})}
+\author{Julien Labb\'e}
+
+%% test options subother and subactive
+% \usepackage[subscripts]{overarrows}
+\usepackage[subscripts, subother]{overarrows}
+% \usepackage[subscripts, subactive]{overarrows}
+\usepackage{overarrows-doc}
+
+%% load package altsubsup (set `_ to catcode 12)
+\usepackage{altsubsup}
+
+%% define commands in preamble, before altsubsup catcode redefinition of `_
+\DeclareOverArrowCommand{withsubdetection}{%
+  detect subscripts=true,
+}
+\DeclareOverArrowCommand{nosubdetection}{%
+  detect subscripts=false,
+}
+
+\begin{document}
+
+\maketitle
+
+%% test with another catcodes
+% \catcode `_=12
+% \catcode `_=13
+
+\section{Subscript detection enabled}
+
+\begin{dispExample}
+\TestOverArrow*{withsubdetection}
+
+$ \withsubdetection{\imath}_{sub} \qquad \withsubdetection{\imath}_[altsub]$
+\end{dispExample}
+
+\section{Subscript detection disabled}
+
+\begin{dispExample}
+\TestOverArrow*{nosubdetection}
+
+$ \nosubdetection{\imath}_{sub} \qquad \nosubdetection{\imath}_[altsub]$
+\end{dispExample}
+
+\section{Compatibility with \pkg{altsubsup} package}
+
+\begin{dispExample}
+  $ \vv{\imath}_{sub} \qquad \vv{\imath}_[altsub]$
+\end{dispExample}
+
+\end{document}
