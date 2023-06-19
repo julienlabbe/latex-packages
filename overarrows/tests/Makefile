@@ -5,8 +5,7 @@
 name=overarrows
 
 stydir=..
-dep=$(stydir)/$(name).sty\
-	$(wildcard texconfig.tex)
+dep=$(stydir)/$(name).sty
 src=$(filter-out $(dep),$(wildcard *.tex))
 
 cmd=latexmk
