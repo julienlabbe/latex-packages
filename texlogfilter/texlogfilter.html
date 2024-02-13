@@ -19,7 +19,7 @@
 
 <h2 id="SYNOPSIS">SYNOPSIS</h2>
 
-<pre><code>    texlogfilter [options] file.log</code></pre>
+<pre><code>texlogfilter [options] file.log</code></pre>
 
 <h2 id="DESCRIPTION">DESCRIPTION</h2>
 
@@ -27,39 +27,39 @@
 
 <p>Without input file, standard input is used. Use on latex engine output with:</p>
 
-<pre><code>    latex file.tex &lt; /dev/null | texlogfilter</code></pre>
+<pre><code>latex file.tex &lt; /dev/null | texlogfilter</code></pre>
 
 <h2 id="OPTIONS">OPTIONS</h2>
 
-<pre><code>    --help                 : print this help and exit
-    --version              : print version and exit
+<pre><code>--help                 : print this help and exit
+--version              : print version and exit
 
-    --box                  : show box warnings
-    --no-box               : mask box warnings
+--box                  : show box warnings
+--no-box               : mask box warnings
 
-    --ref                  : show reference/citation warnings
-    --no-ref               : mask reference/citation warnings
+--ref                  : show reference/citation warnings
+--no-ref               : mask reference/citation warnings
 
-    --info                 : show latex info messages
-    --no-info              : mask latex info messages
+--info                 : show latex info messages
+--no-info              : mask latex info messages
 
-    --filename             : print current file name
-    --no-filename          : do not print current file name
-    --files-ext=string     : regex pattern used to match files extension (default: tex|sty|cls|bib)
+--filename             : print current file name
+--no-filename          : do not print current file name
+--files-ext=string     : regex pattern used to match files extension (default: tex|sty|cls|bib)
 
-    --skips                : indicate skipped lines
-    --no-skips             : mask skipped lines
-    --skip-marker=string   : marker used to indicate skipped lines (defaut: ...)
+--skips                : indicate skipped lines
+--no-skips             : mask skipped lines
+--skip-marker=string   : marker used to indicate skipped lines (defaut: ...)
 
-    --add-filter=string    : add user filter pattern (as perl regular expression)
+--add-filter=string    : add user filter pattern (as perl regular expression)
 
-    --full-log             : show full log (don&#39;t filter - only colorize latex engine output)
+--full-log             : show full log (don&#39;t filter - only colorize latex engine output)
 
-    --errors-color=string
-    --warnings-color=string
-    --infos-color=string
-    --skips-color=string
-    --user-color=string    : colors used for errors, warnings, informations and skipped lines</code></pre>
+--errors-color=string
+--warnings-color=string
+--infos-color=string
+--skips-color=string
+--user-color=string    : colors used for errors, warnings, informations and skipped lines</code></pre>
 
 <h2 id="ALTERNATIVES">ALTERNATIVES</h2>
 
@@ -94,10 +94,13 @@
 
 <ul>
 
-<li><p>2022, march, version 1.1 : add --info and --no-info options.</p>
+<li><p>2024, February, version 1.2 : fix duplicate or missing lines; handle package and class names with hyphen ; add info and warning patterns for fonts.</p>
 
 </li>
-<li><p>2021, november, version 1.0 : initial version.</p>
+<li><p>2022, March, version 1.1 : add --info and --no-info options.</p>
+
+</li>
+<li><p>2021, November, version 1.0 : initial version.</p>
 
 </li>
 </ul>

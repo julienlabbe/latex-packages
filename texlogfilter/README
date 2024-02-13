@@ -69,9 +69,13 @@ texlogfilter
     1.1
 
   HISTORY
-    *   2022, march, version 1.1 : add --info and --no-info options.
+    *   2024, February, version 1.2 : fix duplicate or missing lines; handle
+        package and class names with hyphen ; add info and warning patterns
+        for fonts.
 
-    *   2021, november, version 1.0 : initial version.
+    *   2022, March, version 1.1 : add --info and --no-info options.
+
+    *   2021, November, version 1.0 : initial version.
 
   DOCUMENTATION
     The documentation is integrated, writtent in Plain Old Documentation
