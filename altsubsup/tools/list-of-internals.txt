@@ -1,0 +1,16 @@
+\ifaltsbsp@subscript
+\altsbsp@subscripttrue
+\ifaltsbsp@superscript
+\altsbsp@superscripttrue
+\ifaltsbsp@spbmark
+\altsbsp@spbmarkfalse
+\altsbsp@superscriptfalse
+\altsbsp@subscriptfalse
+\altsbsp@spbmarktrue
+\altsbsp@standardsub
+\altsbsp@standardsup
+\altsbsp@subwrapper
+\altsbsp@supwrapper
+\altsbsp@altsubcmd
+\altsbsp@altsupcmd
+\altsbsp@pr@m@s

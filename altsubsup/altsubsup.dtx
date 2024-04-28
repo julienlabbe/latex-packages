@@ -1,20 +1,11 @@
 % \iffalse meta-comment
 %
-% Copyright (C) 2022 by Julien Labbé <Julien.Labbe@univ-grenoble-alpes.fr>
+% Copyright (C) 2022-2024 by Julien Labbé <Julien.Labbe@univ-grenoble-alpes.fr>
 %
-%
-% This file may be distributed and/or modified under the conditions of the LaTeX
-% Project Public License, either version 1.3 of this license or (at your option)
-% any later version. The latest version of this license is in:
-%
-%
-% http://www.latex-project.org/lppl.txt
-%
-% and version 1.3 or later is part of all distributions of LaTeX version
-% 2005/12/01 or later.
-%
-% Note : this file was created from the version 2.1 of the dtxtut tutorial,
-% maintained by Scott Pakin.
+% This file may be distributed and/or modified under the conditions of the
+% LaTeX Project Public License (LPPL), either version 1.3c of this license or
+% (at your option) any later version. The latest version of this license is in
+% the file https://www.latex-project.org/lppl.txt
 %
 % \fi
 %
@@ -23,78 +14,64 @@
 \ProvidesFile{altsubsup.dtx}
 %</driver>
 %<package> \NeedsTeXFormat{LaTeX2e}
+%<package>\ProvidesPackage{altsubsup}
 %<*package>
-\ProvidesPackage{altsubsup}[2022/03/15, v1.1, Alternative and customisable
-subscripts and superscripts, with  square brackets.]
+[2022/03/15 v1.1 Alternative and customisable formatting for subscripts and
+  superscripts]
 %</package>
 %
 %<*driver>
-\documentclass{ltxdoc}
+\documentclass[nohyperref]{ltxdoc}
+
+\usepackage{altsubsup-doc} %^^A defined at end of this file, with guard <docstyle>
 \usepackage{altsubsup}
 \usepackage{spbmark}
-\usepackage[hidelinks]{hyperref}
-\usepackage{xcolor}
+
 \EnableCrossrefs
-\CodelineIndex
+\PageIndex
+% \CodelineIndex
 \RecordChanges
 % \OnlyDescription
+
 \begin{document}
+
 \DocInput{altsubsup.dtx}
-\PrintChanges
+
 \PrintIndex
+\PrintChanges
+
 \end{document}
 %</driver>
 % \fi
 %
-% \CheckSum{147}
-%
-% \CharacterTable
-% {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
-% Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
-% Digits        \0\1\2\3\4\5\6\7\8\9
-% Exclamation   \!     Double quote  \"     Hash (number) \#
-% Dollar        \$     Percent       \%     Ampersand     \&
-% Acute accent  \'     Left paren    \(     Right paren   \)
-% Asterisk      \*     Plus          \+     Comma         \,
-% Minus         \-     Point         \.     Solidus       \/
-% Colon         \:     Semicolon     \;     Less than     \<
-% Equals        \=     Greater than  \>     Question mark \?
-% Commercial at \@     Left bracket  \[     Backslash     \\
-% Right bracket \]     Circumflex    \^     Underscore    \_
-% Grave accent  \`     Left brace    \{     Vertical bar  \|
-% Right brace   \}     Tilde         \~}
-%
-%
 % \changes{v1.0}{2022/01/23}{Initial version.}
 %
-% \GetFileInfo{altsubsup.dtx}
+% \GetFileInfo{\jobname.dtx}
 %
-% \DoNotIndex{\newcommand,\newenvironment,\let}
-% \DoNotIndex{\#,\$,\%,\&,\@,\\,\{,\},\^,\_,\~,\ }
-% \DoNotIndex{\begingroup,\endgroup,\bgroup,\egroup}
-% \DoNotIndex{\catcode,\mathcode,\lccode,\lowercase}
-% \DoNotIndex{\relax,\expandafter,\endinput}
-% \DoNotIndex{\def,\edef,\gdef,\global,\newif,\ifx,\else,\fi}
-% \DoNotIndex{\@ifnextchar,\@let@token}
-% \DoNotIndex{\sb,\sp,\text}
-%
-% \title{The \textsf{altsubsup} package\thanks{This document
-% corresponds to \textsf{altsubsup}~\fileversion, dated \filedate.}}
+% \title{The \pkg{altsubsup} package\thanks{This document corresponds to
+% \pkg{altsubsup}~\fileversion, dated \filedate.}}
 % \author{Julien Labb\'e \\ \texttt{Julien.Labbe@univ-grenoble-alpes.fr}}
 %
 % \maketitle
 %
 % \begin{abstract}
-%   A \LaTeX{} package to write alternative and customisable subscripts and
-%   superscripts, with  square brackets.
+%   A \LaTeX{} package to customize subscripts and superscripts. An alternative
+%   formatting is used when the subscript or the superscript is written in
+%   square brackets. By default, it allows to quickly get an upright format.
 %
-%   Typical use:
-%   \begin{center}
-%     \begin{tabular}{ccc}
-%         |x_[roman]^{italic}|& $\longrightarrow$ & $x_[roman]^{italic}$ \\[6pt]
-%         |x_{italic}^[roman]|& $\longrightarrow$ & $x_{italic}^[roman]$
-%     \end{tabular}
-%   \end{center}
+% \bigskip
+%
+% Example:
+% \iffalse
+%<*example>
+% \fi
+\begin{dispExample}
+  $ x_[roman]^{italic} \qquad x_{italic}^[roman] $
+\end{dispExample}
+% \iffalse
+%</example>
+% \fi
+%
 % \end{abstract}
 %
 % \tableofcontents{}
@@ -102,198 +79,227 @@ subscripts and superscripts, with  square brackets.]
 %
 % \section{Introduction}
 %
-% The \textsf{altsubsup} package allows to write alternate subscripts and
-% superscripts, in math mode, with square brackets :
-% \begin{center}
-%   |x_[my subscript]| \quad or \quad |x^[my superscript]|.
-% \end{center}
-% These alternate superscripts and superscripts are formatted by the commands
-% set, respectively,  with |\SetAltSubscriptCommand| and
-% |\SetAltSuperscriptCommand|. By default,  the |\text| command, from
-% \textsf{amstext} (part of \textsf{amsmath}) is used. This gives:
-% \begin{center}
-%   $x_[my subscript]$ \quad or \quad $x^[my superscript]$.
-% \end{center}
+% The \pkg{altsubsup} package provides an alternative formatting for subscripts
+% and superscripts when written with square brackets in math mode, like for
+% \iffalse
+%<*example>
+% \fi
+\begin{dispExample}
+$ x_[my~subscript] $ \quad or \quad $ x^[my~superscript] $.
+\end{dispExample}
+% \iffalse
+%</example>
+% \fi
+% The commands used to typeset the alternative forms of subscripts and
+% superscripts are set, respectively, with \refCom{SetAltSubscriptCommand} and
+% \refCom{SetAltSuperscriptCommand}. By default, the command \cs{text} (from the
+% \pkg{amsmath}/\pkg{amstext} package) is used.
 %
-% This package redefine |_| and |^| symbols. Options allow to redefine both
-% (by default), only subscript |_| symbol, or only superscript |^| symbol.
+% This package redefines \code{_} and \code{^} symbols (their catcode and
+% mathcode are modified to make them active in math mode). Options allow to
+% redefine \refOpt{both} (by default), only \refOpt{subscript} \code{_}
+% symbol, or only \refOpt{superscript} \code{^} symbol.
 %
 % \section{Motivations}
 %
 % Common typographic conventions\footnotemark{} use italic (sloping) type for
 % physical quantities or mathematical variables and roman (upright) type for
-% words or fixed numbers. For example, heat capacity at constant pressure should
-% be printed $C_P$, but kinetic energy $E_[k]$ (instead of $E_k$) and relative
-% permeability $\mu_[r]$ (instead of $\mu_r$). This can be obtainted in \LaTeX{}
-% with\footnotemark{} |E_{\mathrm{k}}| and |\mu_{\mathrm{r}}|. This package
-% allows to write them simply |E_[k]| and |\mu_[r]|.
-% \footnotetext{See, for example: International Organization for
-% Standardization. (2009). \emph{Quantities and units -- Part 1: General} (ISO
-% Standard No. 80000-1:2009).
-% \href{https://www.iso.org/standard/30669.html}{https://www.iso.org/standard/30669.html}.}
-% \footnotetext{Instead of \texttt{\textbackslash{}mathrm}, a best choice is
-% the \texttt{\textbackslash{}text} macro provided by \textsf{amsmath}
-% package, which, for example, handle spaces. It's the formatting macro used
-% by default by the \textsf{altsubsup} package.}
+% words or fixed numbers. For example, the heat capacity at constant pressure
+% should be printed $C_p$, but the kinetic energy $E_[k]$ (instead of $E_k$) and
+% the relative permeability $\mu_[r]$ (instead of $\mu_r$). This can be obtained
+% in \LaTeX{} with\footnotemark{} \code{$E_{\mathrm{k}}$}
+% and \code{$\mu_{\mathrm{r}}$}. This package allows to write them simply
+% \code{$E_[k]$} and \code{$\mu_[r]$}.
+%
+% \footnotetext{See, for
+% example: International Organization for Standardization. (2009). \emph{Quantities and units -- Part 1: General}
+% (ISO Standard No. 80000-1:2009).
+% \url{https://www.iso.org/standard/30669.html}.}
+% \footnotetext{Instead of \cs{mathrm}, a best choice is the \cs{\text} macro
+% provided by the \pkg{amsmath} package, which, for example, handle spaces.
+% It's the formatting macro used by default by the \textsf{altsubsup} package.}
 %
 % \section{User interface}
 %
 % \subsection{Usage}
 %
-% \DescribeMacro{\SetAltSubscriptCommand\marg{cmd}}
+% \begin{docCommands}{%
+%   {
+%     doc name=SetAltSubscriptCommand,
+%     doc parameter=\marg{command},
+%   },
+%   {
+%     doc name=SetAltSuperscriptCommand,
+%     doc parameter=\marg{command},
+%   },
+% }
+%   Set to \meta{command} the command used to format the alternative forms of
+%   subscript or superscript written with square brackets, like \code{_[...]}
+%   or \code{^[...]}.
+% \end{docCommands}
 %
-% Set the command \meta{cmd} used to format square brackets subscripts
-% |_[...]|. By default, \meta{cmd} is the |\text| command, provided by the
-% \textsf{amstext} package (part of \textsf{amsmath} package).
+% \begin{docCommand}{SetAltSubSupCommands}{\marg{command}}
+%   Sets to the same \meta{command} the commands used to format the subscripts
+%   and superscripts written with square brackets.
+% \end{docCommand}
 %
-% \DescribeMacro{\SetAltSuperscriptCommand\marg{cmd}}
-%
-% Set the command \meta{cmd} used to format square brackets superscripts
-% |^[...]|. By default, \meta{cmd} is the |\text| command, provided by the
-% \textsf{amstext} package (part of \textsf{amsmath} package).
-%
-% \DescribeMacro{\SetAltSubSupCommands\marg{cmd}}
-%
-% Set both square brackets subscripts and square brackets superscripts, with the
-% same command \meta{cmd}.
-%
-% \pagebreak
 % \subsection{Options}
 %
-% To load the package, add in your preamble:
-% \begin{center}
-%   \begin{minipage}{0.7\linewidth}
-%     |\usepackage|\oarg{option}|{altsubsup}|
-%   \end{minipage}
-% \end{center}
-% Available values for \meta{option}:
-% \begin{description}
-%  \item[|subscript|] redefine only the |_| subscript symbol.
-%  \item[|superscript|] redefine only the |^| superscript symbol.
-%  \item[|both|] redefine both |_| and |^| symbols (default).
-%  \item[|spbmark|] use the \textsf{spbmark} package to handle bracket form of
-%  superscripts and superscripts (see below).
-% \end{description}
+% To load the \pkg{altsubsup}, simply add in preamble, before the
+% ``\cs{begin}|{document}|":
+% \iffalse
+%<*example>
+% \fi
+\begin{dispListing}
+\usepackage{altsubsup}
+\end{dispListing}
+% \iffalse
+%</example>
+% \fi
 %
-% \subsubsection*{\texttt{spbmark} option}
+% Options can be given, in a comma-separated list. For example, to redefine only
+% the subscript \code{_} symbol, write:
+% \iffalse
+%<*example>
+% \fi
+\begin{dispListing}
+\usepackage[subscript]{overarrows}
+\end{dispListing}
+% \iffalse
+%</example>
+% \fi
 %
-% The \textsf{spbmark} package
-% (\href{https://www.ctan.org/pkg/spbmark}{https://www.ctan.org/pkg/spbmark}),
-% by Qu Yi, allows a complete customisation of subscripts and superscripts.
-% With the |spbmark| option, the \textsf{altsubsup} package use the |\sub| and
-% |\super| macros of the \textsf{spbmark} package to handle subscripts and
-% superscripts in place of the standard |_| and |^| commands.
 %
-% Theses two macros are called with the respective |altsub| and |altsup| styles,
-% allowing simple customization (these styles are initially created empty).
-% For example, to display subscripts in blue and superscripts in red, use:
-% \begin{center}\begin{minipage}{0.7\linewidth}
-% \begin{verbatim}
-%   \defspbstyle{altsub}{cmd=\color{blue}}
-%   \defspbstyle{altsup}{cmd=\color{red}}
-% \end{verbatim}
-% \end{minipage}\end{center}
+% \subsubsection{Available options}
 %
-% A major limitation is that using simultaneously a subscript and a superscript gives
-% bad formatting (the \textsf{spbmark} macro for this is |\supersub|).
-% For example, |x_[sub]^[super]| gives $x\sub{\text{sub}}\super{\text{super}}$
-% instead of $x_[sub]^[super]$.
+% \begin{docOption}{subscript}
+%   Redefine only the \code{_} subscript symbol.
+% \end{docOption}
+%
+% \begin{docOption}{superscript}
+%   Redefine only the \code{^} superscript symbol.
+% \end{docOption}
+%
+% \begin{docOption}{both}
+%   Redefine both \code{_} and \code{^} symbols (default).
+% \end{docOption}
+%
+% \begin{docOption}{spbmark}
+%   Use the \pkg{spbmark} package to handle the alternative forms of
+%   superscripts and superscripts written in square brackets (see below).
+% \end{docOption}
+%
+% \subsubsection{\texorpdfstring{\refOpt*{spbmark}}{spbmark} option}
+%
+% The \pkg{spbmark} package (\url{https://www.ctan.org/pkg/spbmark}), by Qu Yi, allows
+% a complete customisation of subscripts and superscripts. With the
+% macros of the \pkg{spbmark} package to handle subscripts and superscripts
+% \refOpt{spbmark} option, the \pkg{altsubsup} package use the \cs{sub} and \cs{super}
+% written in square brackets.
+%
+% Theses two macros are called with the respective \code{altsub}
+% and \code{altsup} \pkg{spbmark} styles. These styles are initially created
+% empty, set them to get the desired output. For example, to display subscripts
+% in blue and superscripts in red, use:
+% \iffalse
+%<*example>
+% \fi
+\begin{dispListing}
+   \defspbstyle{altsub}{cmd=\color{blue}}
+   \defspbstyle{altsup}{cmd=\color{red}}
+\end{dispListing}
+% \iffalse
+%</example>
+% \fi
+%
+% A major limitation of the \refOpt{spbmark} option is the bad alignment
+% generated when a subscript and a superscript are simultaneously used (the
+% \pkg{spbmark} macro for this is \cs{supersub}).
+% For example, \code{x_[sub]^[super]}
+% gives $x\sub{\text{sub}}\super{\text{super}}$ instead of $x_[sub]^[super]$.
 %
 % \pagebreak
-% \section{Example}
+% \section{Examples}
 %
-% The following input:
-% \begin{center}\begin{minipage}{0.7\linewidth}
-% \begin{verbatim}
-% Default:
-% \begin{displaymath}
-%   x_a^b  \quad
-%   x_{braces sub}^{braces sup}  \quad
-%   x_[brackets sub]^{braces sup}  \quad
-%   x_{braces sub}^[brackets sup]  \quad
-%   x_[brackets sub]^[brackets sup]
-% \end{displaymath}
+% \subsection{Default}
 %
-% New formats:
-% % \text from amstext package
-% % \color from xcolor package
-% \newcommand{\bluecolor}[1]{\text{\color{blue}#1}}
-% \newcommand{\redcolor}[1] {\text{\color{red}#1}}
-% \SetAltSubscriptCommand{\bluecolor}
-% \SetAltSuperscriptCommand{\redcolor}
-% \begin{displaymath}
-%   x_a^b  \quad
-%   x_{braces sub}^{braces sup}  \quad
-%   x_[brackets sub]^{braces sup}  \quad
-%   x_{braces sub}^[brackets sup]  \quad
-%   x_[brackets sub]^[brackets sup]
-% \end{displaymath}
+% \iffalse
+%<*example>
+% \fi
+\begin{dispExample}
+\[
+   x_a^b  \quad
+   x_{braces~sub}^{braces~sup}  \quad
+   x_[brackets~sub]^{braces~sup}  \quad
+   x_{braces~sub}^[brackets~sup]  \quad
+   x_[brackets~sub]^[brackets~sup]
+\]
+\end{dispExample}
+% \iffalse
+%</example>
+% \fi
 %
-% Same command for subscripts and superscripts:
-% \SetAltSubSupCommands{\mathbf}
-% \begin{displaymath}
-%   x_a^b  \quad
-%   x_{braces sub}^{braces sup}  \quad
-%   x_[brackets sub]^{braces sup}  \quad
-%   x_{braces sub}^[brackets sup]  \quad
-%   x_[brackets sub]^[brackets sup]
-% \end{displaymath}
-% \end{verbatim}
-% \end{minipage}\end{center}
+% \subsection{Set new formatting commands}
 %
-% gives:
-% \begin{center}\begin{minipage}{0.7\linewidth}
-% Default:
-% \begin{displaymath}
-%   x_a^b  \quad
-%   x_{braces sub}^{braces sup}  \quad
-%   x_[brackets sub]^{braces sup}  \quad
-%   x_{braces sub}^[brackets sup]  \quad
-%   x_[brackets sub]^[brackets sup]
-% \end{displaymath}
+% The command \cs{text} comes from \pkg{amstext} package (part of \pkg{amsmath})
+% and the command \cs{color} from the \pkg{xcolor} package.
+% \iffalse
+%<*example>
+% \fi
+\begin{dispExample}
+\newcommand{\bluecolor}[1]{\text{\color{blue}#1}}
+\newcommand{\redcolor}[1] {\text{\color{red}#1}}
+\SetAltSubscriptCommand{\bluecolor}
+\SetAltSuperscriptCommand{\redcolor}
+\[
+   x_a^b  \quad
+   x_{braces~sub}^{braces~sup}  \quad
+   x_[brackets~sub]^{braces~sup}  \quad
+   x_{braces~sub}^[brackets~sup]  \quad
+   x_[brackets~sub]^[brackets~sup]
+\]
+\end{dispExample}
+% \iffalse
+%</example>
+% \fi
 %
-% New formats:
-% \newcommand{\bluecolor}[1]{\text{\color{blue}#1}}
-% \newcommand{\redcolor}[1] {\text{\color{red}#1}}
-% \SetAltSubscriptCommand{\bluecolor}
-% \SetAltSuperscriptCommand{\redcolor}
-% \begin{displaymath}
-%   x_a^b  \quad
-%   x_{braces sub}^{braces sup}  \quad
-%   x_[brackets sub]^{braces sup}  \quad
-%   x_{braces sub}^[brackets sup]  \quad
-%   x_[brackets sub]^[brackets sup]
-% \end{displaymath}
-%
-% Same command for subscripts and superscripts:
-% \SetAltSubSupCommands{\mathbf}
-% \begin{displaymath}
-%   x_a^b  \quad
-%   x_{braces sub}^{braces sup}  \quad
-%   x_[brackets sub]^{braces sup}  \quad
-%   x_{braces sub}^[brackets sup]  \quad
-%   x_[brackets sub]^[brackets sup]
-% \end{displaymath}
-% \end{minipage}\end{center}
+% \bigskip
+% Setting simultaneously the same command for subscripts and superscripts:
+% \iffalse
+%<*example>
+% \fi
+\begin{dispExample}
+\SetAltSubSupCommands{\mathbf}
+\[
+   x_a^b  \quad
+   x_{braces~sub}^{braces~sup}  \quad
+   x_[brackets~sub]^{braces~sup}  \quad
+   x_{braces~sub}^[brackets~sup]  \quad
+   x_[brackets~sub]^[brackets~sup]
+\]
+\end{dispExample}
+% \iffalse
+%</example>
+% \fi
 %
 % \section{Complements}
 %
 % \subsection{Known issue}
 %
-% The use of the prime symbol |'| can raise the \emph{Double superscript}
-% error message. This is normally fixed (|x'^2| gives $x'^2$ correctly).
-% If needed, enclose the expression with |{...}|. In particular, |x'^[sup]|
-% doesn't work, and should be written: |{x'}^[sup]|.
+% The use of the prime symbol \code{'} can raise the \emph{Double
+% superscript} error message. This is normally fixed (\code{x'^2}
+% gives $x'^2$ correctly). If needed, enclose the expression with
+% \code{{...}}. In particular, \code{x'^[sup]} doesn't work, and
+% should be written: \code{{x'}^[sup]}.
 %
 % \subsection{Alternative}
 %
 % \begin{description}
-%  \item[the \textsf{subtext} package]
-%   (\href{https://www.ctan.org/pkg/subtext}{https://www.ctan.org/pkg/subtext}),
-%   by Palle J\o{}rgensen, formats |_[...]| subscripts with |\text| (the
-%   differences, is that the \textsf{altsubsup} package works both for
-%   subscripts and superscripts, allows to customise the commands, and
-%   redefine symbols only in math mode).
+%  \item[the \pkg{subtext} package]
+%   (\url{https://www.ctan.org/pkg/subtext}),
+%   by Palle J\o{}rgensen, formats \code{_[...]} subscripts with \cs{text}.
+%   The \textsf{altsubsup} package works both for subscripts and superscripts,
+%   allows to customise the commands, and redefine symbols only in math mode.
 % \end{description}
 %
 % \subsection{Changelog}
@@ -301,16 +307,25 @@ subscripts and superscripts, with  square brackets.]
 % \begin{description}
 %  \item[v1.1]
 % \begin{itemize}
-% \item Backup standard subscript |_| and superscript |^| commands to handle
-% packages that redefine |\sb| or |\sp| macros, as \textsf{spbmark}.
-% \item Add option |spbmark| to format subscripts and superscripts with the
-% \textsf{spbmark} package.
+% \item Backup standard subscript \code{_} and superscript \code{^}
+% commands to handle packages that redefine \cs{sb} or \cs{sp} macros, like
+% \pkg{spbmark}.
+% \item Add option \refOpt{spbmark} to handle alternative subscripts and
+% superscripts form with the \pkg{spbmark} package.
 % \end{itemize}
 %  \item[v1.0] Initial version.
 % \end{description}
-
+%
 % \StopEventually{}
+%
 % \section{Implementation}
+%
+%\iffalse
+%<*package>
+%\fi
+% \catcode`\^=7 %^^A restore ^ catcode to allow ^^A comments
+% \setlength{\parindent}{0em}
+% \setlength{\parskip}{\smallskipamount}
 %
 % \subsection*{Flags declaration}
 %
@@ -452,10 +467,344 @@ subscripts and superscripts, with  square brackets.]
 \fi
 %    \end{macrocode}
 %
-% \subsection*{End of the package}
+%\iffalse
+%</package> ^^A End of package implementation.
+%\fi
+%
+% \iffalse % ^^A The following is not for doc
+%
+%<*docstyle>
+%
+% \section*{altsubsup-doc package}
+%
+% The following define some styles used for documentation and should not be
+% included in the documentation itself.
+%
+% \subsection*{Packages}
 %
 %    \begin{macrocode}
-\endinput
+\RequirePackage{xcolor}
+\PassOptionsToPackage{hyperref}{xcolor}
+\RequirePackage[many]{tcolorbox}
+\tcbuselibrary{listings}
+\tcbuselibrary{documentation}
+\hypersetup{hidelinks}
 %    \end{macrocode}
+%
+% \subsection*{Colors}
+%
+%    \begin{macrocode}
+\definecolor{altsbsp_lavender}{rgb}{0.92,0.92,1}
+\definecolor{altsbsp_darkblue}{rgb}{0.1,0.2,0.5}
+\definecolor{altsbsp_darkgreen}{rgb}{0,0.39,0}
+\definecolor{altsbsp_beige}{rgb}{.96,.96,.86}
+\colorlet{altsbsp_commands}{altsbsp_darkblue}
+\colorlet{altsbsp_keys}{altsbsp_darkgreen}
+\colorlet{altsbsp_lengths}{violet}
+\colorlet{altsbsp_options}{Definition} % from tcolorbox documentation
+%    \end{macrocode}
+%
+% \subsection*{listings styles}
+%
+%    \begin{macrocode}
+\lstdefinestyle{lstaltsbspdoc}{%
+  language = [LaTeX]TeX,
+  columns         = flexible,
+  keywordstyle    = {\bfseries\color{altsbsp_darkblue}},
+  texcsstyle      = *{\bfseries\color{altsbsp_darkblue}},
+  commentstyle    = {\color{gray}},
+  identifierstyle = {\color{altsbsp_darkgreen}},
+  morekeywords    = {},% keywordsprefix needs a morekeywords before
+  keywordsprefix  = {\\},
+%    \end{macrocode}
+% For literate, the extra braces around the replacement text avoid the error: "Argument of |lst@FillFixed@| has an extra \}."
+%    \begin{macrocode}
+  literate        = *{\$}{{\textcolor{red}{\$}}}{1}
+                    {\&}{{\textcolor{red}{\&}}}{1}
+                    {\}}{{\textcolor{darkgray}{\}}}}{1}
+                    {\{}{{\textcolor{darkgray}{\{}}}{1}
+                    {\\\\}{{\textcolor{red}{\textbackslash\textbackslash}}}{2}
+%    \begin{macrocode}
+% One \% and four spaces to remove extra lines added by \cs{macrocode}
+%    \end{macrocode}
+                    {\%\ \ \ \ }{}0,
+  basicstyle      = \ttfamily\footnotesize,
+  frame           = none,
+  framesep        = 0pt,
+  aboveskip       = 0pt,
+  belowskip       = 0pt,
+}
+\lstdefinestyle{lstaltsbspcode}{%
+  style           = lstaltsbspdoc,
+  backgroundcolor = \color{altsbsp_beige},
+  breakindent     = 1cm,
+  numbers         = left,
+  numberstyle     = \scriptsize\ttfamily\color{gray},
+  aboveskip       = \smallskipamount,
+  belowskip       = \smallskipamount,
+}
+%    \end{macrocode}
+%
+% \subsection*{tcolorbox}
+%
+%    \begin{macrocode}
+\tcbset{% copied and adapted from tcolorbox.doc.s_main.sty
+  documentation listing style=lstaltsbspdoc,%
+  doc keypath=altsubsup,
+  size=small,%
+  % verbatim ignore percent,
+  %% styles
+  docexample/.style={%
+    bicolor jigsaw,
+    before skip balanced=\medskipamount,
+    after skip balanced=\medskipamount,
+    fonttitle=\bfseries,
+    fontlower=\normalfont,
+    halign lower=center,
+    colframe=altsbsp_darkblue,
+    colback=altsbsp_lavender,
+    colbacklower=white,
+    drop fuzzy shadow,
+  },
+  color key=altsbsp_keys,
+  color command=altsbsp_commands,
+  color length=altsbsp_lengths,
+  doc head key={fontlower=\footnotesize, collower=darkgray},
+  before doc body={\parskip=\smallskipamount},
+}
+%    \end{macrocode}
+%
+% Inline code
+%
+%    \begin{macrocode}
+\DeclareTotalTCBox{\code}{ v }
+  {
+    verbatim,
+    colframe=altsbsp_beige,
+    colback=altsbsp_beige, 
+    sharp corners, 
+    size=tight,
+    left=2pt,
+    right=2pt,
+  }
+  {%
+    \strut\lstinline[basicstyle=\ttfamily\small\color{altsbsp_darkblue}]!#1!%
+  }
+%    \end{macrocode}
+%
+% \subsection*{Index}
+%
+% To deal with internal macros, use '=' as index actual, in place of '@'.
+%    \begin{macrocode}
+\begin{filecontents*}{\jobname.mst}
+actual '='
+\end{filecontents*}
+\tcbset{%
+  index actual={=},
+  index colorize=true,
+  index gather all,
+  index format=pgfsection,
+}
+%    \end{macrocode}
+% Redefine \cs{tcb@doc@index@pgfsection} to add prologue (adapted from
+% tcbdocumentation.code.tex).
+%    \begin{macrocode}
+\def\tcb@doc@index@pgfsection{%
+  \def\index@prologue{%
+    \section*{\kvtcb@text@index}\addcontentsline{toc}{section}{\kvtcb@text@index}
+    {\small%
+      Entries listed in the categories ``commands" and ``internal macros" also
+      include references to package implementation. }
+    \bigskip\par\noindent%
+  }%
+  \tcb@doc@index@pgf@%
+}
+%    \end{macrocode}
+% Unset |\lst@UM| before indexing, to deals with comma (avoid |\unhbox \voidb@x
+% \kern \z@| in index file, see: \url{https://tex.stackexchange.com/a/510108}).
+%    \begin{macrocode}
+\newcommand{\indexmacro}[1]{%
+  \begingroup
+  \let\lst@UM\@empty%
+  \index{{Commands!#1=\tcbIndexPrintComC {#1}}}%
+  \endgroup
+}
+\newcommand{\indexmacrointernal}[1]{%
+  \begingroup
+  \let\lst@UM\@empty%
+  \index{{Internal macros!#1=\tcbIndexPrintComC {#1}}}%
+  \endgroup
+}
+\newcommand{\indexlength}[1]{%
+  \begingroup
+  \let\lst@UM\@empty%
+  \index{{Lengths!#1=\tcbIndexPrintLenC {#1}}}%
+  \endgroup
+}
+%    \end{macrocode}
+%
+% \subsection*{Redefinition of macrocode environment}
+%
+%    \begin{macrocode}
+\let\macrocode\relax
+\lstnewenvironment{macrocode}{%
+  \lstset{%
+    name=macrocode,
+    firstnumber=auto,
+    style=lstaltsbspcode,
+    showlines=false,
+    keepspaces=true,
+%    \end{macrocode}
+% Commands and lengths identification and indexing
+%
+% Note: index works badly with inherited styles. It seems that "texcs" and
+% "index" keys should be set together.
+%    \begin{macrocode}
+    texcs       = [2]{% commands
+      SetAltSubscriptCommand,
+      SetAltSubSupCommands,
+      SetAltSuperscriptCommand,
+    },
+    index       = [2][texcs2],%
+    indexstyle  = [2]\indexmacro,%
+    texcs       = [3]{% lengths
+    },
+    index       = [3][texcs3],%
+    indexstyle  = [3]\indexlength,%
+%    \end{macrocode}
+% Internal macros identification and indexing
+%    \begin{macrocode}
+    texcs       = [4]{% internal macros
+      ifaltsbsp@subscript,
+      altsbsp@subscripttrue,
+      ifaltsbsp@superscript,
+      altsbsp@superscripttrue,
+      ifaltsbsp@spbmark,
+      altsbsp@spbmarkfalse,
+      altsbsp@superscriptfalse,
+      altsbsp@subscriptfalse,
+      altsbsp@spbmarktrue,
+      altsbsp@standardsub,
+      altsbsp@standardsup,
+      altsbsp@subwrapper,
+      altsbsp@supwrapper,
+      altsbsp@altsubcmd,
+      altsbsp@altsupcmd,
+      altsbsp@pr@m@s
+    },
+    index       = [4][texcs4],%
+    indexstyle  = [4]\indexmacrointernal,%
+%    \end{macrocode}
+% Other macros identification
+%    \begin{macrocode}
+    moretexcs   = [5]{% other macros
+      pr@m@s
+    },
+%    \end{macrocode}
+% Il would be nice to also index keys, but spaces are badly handled by listings.
+%    \begin{macrocode}
+%^^A    morekeywords = [2]{%
+%^^A    },
+%^^A    index       = [3][keywords2],%
+%^^A    indexstyle  = [3]\lstindexmacro,%
+  }
+%    \end{macrocode}
+% Save and restore the line number (not done by environments defined with
+% |\lstnewenvironment|, see \url{https://tex.stackexchange.com/a/95048}):
+%    \begin{macrocode}
+  \csname\@lst @SetFirstNumber\endcsname
+}{%
+  \csname \@lst @SaveFirstNumber\endcsname
+}
+%    \end{macrocode}
+%
+% \subsection*{Redefinition of macro environment}
+%
+%    \begin{macrocode}
+\DeclareDocumentEnvironment{macro}{m}{%
+%    \end{macrocode}
+% Extraction of macro name. Save/restore current \cs{escapechar} in \cs{count@}.
+%    \begin{macrocode}
+ \count@\escapechar \escapechar=-1
+ \edef\macroname{\string#1}
+ \escapechar\count@
+ \marginpar{%
+   \parbox{0.88\linewidth}{%
+     \scriptsize\flushright\ifcsdef{r@com:\macroname}{\refCom*{\macroname}}{\cs{\macroname}}%
+   }%
+ }
+}{% end of macro environment
+}
+%    \end{macrocode}
+%
+% \subsection*{Documentation styles}
+%
+% \subsubsection*{Tool for references}
+%
+%    \begin{macrocode}
+\def\refDoc#1{\tcb@ref@doc{#1}}
+%    \end{macrocode}
+%
+% \subsubsection*{Package name}
+%
+%    \begin{macrocode}
+\newcommand{\pkg}[1]{\textsf{#1}}
+%    \end{macrocode}
+%
+% \subsubsection*{Package options}
+%
+% Definition of docOption environment to document package options, like keys.
+%    \begin{macrocode}
+\newrobustcmd{\tcbIndexPrintOptionCA}[1]{% adapted from \tcbIndexPrintKeyCA
+  \tcb@Index@Print@CA{#1}{altsbsp_options}{package option}%
+}
+\newrobustcmd{\tcbIndexPrintOptionC}[1]{% adapted from \tcbIndexPrintKeyCA
+  \tcb@Index@Print@C{#1}{altsbsp_options}%
+}
+\DeclareDocumentEnvironment{docOption}{ O{} m }{%
+  \begin{docKey*}[]
+    [doc name={#2}, doc label={opt:#2}, color key=altsbsp_options, #1]
+    {#2}{}{}%
+    \kvtcb@index@command{%
+      \kvtcb@doc@sortindex\idx@actual\tcbIndexPrintOptionCA{#2}%
+    }%
+    \kvtcb@index@command{%
+      {Package options}\idx@level\kvtcb@doc@sortindex\idx@actual%
+      \tcbIndexPrintOptionC{#2}%
+    }%
+}{%
+  \end{docKey*}%
+}
+\def\refOpt{\refDoc{key:opt}}
+%    \end{macrocode}
+%
+% \subsubsection*{Lengths}
+%
+% Definition of docLength environment to document lengths, like commands.
+%    \begin{macrocode}
+\let\tcbdocLength\docLength% save original definition
+\DeclareDocumentEnvironment{docLength}{ O{} m }{%
+  \begin{docCommand*}[doc name=#2, color command=altsbsp_lengths,#1]{#2}{}
+    \protected@edef\@currentlabel{\cs{#2}}%
+    \label{len:#2}%
+    %% add length index entry (from \docLength original definition)
+    \kvtcb@index@command{%
+      \kvtcb@doc@sortindex\idx@actual\tcbIndexPrintLenCA{\kvtcb@doc@index}%
+    }%
+    \kvtcb@index@command{%
+      \kvtcb@text@lengths\idx@level\kvtcb@doc@sortindex\idx@actual%
+      \tcbIndexPrintLenC{\kvtcb@doc@index}%
+    }%
+}{%
+  \end{docCommand*}%
+}
+\def\refLen{\refDoc{len}}
+%    \end{macrocode}
+%
+%</docstyle>
+%
+% \fi %^^A end of \iffalse
+%
 % \Finale
+%
 \endinput

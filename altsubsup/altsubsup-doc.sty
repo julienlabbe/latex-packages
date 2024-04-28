@@ -1,0 +1,236 @@
+%%
+%% This is file `altsubsup-doc.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% altsubsup.dtx  (with options: `docstyle')
+%% 
+%% This is a generated file.
+%% 
+%% Copyright (C) 2022-2024 by Julien Labbé <Julien.Labbe@univ-grenoble-alpes.fr>
+%% 
+%% This file may be distributed and/or modified under the conditions of the LaTeX
+%% Project Public License (LPPL), either version 1.3c of this license or (at your
+%% option) any later version. The latest version of this license is in the file
+%% https://www.latex-project.org/lppl.txt
+%% 
+\RequirePackage{xcolor}
+\PassOptionsToPackage{hyperref}{xcolor}
+\RequirePackage[many]{tcolorbox}
+\tcbuselibrary{listings}
+\tcbuselibrary{documentation}
+\hypersetup{hidelinks}
+\definecolor{altsbsp_lavender}{rgb}{0.92,0.92,1}
+\definecolor{altsbsp_darkblue}{rgb}{0.1,0.2,0.5}
+\definecolor{altsbsp_darkgreen}{rgb}{0,0.39,0}
+\definecolor{altsbsp_beige}{rgb}{.96,.96,.86}
+\colorlet{altsbsp_commands}{altsbsp_darkblue}
+\colorlet{altsbsp_keys}{altsbsp_darkgreen}
+\colorlet{altsbsp_lengths}{violet}
+\colorlet{altsbsp_options}{Definition} % from tcolorbox documentation
+\lstdefinestyle{lstaltsbspdoc}{%
+  language = [LaTeX]TeX,
+  columns         = flexible,
+  keywordstyle    = {\bfseries\color{altsbsp_darkblue}},
+  texcsstyle      = *{\bfseries\color{altsbsp_darkblue}},
+  commentstyle    = {\color{gray}},
+  identifierstyle = {\color{altsbsp_darkgreen}},
+  morekeywords    = {},% keywordsprefix needs a morekeywords before
+  keywordsprefix  = {\\},
+  literate        = *{\$}{{\textcolor{red}{\$}}}{1}
+                    {\&}{{\textcolor{red}{\&}}}{1}
+                    {\}}{{\textcolor{darkgray}{\}}}}{1}
+                    {\{}{{\textcolor{darkgray}{\{}}}{1}
+                    {\\\\}{{\textcolor{red}{\textbackslash\textbackslash}}}{2}
+                    {\%\ \ \ \ }{}0,
+  basicstyle      = \ttfamily\footnotesize,
+  frame           = none,
+  framesep        = 0pt,
+  aboveskip       = 0pt,
+  belowskip       = 0pt,
+}
+\lstdefinestyle{lstaltsbspcode}{%
+  style           = lstaltsbspdoc,
+  backgroundcolor = \color{altsbsp_beige},
+  breakindent     = 1cm,
+  numbers         = left,
+  numberstyle     = \scriptsize\ttfamily\color{gray},
+  aboveskip       = \smallskipamount,
+  belowskip       = \smallskipamount,
+}
+\tcbset{% copied and adapted from tcolorbox.doc.s_main.sty
+  documentation listing style=lstaltsbspdoc,%
+  doc keypath=altsubsup,
+  size=small,%
+  % verbatim ignore percent,
+  %% styles
+  docexample/.style={%
+    bicolor jigsaw,
+    before skip balanced=\medskipamount,
+    after skip balanced=\medskipamount,
+    fonttitle=\bfseries,
+    fontlower=\normalfont,
+    halign lower=center,
+    colframe=altsbsp_darkblue,
+    colback=altsbsp_lavender,
+    colbacklower=white,
+    drop fuzzy shadow,
+  },
+  color key=altsbsp_keys,
+  color command=altsbsp_commands,
+  color length=altsbsp_lengths,
+  doc head key={fontlower=\footnotesize, collower=darkgray},
+  before doc body={\parskip=\smallskipamount},
+}
+\DeclareTotalTCBox{\code}{ v }
+  {
+    verbatim,
+    colframe=altsbsp_beige,
+    colback=altsbsp_beige,
+    sharp corners,
+    size=tight,
+    left=2pt,
+    right=2pt,
+  }
+  {%
+    \strut\lstinline[basicstyle=\ttfamily\small\color{altsbsp_darkblue}]!#1!%
+  }
+\begin{filecontents*}{\jobname.mst}
+actual '='
+\end{filecontents*}
+\tcbset{%
+  index actual={=},
+  index colorize=true,
+  index gather all,
+  index format=pgfsection,
+}
+\def\tcb@doc@index@pgfsection{%
+  \def\index@prologue{%
+    \section*{\kvtcb@text@index}\addcontentsline{toc}{section}{\kvtcb@text@index}
+    {\small%
+      Entries listed in the categories ``commands" and ``internal macros" also
+      include references to package implementation. }
+    \bigskip\par\noindent%
+  }%
+  \tcb@doc@index@pgf@%
+}
+\newcommand{\indexmacro}[1]{%
+  \begingroup
+  \let\lst@UM\@empty%
+  \index{{Commands!#1=\tcbIndexPrintComC {#1}}}%
+  \endgroup
+}
+\newcommand{\indexmacrointernal}[1]{%
+  \begingroup
+  \let\lst@UM\@empty%
+  \index{{Internal macros!#1=\tcbIndexPrintComC {#1}}}%
+  \endgroup
+}
+\newcommand{\indexlength}[1]{%
+  \begingroup
+  \let\lst@UM\@empty%
+  \index{{Lengths!#1=\tcbIndexPrintLenC {#1}}}%
+  \endgroup
+}
+\let\macrocode\relax
+\lstnewenvironment{macrocode}{%
+  \lstset{%
+    name=macrocode,
+    firstnumber=auto,
+    style=lstaltsbspcode,
+    showlines=false,
+    keepspaces=true,
+    texcs       = [2]{% commands
+      SetAltSubscriptCommand,
+      SetAltSubSupCommands,
+      SetAltSuperscriptCommand,
+    },
+    index       = [2][texcs2],%
+    indexstyle  = [2]\indexmacro,%
+    texcs       = [3]{% lengths
+    },
+    index       = [3][texcs3],%
+    indexstyle  = [3]\indexlength,%
+    texcs       = [4]{% internal macros
+      ifaltsbsp@subscript,
+      altsbsp@subscripttrue,
+      ifaltsbsp@superscript,
+      altsbsp@superscripttrue,
+      ifaltsbsp@spbmark,
+      altsbsp@spbmarkfalse,
+      altsbsp@superscriptfalse,
+      altsbsp@subscriptfalse,
+      altsbsp@spbmarktrue,
+      altsbsp@standardsub,
+      altsbsp@standardsup,
+      altsbsp@subwrapper,
+      altsbsp@supwrapper,
+      altsbsp@altsubcmd,
+      altsbsp@altsupcmd,
+      altsbsp@pr@m@s
+    },
+    index       = [4][texcs4],%
+    indexstyle  = [4]\indexmacrointernal,%
+    moretexcs   = [5]{% other macros
+      pr@m@s
+    },
+  }
+  \csname\@lst @SetFirstNumber\endcsname
+}{%
+  \csname \@lst @SaveFirstNumber\endcsname
+}
+\DeclareDocumentEnvironment{macro}{m}{%
+ \count@\escapechar \escapechar=-1
+ \edef\macroname{\string#1}
+ \escapechar\count@
+ \marginpar{%
+   \parbox{0.88\linewidth}{%
+     \scriptsize\flushright\ifcsdef{r@com:\macroname}{\refCom*{\macroname}}{\cs{\macroname}}%
+   }%
+ }
+}{% end of macro environment
+}
+\def\refDoc#1{\tcb@ref@doc{#1}}
+\newcommand{\pkg}[1]{\textsf{#1}}
+\newrobustcmd{\tcbIndexPrintOptionCA}[1]{% adapted from \tcbIndexPrintKeyCA
+  \tcb@Index@Print@CA{#1}{altsbsp_options}{package option}%
+}
+\newrobustcmd{\tcbIndexPrintOptionC}[1]{% adapted from \tcbIndexPrintKeyCA
+  \tcb@Index@Print@C{#1}{altsbsp_options}%
+}
+\DeclareDocumentEnvironment{docOption}{ O{} m }{%
+  \begin{docKey*}[]
+    [doc name={#2}, doc label={opt:#2}, color key=altsbsp_options, #1]
+    {#2}{}{}%
+    \kvtcb@index@command{%
+      \kvtcb@doc@sortindex\idx@actual\tcbIndexPrintOptionCA{#2}%
+    }%
+    \kvtcb@index@command{%
+      {Package options}\idx@level\kvtcb@doc@sortindex\idx@actual%
+      \tcbIndexPrintOptionC{#2}%
+    }%
+}{%
+  \end{docKey*}%
+}
+\def\refOpt{\refDoc{key:opt}}
+\let\tcbdocLength\docLength% save original definition
+\DeclareDocumentEnvironment{docLength}{ O{} m }{%
+  \begin{docCommand*}[doc name=#2, color command=altsbsp_lengths,#1]{#2}{}
+    \protected@edef\@currentlabel{\cs{#2}}%
+    \label{len:#2}%
+    %% add length index entry (from \docLength original definition)
+    \kvtcb@index@command{%
+      \kvtcb@doc@sortindex\idx@actual\tcbIndexPrintLenCA{\kvtcb@doc@index}%
+    }%
+    \kvtcb@index@command{%
+      \kvtcb@text@lengths\idx@level\kvtcb@doc@sortindex\idx@actual%
+      \tcbIndexPrintLenC{\kvtcb@doc@index}%
+    }%
+}{%
+  \end{docCommand*}%
+}
+\def\refLen{\refDoc{len}}
+\endinput
+%%
+%% End of file `altsubsup-doc.sty'.

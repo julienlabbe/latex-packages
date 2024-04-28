@@ -1,0 +1,4 @@
+SetAltSubscriptCommand
+SetAltSuperscriptCommand
+SetAltSubSupCommands
+pr@m@s

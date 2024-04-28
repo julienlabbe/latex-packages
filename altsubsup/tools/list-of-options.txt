@@ -1,0 +1,4 @@
+subscript
+superscript
+both
+spbmark
