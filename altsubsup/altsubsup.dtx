@@ -350,7 +350,7 @@ $ x_[my~subscript] $ \quad or \quad $ x^[my~superscript] $.
 \DeclareOption{superscript} {\altsbsp@subscriptfalse  \altsbsp@superscripttrue }
 \DeclareOption{both}        {\altsbsp@subscripttrue   \altsbsp@superscripttrue }
 \DeclareOption{spbmark}     {\altsbsp@spbmarktrue}
-\DeclareOption*{\PackageWarning{altsubsup}{Unknown option \CurrentOption.}}
+\DeclareOption*{\PackageWarning{altsubsup}{Unknown option \CurrentOption}}
 \ProcessOptions\relax
 \ifaltsbsp@spbmark
   \RequirePackage{spbmark}
@@ -370,8 +370,37 @@ $ x_[my~subscript] $ \quad or \quad $ x^[my~superscript] $.
 % \subsection*{Redefine catcodes and make symbols active in mathmode}
 %
 %    \begin{macrocode}
-  \ifaltsbsp@subscript    \catcode`\_=12 \mathcode`\_="8000 \fi%
-  \ifaltsbsp@superscript  \catcode`\^=12 \mathcode`\^="8000 \fi%
+  \ifaltsbsp@subscript
+%    \end{macrocode}
+% \changes{v1.2}{2024/04/24}{Add warnings.}
+% The standard catcode of \code{_} is 8 (subscript). Display a warning if it was
+% already altered.
+%    \begin{macrocode}
+    \ifnum\catcode`\_=8\else
+      \PackageWarning{altsubsup}{The character "_" does not have
+        its standard catcode\MessageBreak before the package altsubsup modifies
+        it. Something\MessageBreak might go wrong}
+    \fi
+%    \end{macrocode}
+% Make \code{_} active in math mode.
+%    \begin{macrocode}
+    \catcode`\_=12 \mathcode`\_="8000
+  \fi%
+  \ifaltsbsp@superscript
+%    \end{macrocode}
+% The standard catcode of \code{^} is 7 (superscript). Display a warning if it
+% was already altered.
+%    \begin{macrocode}
+    \ifnum\catcode`\^=7\else
+      \PackageWarning{altsubsup}{The character "^" does not have
+        its standard catcode\MessageBreak before the package altsubsup modifies
+        it. Something\MessageBreak might go wrong}
+    \fi
+%    \end{macrocode}
+% Make \code{^} active in math mode.
+%    \begin{macrocode}
+  \catcode`\^=12 \mathcode`\^="8000
+\fi%
 }
 %    \end{macrocode}
 %
