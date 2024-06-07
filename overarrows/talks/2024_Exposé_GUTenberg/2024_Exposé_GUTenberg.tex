@@ -1,0 +1,1101 @@
+% aspectratio=3218 donne du 16:9 sans changer la hauteur
+\documentclass[10pt, aspectratio=3218]{beamer}
+% \documentclass[handout, 10pt, aspectratio=3218]{beamer} % remove all overlay
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% packages
+
+\usepackage[no-math]{fontspec}
+\usepackage{unicode-math}
+
+\usepackage[french]{babel}
+\frenchsetup{ThinColonSpace=true}
+
+\usepackage{amsmath}
+\usepackage{amssymb}% for \twoheadrightarrow
+\usepackage{metalogo}
+\usepackage{ragged2e}
+
+\usepackage{tikz}
+\usetikzlibrary{tikzmark, calc}
+
+\usepackage{etoolbox}
+% \usepackage{lua-visual-debug}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Configuration beamer
+
+\title{Le package overarrows}
+\subtitle{des flèches personnalisées au-dessus -- ou au-dessous -- d'expressions mathématiques}
+\author{Julien Labbé}
+\institute[UGA]{Université Grenoble-Alpes}
+\date{Exposé mensuel de l'association GUTenberg\linebreak 6 juin 2024}
+
+\mode<presentation> {
+
+  %% theme
+  \usetheme[right, width=20mm]{Goettingen}
+
+  %% margins
+  \setbeamersize{text margin left=10mm,text margin right=10mm}
+
+  %% frame title
+  \setbeamertemplate{frametitle}
+  {%
+    \ifbeamercolorempty[bg]{frametitle}{}{\nointerlineskip}%
+    \begin{beamercolorbox}
+      [wd=\dimeval{\paperwidth-20mm},sep=3pt]
+      {frametitle}
+      \hspace*{1ex}%
+      \usebeamerfont{frametitle}%
+      \strut\insertframetitle\strut%
+      \ifcsempty{insertframesubtitle}{}
+      {%
+        ~/~%
+        \usebeamerfont{framesubtitle}\usebeamercolor[fg]{framesubtitle}%
+        \strut\insertframesubtitle\strut%
+      }\par
+    \end{beamercolorbox}%
+  }
+  \setbeamerfont{framesubtitle}{size=\large}
+  \setbeamercolor{framesubtitle}{use={frametitle}, fg=frametitle.fg!50!red}
+
+  %% numéros page
+  %% source : https://tex.stackexchange.com/a/137028/316068
+  \addtobeamertemplate{navigation symbols}{}{%
+    \usebeamerfont{footline}%
+    \usebeamercolor[fg]{footline}%
+    \hspace{1em}%
+    \insertframenumber/\inserttotalframenumber
+  }
+
+  %% colors
+  \usecolortheme{spruce}
+  \usecolortheme{rose}      % inner theme (blocks)
+  % \setbeamercolor{itemize subitem}{use={palette quaternary}, fg=palette quaternary.fg}
+  \setbeamercolor{itemize subitem}{use={itemize item}, fg=white!70!itemize item.fg}
+  \setbeamercolor{itemize subsubitem}{use={itemize subitem}, fg=white!70!itemize subitem.fg}
+
+  %% fonts
+  \usefonttheme[onlymath]{serif}
+
+  %% overlays
+  \setbeamercovered{transparent=65}
+
+  %% lists
+  \settowidth{\leftmargini}{\usebeamertemplate{itemize item}}
+  \addtolength{\leftmargini}{\labelsep}
+  \setlength{\leftmarginii}{\leftmargini}
+  \setlength{\leftmarginiii}{\leftmarginii}
+
+  %% blocks
+  \addtobeamertemplate{block begin}{}{\leftskip=0pt \rightskip=0pt plus 0cm}
+  \addtobeamertemplate{block example begin}{}{\leftskip=0pt \rightskip=0pt plus 0cm}
+  \addtobeamertemplate{block alerted begin}{}{\leftskip=0pt \rightskip=0pt plus 0cm}
+  \addtobeamertemplate{block begin}{}{\vspace*{-\smallskipamount}}
+  \addtobeamertemplate{block end}{\vspace*{-\smallskipamount}}{}
+  \addtobeamertemplate{block example begin}{}{\vspace*{-\smallskipamount}}
+  \addtobeamertemplate{block example end}{\vspace*{-\smallskipamount}}{}
+  \addtobeamertemplate{block alerted begin}{}{\vspace*{-\smallskipamount}}
+  \addtobeamertemplate{block alerted end}{\vspace*{-\smallskipamount}}{}
+}
+
+% \AtBeginSubsection[] {
+%   \begin{frame}<beamer>{Sommaire}
+%     \tableofcontents[currentsection, currentsubsection]
+%   \end{frame}
+% }
+
+\makeatletter \NewDocumentCommand{\shortinlinetoc}{ } { \begingroup
+  \long\def\beamer@sectionintoc##1##2##3##4##5 % taken from beamerbasetoc.sty
+  {%
+    \usebeamerfont{section in toc}\usebeamercolor[fg]{section in toc}%
+    \ifnum ##1 > 1\relax \hfill \fi%
+    \hyperlink{Navigation##3}{$\triangleright$~##2}%
+  }%
+  \def\inserttocsection{}%
+  \par\tableofcontents[hideallsubsections]%
+  \vspace*{-3cm}%
+  \endgroup
+}
+\makeatother
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Formattage
+
+\RequirePackage[many]{tcolorbox}
+\tcbuselibrary{listings}
+\tcbuselibrary{documentation}
+
+\definecolor{ovar_lavender}{rgb}{0.92,0.92,1}
+\definecolor{ovar_darkblue}{rgb}{0.1,0.2,0.5}
+\definecolor{ovar_darkgreen}{rgb}{0,0.39,0}
+\definecolor{ovar_beige}{rgb}{.96,.96,.86}
+\colorlet{ovar_commands}{ovar_darkblue}
+\colorlet{ovar_keys}{ovar_darkgreen}
+\colorlet{ovar_lengths}{violet}
+\colorlet{ovar_options}{Definition} % from tcolorbox documentation
+
+\lstdefinestyle{lstovardoc}{%
+  language        = [LaTeX]TeX,
+  columns         = flexible,
+  keepspaces      = true,
+  keywordstyle    = {\bfseries\color{ovar_darkblue}},
+  texcsstyle      = *{\bfseries\color{ovar_darkblue}},
+  commentstyle    = {\color{gray}},
+  identifierstyle = {\color{ovar_darkgreen}},
+  morekeywords    = {},% keywordsprefix needs a morekeywords before
+  keywordsprefix  = {\\},
+  literate        = *{\$}{{\textcolor{red}{\$}}}{1}
+                    {\&}{{\textcolor{red}{\&}}}{1}
+                    {\}}{{\textcolor{darkgray}{\}}}}{1}
+                    {\{}{{\textcolor{darkgray}{\{}}}{1}
+                    {\\\\}{{\textcolor{red}{\textbackslash\textbackslash}}}{2}
+                    {\%\ \ \ \ }{}0,
+  basicstyle      = \ttfamily\footnotesize,
+  frame           = none,
+  framesep        = 0pt,
+  aboveskip       = 0pt,
+  belowskip       = 0pt,
+}
+
+\tcbset{% copied and adapted from tcolorbox.doc.s_main.sty
+  documentation listing style=lstovardoc,%
+  doc keypath=overarrows,
+  size=small,%
+  % verbatim ignore percent,
+  %% styles
+  docexample/.style={%
+    bicolor jigsaw,
+    beforeafter skip balanced={2pt plus 6pt},
+    fonttitle=\bfseries,
+    fontlower=\normalfont,
+    halign lower=center,
+    colframe=ovar_darkblue,
+    colback=ovar_lavender,
+    colbacklower=white,
+    drop fuzzy shadow,
+    left=0mm
+  },
+  color key=ovar_keys,
+  color command=ovar_commands,
+  color length=ovar_lengths,
+  doc head key={fontlower=\footnotesize, collower=darkgray},
+  before doc body={\parskip=\smallskipamount},
+}
+
+\DeclareTotalTCBox{\code}{ v }
+  {
+    verbatim,
+    colframe=ovar_lavender,
+    colback=ovar_lavender,
+    sharp corners,
+    size=tight,
+    left=2pt,
+    right=2pt,
+  }
+  {%
+    \strut\lstinline[basicstyle=\ttfamily\small\color{ovar_darkblue}]!#1!%
+  }
+
+\NewCommandCopy{\oldcs}{\cs}
+\RenewDocumentCommand{\cs}{ m }{{\small\oldcs{#1}}}
+
+\newcommand*{\pkg}[1]{\textcolor{violet}{\textsf{#1}}}
+\newcommand*{\opt}[1]{\textcolor{Definition}{\texttt{\small #1}}}
+\newcommand*{\key}[1]{\textcolor{Option}{\texttt{\small #1}}}
+\newcommand*{\symb}[1]{\colorbox{yellow!50}{\rule{0pt}{1ex}$#1$}}
+\newcommand{\rmq}[1]{{\small #1}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Arrows
+
+\usepackage[old-arrows, esvect, tikz, pstarrows, allcommands]{overarrows}
+
+\makeatletter
+\AtBeginDocument{%
+  %% sauvegarder la définition de \overrightarrow de unicode-math
+  \NewCommandCopy{\umoverrightarrow}{\overrightarrow}
+  %% redéfinir toutes les commandes \AtBeginDocument pour éviter les interférences
+  %% de unicode-math
+  \ifovar@option@overrightarrow@
+    \DeclareOverArrowCommand{overrightarrow}{%
+      amsmath, middle config=relbar,
+      end=\ovar@rightarrow,
+      right arrow,
+    }
+  \fi
+  \ifovar@option@underrightarrow@
+    \DeclareOverArrowCommand{underrightarrow}{%
+      amsmath, middle config=relbar,
+      end=\ovar@rightarrow,
+      right arrow,
+      arrow under,
+    }
+  \fi
+  \ifovar@option@overleftarrow@
+    \DeclareOverArrowCommand{overleftarrow}{%
+      amsmath, middle config=relbar,
+      start=\ovar@leftarrow,
+      end=\relbar,
+      left arrow,
+    }
+  \fi
+  \ifovar@option@underleftarrow@
+    \DeclareOverArrowCommand{underleftarrow}{%
+      amsmath, middle config=relbar,
+      start=\ovar@leftarrow,
+      end=\relbar,
+      left arrow,
+      arrow under,
+    }
+  \fi
+  \ifovar@option@overleftrightarrow@
+    \DeclareOverArrowCommand{overleftrightarrow}{%
+      amsmath, middle config=relbar,
+      start=\ovar@leftarrow,
+      end=\ovar@rightarrow,
+      center arrow,
+    }
+  \fi
+  \ifovar@option@underleftrightarrow@
+    \DeclareOverArrowCommand{underleftrightarrow}{%
+      amsmath, middle config=relbar,
+      start=\ovar@leftarrow,
+      end=\ovar@rightarrow,
+      center arrow,
+      arrow under,
+    }
+  \fi
+  \ifovar@option@overrightharpoonup@
+    \DeclareOverArrowCommand{overrightharpoonup}{%
+      amsmath, middle config=relbar,
+      end=\rightharpoonup,
+      right arrow,
+    }
+  \fi
+  \ifovar@option@underrightharpoonup@
+    \DeclareOverArrowCommand{underrightharpoonup}{%
+      amsmath, middle config=relbar,
+      end=\rightharpoonup,
+      right arrow,
+      arrow under,
+    }
+  \fi
+  \ifovar@option@overrightharpoondown@
+    \DeclareOverArrowCommand{overrightharpoondown}{%
+      amsmath, middle config=relbar,
+      end=\rightharpoondown,
+      right arrow,
+    }
+  \fi
+  \ifovar@option@underrightharpoondown@
+    \DeclareOverArrowCommand{underrightharpoondown}{%
+      amsmath, middle config=relbar,
+      end=\rightharpoondown,
+      right arrow,
+      arrow under,
+    }
+  \fi
+  \ifovar@option@overleftharpoonup@
+    \DeclareOverArrowCommand{overleftharpoonup}{%
+      amsmath, middle config=relbar,
+      start=\leftharpoonup,
+      end=\relbar,
+      left arrow,
+    }
+  \fi
+  \ifovar@option@underleftharpoonup@
+    \DeclareOverArrowCommand{underleftharpoonup}{%
+      amsmath, middle config=relbar,
+      start=\leftharpoonup,
+      end=\relbar,
+      left arrow,
+      arrow under,
+    }
+  \fi
+  \ifovar@option@overleftharpoondown@
+    \DeclareOverArrowCommand{overleftharpoondown}{%
+      amsmath, middle config=relbar,
+      start=\leftharpoondown,
+      end=\relbar,
+      left arrow,
+    }
+  \fi
+  \ifovar@option@underleftharpoondown@
+    \DeclareOverArrowCommand{underleftharpoondown}{%
+      amsmath, middle config=relbar,
+      start=\leftharpoondown,
+      end=\relbar,
+      left arrow,
+      arrow under,
+    }
+  \fi
+  \ifovar@option@overbar@
+    \DeclareOverArrowCommand{overbar}{%
+      amsmath, middle config=relbar,
+      start={\std@minus}, end={\std@minus},% \relbar is defined with \mathsm@sh
+      shift leftright=0,
+      space after arrow=-0.3ex,
+    }
+  \fi
+  \ifovar@option@underbar@
+    %%
+    %% \underbar ne fonctionne pas avec unicode-math. Ajouter \vphatom{+} pour
+    %% obtenir la position désirée
+    %%
+    \DeclareOverArrowCommand{underbar}{%
+      amsmath, middle config=relbar,
+      start={\vphantom{+}-}, end={-},% \relbar is defined with \mathsm@sh
+      shift leftright=0,
+      arrow under,
+      space before arrow=-0.3ex,
+    }
+  \fi
+}
+\makeatother
+
+\NewOverArrowCommand{amsoverrightarrow}{amsmath=strict, end={\rightarrow}}
+\NewOverArrowCommand{overrightnewarrow}{%
+    amsmath, middle config=relbar,  end=\rightarrow,
+    right arrow,
+  }
+\DeclareMathSymbol{\fldra}{\mathrel}{esvector}{'021}
+\DeclareMathSymbol{\fldrb}{\mathrel}{esvector}{'022}
+\DeclareMathSymbol{\fldrc}{\mathrel}{esvector}{'023}
+\DeclareMathSymbol{\fldrd}{\mathrel}{esvector}{'024}
+\DeclareMathSymbol{\fldre}{\mathrel}{esvector}{'025}
+\DeclareMathSymbol{\fldrf}{\mathrel}{esvector}{'026}
+\DeclareMathSymbol{\fldrg}{\mathrel}{esvector}{'027}
+\DeclareMathSymbol{\fldrh}{\mathrel}{esvector}{'030}
+\NewOverArrowCommand{esveca}{esvect=strict, end={\fldra}}
+\NewOverArrowCommand{esvecb}{esvect=strict, end={\fldrb}}
+\NewOverArrowCommand{esvecc}{esvect=strict, end={\fldrc}}
+\NewOverArrowCommand{esvecd}{esvect=strict, end={\fldrd}}
+\NewOverArrowCommand{esvece}{esvect=strict, end={\fldre}}
+\NewOverArrowCommand{esvecg}{esvect=strict, end={\fldrg}}
+\NewOverArrowCommand{esvech}{esvect=strict, end={\fldrh}}
+\NewOverArrowCommand{vva}{esvect, middle config=auto, end=\fldra}
+\NewOverArrowCommand{esvecf}{esvect=strict, end={\fldrf}}
+\NewOverArrowCommand{vvb}{esvect, middle config=auto, end=\fldrb}
+\NewOverArrowCommand{vvc}{esvect, middle config=auto, end=\fldrc}
+\NewOverArrowCommand{vvd}{esvect, middle config=auto, end=\fldrd}
+\NewOverArrowCommand{vve}{esvect, middle config=auto, end=\fldre}
+\NewOverArrowCommand{vvf}{esvect, middle config=auto, end=\fldrf}
+\NewOverArrowCommand{vvg}{esvect, middle config=auto, end=\fldrg}
+\NewOverArrowCommand{vvh}{esvect, middle config=auto, end=\fldrh}
+
+\makeatletter
+\newcommand{\unsetoldarrows}{%
+  \let\ovar@rightarrow\rightarrow%
+  \let\ovar@leftarrow\leftarrow%
+}
+\newcommand{\setoldarrows}{%
+  \let\ovar@rightarrow\varrightarrow%
+  \let\ovar@leftarrow\varleftarrow%
+}
+\unsetoldarrows
+\makeatother
+
+%% patch \ovar@set@arrowthickness pour fonctionner avec unicode-math
+\makeatletter
+\def\ovar@set@arrowthickness@lua#1{% use rule thickness=\fontdimen 8 font family 3
+  \overarrowthickness = \Umathoverbarrule #1
+  \ifx#1\displaystyle%
+    \overarrowsmallerthickness = \Umathoverbarrule \textstyle%
+  \else\ifx#1\textstyle%
+    \overarrowsmallerthickness = \Umathoverbarrule \scriptstyle%
+  \else%
+    \overarrowsmallerthickness = \Umathoverbarrule \scriptscriptstyle%
+  \fi\fi%
+}
+\let\ovar@set@arrowthickness\ovar@set@arrowthickness@lua
+\makeatother
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Début du document
+\begin{document}
+
+\begingroup
+  \setbeamertemplate{sidebar canvas right}{}
+  \setbeamertemplate{sidebar right}{}
+  \begin{frame}
+    \hspace*{.5\beamersidebarwidth}
+    \begin{minipage}{\textwidth}
+      \maketitle
+
+      \begin{center}
+        \rule{6cm}{0.4pt}
+
+        \url{https://ctan.org/pkg/overarrows}
+      \end{center}
+      \vspace*{6pt}%
+
+      \setbeamercolor{section in toc}{use=subtitle, fg=subtitle.fg}
+      \setbeamerfont{section in toc}{size=\footnotesize}
+      \shortinlinetoc
+    \end{minipage}
+  \end{frame}
+\endgroup
+
+% \begin{frame}
+%   \frametitle{Sommaire}
+%   \tableofcontents
+% \end{frame}
+
+
+\section{Introduction}
+
+\subsection{Motivations}
+
+\begin{frame}[fragile]
+  \frametitle{Introduction}
+  \framesubtitle{Motivations}
+
+  \begin{block}<+>{Enseigner la mécanique du point en Licence}
+    \begin{itemize}
+     \item Représenter un vecteur avec une \structure{flèche extensible}.
+
+       \begin{itemize}
+        \item \alert{Exemples :} vecteur position $\vv{r} = \vv{OM}$, vecteur
+          moment cinétique $\vv*{L}_O = \vv{OM} \wedge \vv*{v}$.
+       \end{itemize}
+
+     \item Adapter la flèche aux quatre \structure{styles mathématiques} :
+
+      \begin{center}
+        \cs{displaystyle}, \cs{textstyle}, \cs{scriptstyle},
+        \cs{scriptscriptstyle}.
+      \end{center}
+
+     \item Corriger \structure{l'espacement des indices} (\rmq{position
+       identique avec ou sans flèche}).
+
+     \begin{itemize}
+      \item \alert{Exemple,} sans correction :
+        $\vv{v\tikzmark{v1}}_{\tikzmark{c1}C}$ ;
+      \begin{tikzpicture}[remember picture, overlay]
+        \coordinate (A) at ([yshift=-2pt]pic cs:v1);
+        \coordinate (B) at ([yshift=-2pt, xshift=\scriptspace]pic cs:c1);
+        \draw[thick, red, >={Bar[width=3pt]}, <->, shorten >=-0.8pt, shorten <=-0.8pt]
+        (A |- B) -- (B);
+      \end{tikzpicture}
+      avec correction : $\vv*{v\tikzmark{v2}}_{\tikzmark{c2}C}$.
+      \begin{tikzpicture}[remember picture, overlay]
+        \coordinate (A) at ([yshift=-2pt]pic cs:v2);
+        \coordinate (B) at ([yshift=-2pt, xshift=\scriptspace]pic cs:c2);
+        \draw[thick, red, >={Bar[width=3pt]}, <->, shorten >=-0.8pt, shorten <=-0.8pt]
+        (A |- B) -- (B);
+      \end{tikzpicture}
+     \end{itemize}
+
+    \end{itemize}
+
+  \end{block}
+
+  \begin{exampleblock}<+>{Créer un nouveau package \LaTeX}
+    \begin{itemize}
+     \item Créer des \structure{commandes personnalisées} avec une
+       \structure{interface clé-valeur}
+
+       (\rmq{\href{https://ctan.org/pkg/pgfkeys}{package \pkg{pgfkeys}} ; lors
+       de la création uniquement}).
+
+     \item Permettre d'utiliser \structure{plusieurs méthodes} (\rmq{assemblage
+       de symboles ; PGF/TikZ})
+
+       et de positionner la \structure{flèche au-dessous}.
+
+      \item Fournir des \structure{commandes pré-définies} :
+
+       \begin{center}
+       \small\setoldarrows
+         $ \overrightarrow{AB}/\underrightarrow{AB}, $
+         $ \overleftarrow{AB}/\underleftarrow{AB}, $
+         $ \overleftrightarrow{AB}/\underleftrightarrow{AB}, $
+         $ \overrightharpoonup{AB}/\underrightharpoonup{AB}, $
+         $ \overleftharpoonup{AB}/\underleftharpoonup{AB}, $
+         $ \overrightharpoondown{AB}/\underrightharpoondown{AB}, $
+         $ \overleftharpoondown{AB}/\underleftharpoondown{AB}, $
+         $ \overbar{AB}/\underbar{AB} $%
+       .
+       \end{center}
+     \end{itemize}
+   \end{exampleblock}
+
+\end{frame}
+
+\subsection{Alternatives}
+
+\begin{frame}[fragile]
+  \frametitle{Introduction}
+  \framesubtitle{Alternatives}
+
+  \begin{itemize}
+
+   \item<+,4> \structure{Accent mathématique} avec \cs{vec} : $\vec{v}$, $\vec{AB}$,
+    $\vec{\mathrm{grad}}$ ;
+    \begin{itemize}
+     \item \rmq{pas de commande \cs{widevec} analogue à \cs{widehat} ($\widehat{v}$,
+       $\widehat{\!AB\!}$, $\widehat{\mathrm{grad}}$)}.
+    \end{itemize}
+
+   \item<+> Commande \structure{\cs{overightarrow}} : {\unsetoldarrows
+     $\overrightarrow{AB}$}, tête de flèche trop large (\rmq{avec \emph{Computer
+     Modern}}) ;
+    \begin{itemize}
+     \item \rmq{mieux avec le \href{https://ctan.org/pkg/old-arrows}{package
+       \pkg{old-arrows}} de Riccardo Dossena : {\setoldarrows
+       $\overrightarrow{AB}$}}.
+    \end{itemize}
+
+   \item<+> Commande \cs{vv} (\structure{\href{https://ctan.org/pkg/esvect}{package
+     \pkg{esvect}}} d'Eddie Saudrais) : $\esvectvv{v}$, $\esvectvv{AB}$
+     $\esvectvv{\mathrm{grad}}$ ;
+    \begin{itemize}
+     \item \rmq{commande \cs{vv*} pour les indices :
+       $\esvectvv*{v\tikzmark{v3}}{\tikzmark{c3}C}$}.
+    \begin{tikzpicture}[remember picture, overlay]
+      \coordinate (A) at ([yshift=-2pt]pic cs:v3);
+      \coordinate (B) at ([yshift=-2pt, xshift=\scriptspace]pic cs:c3);
+      \draw[thick, red, >={Bar[width=3pt]}, <->, shorten >=-0.8pt, shorten <=-0.8pt]
+      (A |- B) -- (B);
+    \end{tikzpicture}
+    \end{itemize}
+
+  \end{itemize}
+
+  \setbeamercovered{invisible}
+  
+  \begin{alertblock}<+>{\LuaTeX/\XeTeX{} et \pkg{unicode-math}}%
+
+    Avec \LuaTeX{} et \XeTeX{} : définition de nouveaux accents avec
+    \cs{Umathaccent}. Utilisé par
+    \href{https://www.ctan.org/pkg/unicode-math}{le package \pkg{unicode-math}}
+    pour redéfinir \cs{overrightarrow} de manière cohérente avec \cs{vec}.
+
+    \let\overrightarrow\umoverrightarrow
+    \begin{dispExample}
+$ \vec{v} \qquad \overrightarrow{ABCD} \qquad
+  {\Umathaccent 0 0 "020D7 {VVV}}_{sub} \qquad {VVV}_{sub} $
+    \end{dispExample}
+
+  \end{alertblock}
+
+\end{frame}
+
+\section{Un peu de \TeX{}nique}
+
+\subsection{Flèches extensibles}
+
+\begin{frame}[fragile]
+
+\frametitle{Un peu de \TeX{}nique}
+\framesubtitle{Flèches extensibles}
+
+\begin{block}<+>{\cs{cleaders} : remplir avec un motif centré}
+  \begin{dispExample}
+A$ \lhook \cleaders\hbox{$-$}\hskip 3cm \relax \rightarrow $B \par
+A$ \lhook \cleaders\hbox{$-$}\hfill     \relax \rightarrow $B
+  \end{dispExample}
+\end{block}
+
+\begin{block}<+>{\cs{mathrel} et \cs{joinrel} : recoller les morceaux}
+  \begin{dispExample}
+A$ \mathrel{\lhook} \joinrel
+  \cleaders\hbox{$\joinrel\mathrel{-}\joinrel$}\hfill \relax
+  \joinrel \mathrel{\rightarrow} $B
+  \end{dispExample}
+\end{block}
+
+\begin{alertblock}<+>{Nouvelle commande \cs{xjoinrel} : plus flexible}
+  \begin{dispExample}
+$ \mathrel\succ\joinrel\mathrel\succ\joinrel\mathrel\succ $\qquad
+$ \succ\xjoinrel[10]\succ\xjoinrel[10]\succ $
+  \end{dispExample}
+\end{alertblock}
+
+\end{frame}
+
+\subsection{Empilements}
+
+\begin{frame}[fragile]
+
+\frametitle{Un peu de \TeX{}nique}
+\framesubtitle{Empilements}
+
+\begin{block}<+>{\cs{ialign} : empiler verticalement}
+  \begin{itemize}
+   \item \cs{noalign} : insérer du contenu vertical entre deux lignes ;\par
+   \item \cs{nointerlineskip} : pas d'interligne.
+  \end{itemize}
+  \begin{dispExample}
+$ \vbox{\ialign{#\crcr $\rightarrow$ \crcr $v$ \crcr }} $ \qquad
+$ \vbox{\ialign{#\crcr $\mskip -1mu \rightarrow$ \crcr
+    \noalign{\kern -0.7pt\nointerlineskip} $v$ \crcr}} $
+  \end{dispExample}
+\end{block}
+
+\begin{block}<+>{\cs{vbox} et \cs{vtop} : choix de la ligne de base}
+  \begin{dispExample}
+$ \vbox{\ialign{#\crcr $\mskip -1mu \rightarrow$ \crcr
+    \noalign{\kern -0.7pt\nointerlineskip} $v$ \crcr}} $ \qquad
+$ \vtop{\ialign{#\crcr $v$ \crcr
+    \noalign{\kern -0.7pt\nointerlineskip}
+    $\mskip -1mu \rightarrow$ \crcr}} $
+  \end{dispExample}
+\end{block}
+
+\end{frame}
+
+\subsection{Styles mathématiques}
+
+\begin{frame}[fragile]
+
+\frametitle{Un peu de \TeX{}nique}
+\framesubtitle{Styles mathématiques}
+
+\begin{block}{\cs{mathpalette} : jongler avec les styles}
+  \begin{dispListing}
+\def\mathpalette#1#2{% définition donnée par latex.ltx
+  \mathchoice {#1\displaystyle{#2}}%
+              {#1\textstyle{#2}}%
+              {#1\scriptstyle{#2}}%
+              {#1\scriptscriptstyle{#2}}}
+  \end{dispListing}
+\begin{itemize}
+ \item Style passé à la macro \texttt{\#1} (\rmq{remarque : les quatre styles
+   sont évalués par \TeX{}}).
+
+  \alert{Exemple :}
+
+\end{itemize}
+  \begin{dispExample}
+\newcommand{\applystyle}[2]{#1 #2 \text{\normalfont\normalsize ~avec \detokenize{#1}}}
+
+\newcommand{\teststyle}{\mathpalette\applystyle{\sum_{i=1}^n x^i}}
+
+$ \displaystyle \teststyle \qquad \textstyle \teststyle $\\[1ex]
+$ \scriptstyle \teststyle \qquad \scriptscriptstyle \teststyle $
+  \end{dispExample}
+\end{block}
+\end{frame}
+
+\subsection{Synthèse}
+
+\begin{frame}[fragile]
+
+\frametitle{Un peu de \TeX{}nique}
+\framesubtitle{Synthèse}
+
+\begin{itemize}
+ \item \structure{Définition de \cs{overrightarrow}} utilisée par le package
+   \pkg{amsmath} :
+
+   \tikzset
+   {
+     block/.style={rectangle, rounded corners, draw=#1, fill=#1!5, inner sep=2pt},
+     >={Triangle}
+   }
+
+   \colorlet{mathpalettecolor}{red}
+   \usebeamercolor{structure}
+   \colorlet{stackmacrocolor}{structure.fg}
+   \usebeamercolor{frametitle}
+   \colorlet{arrowmacrocolor}{frametitle.fg}
+
+   \begin{tcolorbox}
+     [
+       docexample,
+       fontupper=\bfseries\ttfamily\footnotesize,
+       before skip=12pt,
+       after skip=1.5cm,
+       grow to left by=3ex,
+       top=3pt, bottom=3pt,
+     ]
+    \cs{long} macro:->%
+    \tikzmarknode[block=mathpalettecolor]{mathpalette}{\cs{mathpalette}}
+    \{%
+    \tikzmarknode[block=stackmacrocolor]{stack macro}{\cs{overarrow@}}
+    \tikzmarknode[block=arrowmacrocolor]{arrow macro}{\cs{rightarrowfill@}}
+    \}
+  \end{tcolorbox}
+
+  \begin{tikzpicture}[overlay, remember picture]
+    \draw[mathpalettecolor, <-, thick] (mathpalette) -- +(0,-8mm)
+    node[below, xshift=-2em]{\cs{mathpalette}};
+
+    \draw[stackmacrocolor, <-, thick] (stack macro) -- +(0,-8mm)
+    node[below, align=center]
+    {macro d'empilement\\ {\footnotesize (\cs{ialign})}};
+
+    \draw[arrowmacrocolor, <-, thick] (arrow macro) -- +(0,-8mm)
+    node[below, xshift=2em, align=center]
+    {macro de flèche\\ {\footnotesize (\cs{cleaders})}};
+
+  \end{tikzpicture}
+
+ \item Définition analogue pour la commande \cs{vv} du \structure{package
+   \pkg{esvect}}.
+
+ \item Peut nécessiter des ajustements.
+
+   \alert{Exemple :} (\rmq{agrandissement ×4})
+  {
+    \let\overrightarrow\amsoverrightarrow
+    \let\vv\esvectvv
+  \begin{dispExample}
+\scalebox{4}{$\scriptscriptstyle \overrightarrow{vecteur}$}\qquad
+\scalebox{4}{$\scriptscriptstyle \vv{vecteur}$}
+  \end{dispExample}
+  }
+
+  % \begin{itemize}
+  %  \item \alert{Remarque :} \pkg{amsmath} utilise \cs{relbar} \symb{\relbar},
+  %    \pkg{esvect} \cs{relbareda} \symb{\relbareda}
+  % \end{itemize}
+
+\end{itemize}
+\end{frame}
+
+\section{Utilisation}
+
+\subsection{Mise en route}
+
+\begin{frame}[fragile]
+
+\frametitle{Utilisation}
+\framesubtitle{Mise en route}
+
+\begin{block}<+>{Chargement du package}
+  \begin{dispListing}
+\usepackage[allcommands, old-arrows, noesvect]{overarrows}
+  \end{dispListing}
+  \begin{itemize}
+   \item \opt{allcommands} pour avoir toutes les commandes pré-définies ;
+     \opt{old-arrows} et \opt{noesvect} pour utiliser le package
+     \pkg{old-arrows} mais pas le package \pkg{esvect}.
+  \end{itemize}
+\end{block}
+
+\begin{block}<+>{\cs{NewOverArrowCommand} : créer une commande}
+  \begin{itemize}
+   \item Définir les commandes \cs{mafleche} et \cs{mafleche*}.
+\undef\mafleche% \NewOverArrowCommand doesn't work inside beamer frame
+    \begin{dispExample}
+\NewOverArrowCommand{mafleche}{end=\rightarrow}
+$ \mafleche{test} $
+    \end{dispExample}
+   \item La commande étoilée \cs{mafleche*} gère les indices
+    \begin{dispExample}
+$ v_{sub} \qquad \mafleche{v}_{sub} \qquad \mafleche*{v}_{sub} $
+    \end{dispExample}
+   \item Variantes : \cs{Renew\dots}, \cs{Provide\dots} et \cs{Declare\dots}.
+  \end{itemize}
+\end{block}
+
+\end{frame}
+
+\subsection{Assemblage}
+
+\begin{frame}[fragile]
+
+\frametitle{Utilisation}
+\framesubtitle{Assemblage}
+
+\begin{block}<+>{Clés \key{start}, \key{middle}, \key{end}}
+\undef\overhooktwoheadightarrow% \NewOverArrowCommand doesn't work inside beamer frame
+  \begin{dispExample}
+\NewOverArrowCommand{overhooktwoheadightarrow}{%
+  start=\lhook, end=\twoheadrightarrow, middle=\relbar,
+}
+$\overhooktwoheadightarrow{v} \qquad \overhooktwoheadightarrow{AB}$
+ \end{dispExample}
+
+ \smallskip
+
+ \rmq{\alert{Remarque :} \cs{twoheadrightarrow} nécessite le package \pkg{amssymb}}.
+\end{block}
+
+\begin{block}<+>{Clés \key{trim start}, \key{trim middle}, \key{trim end}}
+\undef\overhooktwoheadightarrow% \NewOverArrowCommand doesn't work inside beamer frame
+  \begin{dispExample}
+\NewOverArrowCommand{overhooktwoheadightarrow}{%
+  start=\lhook, end=\twoheadrightarrow, middle=\relbar,
+  trim start=0, trim end=3, trim middle=5,
+}
+$ \overhooktwoheadightarrow{v} \qquad \overhooktwoheadightarrow{AB} $
+ \end{dispExample}
+\end{block}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+\frametitle{Utilisation}
+\framesubtitle{Assemblage}
+
+\setlength{\textwidth}{\dimeval{\paperwidth-20mm}}
+
+\begin{block}<+>{\cs{TestOverArrow} : tester l'assemblage}
+  \begin{dispExample}
+\TestOverArrow{overhooktwoheadightarrow}
+ \end{dispExample}
+\end{block}
+
+\end{frame}
+
+\subsection{Taille et position}
+
+\begin{frame}[fragile]
+
+\frametitle{Utilisation}
+\framesubtitle{Taille et position}
+
+\begin{block}<+>{\cs{smallermathstyle} : une flèche plus petite}
+\undef\OverLeftarrow% \NewOverArrowCommand doesn't work inside beamer frame
+  \begin{dispExample}
+\NewOverArrowCommand{OverLeftarrow}{%
+  start={\smallermathstyle\Leftarrow}, end=\Relbar,
+  middle={\smallermathstyle\Relbar}, trim=4,
+}
+$ \Leftarrow\joinrel\Relbar \quad \OverLeftarrow{v} \qquad \OverLeftarrow{AB} $
+ \end{dispExample}
+
+ \rmq{\alert{Remarque :} le style utilisé pour \key{end} est le même que pour
+   \key{start}}.
+\end{block}
+
+\begin{block}<+>{Clés \key{space after arrow}, \key{shift left}, \key{shift right}}
+\undef\OverLeftarrow% \NewOverArrowCommand doesn't work inside beamer frame
+  \begin{dispExample}
+\NewOverArrowCommand{OverLeftarrow}{%
+  start={\smallermathstyle\Leftarrow}, end=\Relbar,
+  middle={\smallermathstyle\Relbar}, trim=4,
+  space after arrow=0.25ex, shift left=-1, shift right=2,
+}
+$ \OverLeftarrow{v} \qquad \OverLeftarrow{AB} $
+ \end{dispExample}
+\end{block}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+\frametitle{Utilisation}
+\framesubtitle{Taille et position}
+
+\begin{block}<+>{Clé \key{arrow under} : placer la flèche en dessous}
+% \undef\UnderLeftRightarrow% \NewOverArrowCommand doesn't work inside beamer frame
+%   \begin{dispExample}
+% \NewOverArrowCommand{UnderLeftRightarrow}{%
+%   start={\smallermathstyle\Leftarrow},
+%   middle={\smallermathstyle\Relbar},
+%   end=\Rightarrow,
+%   trim=4,
+%   arrow under,
+%   space before arrow=0.5ex,
+%   shift left=0, shift right=0,
+% }
+% $ \UnderLeftRightarrow{v} \qquad \UnderLeftRightarrow{AB} $
+%  \end{dispExample}
+\undef\tttail
+\undef\undertttailtwoheadrightarrow% \NewOverArrowCommand doesn't work inside beamer frame
+  \begin{dispExample}
+\newcommand*{\tttail}{\succ\xjoinrel[10]\succ\xjoinrel[10]\succ}
+
+\NewOverArrowCommand{undertttailtwoheadrightarrow}{%
+  start={\vcenter{\hbox{$\smallermathstyle\tttail$}}},
+  middle=\relbar,
+  end=\twoheadrightarrow,
+  trim=4,
+  arrow under,
+  space before arrow=0.5ex,
+  shift left=0, shift right=0,
+  min length=30
+}
+
+$ \undertttailtwoheadrightarrow{v} \qquad \undertttailtwoheadrightarrow{ABCD} $
+ \end{dispExample}
+\end{block}
+
+\end{frame}
+
+\subsection{TikZ}
+
+\begin{frame}[fragile]
+
+\frametitle{Utilisation}
+\framesubtitle{TikZ}
+
+\begin{block}<+>{Choisir la méthode TikZ}
+\begin{itemize}
+ \item \cs{NewOverArrowCommand} possède un paramètre optionnel :
+  \begin{itemize}
+   \item choix de la méthode de dessin :
+    \begin{itemize}
+     \item \texttt{symb} : assemblage de symboles (défaut),
+     \item \texttt{\texttt{tikz}} : code PGF/TikZ,
+     \item \texttt{picture} : environnement \LaTeX{} \texttt{picture}.
+    \end{itemize}
+
+   \item Avec \texttt{\texttt{tikz}} :
+   \undef\overtikzarrow% \NewOverArrowCommand doesn't work inside beamer frame
+  \begin{dispExample}
+\NewOverArrowCommand[tikz]{overtikzarrow}{}
+$ \overtikzarrow{v} \qquad \overtikzarrow{AB} $
+ \end{dispExample}
+\smallskip
+\item charger le package \pkg{tikz} avant (ou utiliser l'option \opt{tikz}).
+  \end{itemize}
+ \item 3 longueurs disponibles, utilisables dans le code PGF/TikZ :
+\begin{itemize}
+ \item \structure{\cs{overarrowlength} :} \rmq{basé sur la longueur du
+   contenu} ;
+ \item \structure{\cs{overarrowthickness} :} \rmq{épaisseur de trait par défaut
+   du style utilisé} ;
+ \item \structure{\cs{overarrowsmallerthickness} :} \rmq{épaisseur du style
+   inférieur}.
+\end{itemize}
+
+\end{itemize}
+\end{block}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+\frametitle{Utilisation}
+\framesubtitle{TikZ}
+
+\begin{block}{Exemples}
+
+% \onslide<+>
+
+\undef\overdotteddoublearrow% \NewOverArrowCommand doesn't work inside beamer frame
+  \begin{dispExample}
+\NewOverArrowCommand[tikz]{overdotteddoublearrow}{%
+  add tikz options={blue}, add path options={densely dotted},
+  arrows={->[scale=0.5]>[scale=0.5]}, thinner,
+  min length=20, space after arrow={0.3ex},
+}
+$ \overdotteddoublearrow{v} \qquad \overdotteddoublearrow{ABCD} $
+  \end{dispExample}
+
+% \onslide<+>
+
+\undef\overparabola% \NewOverArrowCommand doesn't work inside beamer frame
+  \begin{dispExample}
+\NewOverArrowCommand[tikz]{overparabola}{%
+  path options={
+    x=\overarrowlength, line width=\overarrowsmallerthickness
+  },
+  path={(0,0) parabola[parabola height=0.2\overarrowlength] (1,0)},
+  arrows={-}, center arrow, min length=30,
+}
+$\displaystyle \overparabola{v} \quad \overparabola{ABCD} $\qquad
+$\scriptscriptstyle \overparabola{v} \quad \overparabola{ABCD} $
+ \end{dispExample}
+
+\end{block}
+
+\end{frame}
+
+\subsection{Précisions}
+
+\DeclareOverArrowCommand[picture]{overpictarrow}{}
+
+\DeclareOverArrowCommand{lookback}{%
+  start=\leftarrow, end=\rightharpoondown,
+  shift left=-20, shift right=-10,
+}
+\DeclareMathVersion{FM}
+\setmathfont[version=FM]{Fira Math}
+
+\begin{frame}[fragile]
+
+\frametitle{Utilisation}
+\framesubtitle{Précisions}
+
+\begin{itemize}
+ \item<+> Code flexible : d'autres méthodes peuvent être ajoutées\\ (\rmq{en
+   plus de \texttt{symb}, \texttt{tikz} et \texttt{picture}}).
+
+ \item<+> Package \pkg{esvect} chargé par défaut ; inadapté si la police
+   mathématique est modifiée.
+\begin{itemize}
+
+ \item
+  \begin{tabular}[t]{@{}lcl@{}}
+    \alert{Exemple :} & $\lookback{ABCD}$                                          & avec la police \structure{Computer Modern}, \\
+    & {\begingroup \mathversion{FM} $\lookback{ABCD}$ \endgroup} & avec \structure{Fira Math}.
+  \end{tabular}
+
+ \item Utiliser l'option \opt{noesvect} ou la clé \code{middle config = relbar}
+
+   (\rmq{\pkg{esvect} définit \cs{relbareda} \symb{\relbareda} en remplacement
+   de \cs{relbar} \symb{\relbar}}).
+
+\end{itemize}
+
+\item<+> La clé \key{detect subscripts} gère automatiquement les indices,% \alert{Exemple :}
+\undef\autosub% \NewOverArrowCommand doesn't work inside beamer frame
+   \begin{dispExample}
+\NewOverArrowCommand{autosub}{detect subscripts, end=\rightarrow}
+
+$ \imath_0 \qquad \autosub{\imath}_0 \qquad
+  {\autosub{\imath}}_0 \qquad {\autosub*{\imath}}_0 $
+   \end{dispExample}
+
+\begin{itemize}
+ \item ou utiliser l'option \opt{subscripts}.
+ \item \rmq{Attention, si le caractère \structure{trait de soulignement}
+   \symb{\_} est altéré\\ (\rmq{\alert{exemple} : caractère actif comme avec
+   \href{https://ctan.org/pkg/altsubsup}{le package \pkg{altsubsup}}}) : voir
+   manuel}.
+\end{itemize}
+
+\end{itemize}
+
+\end{frame}
+
+
+\section{Conclusion}
+
+\let\overrightarrow\umoverrightarrow
+\RenewOverArrowCommand{vv}{esvect, middle config=auto, detect subscripts}
+
+\begin{frame}[fragile]
+
+\frametitle{Conclusion}
+
+\begin{block}{Pourquoi utiliser le package \pkg{overarrows} ?}
+\begin{itemize}
+ \item Parce qu'il est \structure{totalement personnalisable}.
+ \item Parce qu'il accepte \structure{TikZ}.
+ \item Parce qu'il sait \structure{détecter les indices}.
+ \item Parce qu'il fournit un jeu de \structure{commande pré-définies} unifiées.
+ \item Parce qu'il possède une \structure{documentation} complète et illustrée.
+\end{itemize}
+\end{block}
+
+\begin{alertblock}<+>{Pourquoi ne pas utiliser le package \pkg{overarrows} ?}
+\begin{itemize}
+ \item Parce que les vecteurs se notent \structure{en gras}.
+ \item Parce que \structure{\pkg{unicode-math}} suffit.
+  \begin{dispExample}
+$ \vv{v}_0 ~/~ \overrightarrow{v}_0 $ \qquad
+$ \vv{AB}_0 ~/~ \overrightarrow{AB}_0 $
+  \end{dispExample}
+\end{itemize}
+\end{alertblock}
+
+\begin{center}
+  \rule{6cm}{0.4pt}
+
+  \url{https://ctan.org/pkg/overarrows}
+\end{center}
+
+\end{frame}
+
+\end{document}

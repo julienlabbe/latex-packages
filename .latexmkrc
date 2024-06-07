@@ -10,7 +10,7 @@ $lualatex='lualatex -file-line-error -interaction nonstopmode %O %P';
 
 ## options
 $new_viewer_always=1;
-$clean_ext="glo gls hd mst tcbtemp listing";
+$clean_ext="glo gls hd mst tcbtemp listing nav snm vrb";
 
 ## glossary
 add_cus_dep('glo', 'gls', 0, 'makeglo2gls');
