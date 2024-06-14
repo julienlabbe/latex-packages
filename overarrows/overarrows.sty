@@ -126,6 +126,15 @@
 \fi
 \ifovar@option@esvect@
   \RequirePackage{esvect}
+  \DeclareFontFamily{U}{esvect}{}
+  \DeclareFontShape{U}{esvect}{m}{n}{
+    <-5.5> vect5
+    <5.5-6.5> vect6
+    <6.5-7.5> vect7
+    <7.5-8.5> vect8
+    <8.5-9.5> vect9
+    <9.5-> vect10
+  }{}
 \fi
 \ifovar@option@tikz@
   \RequirePackage{tikz}

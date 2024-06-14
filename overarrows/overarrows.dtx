@@ -889,7 +889,8 @@ $ \overbandedarrow{v} \qquad \overbandedarrow{AB} $
 % \begin{docOption}{esvect}
 %   Loads the \pkg{esvect} package and redefines its vector commands \refCom{vv}
 %   through the \pkg{overarrows} mechanism. Original \pkg{esvect} \cs{vv} macro
-%   is still available with \refCom{esvectvv}.
+%   is still available with \refCom{esvectvv}. The \pkg{esvect} font description
+%   is fixed to allow any font sizes.
 %
 %   The \pkg{esvect} package provides the symbol \cs{relbareda} \symb{\relbareda}
 %   which is smaller and often more flexible than the classic one \cs{relbar}
@@ -2396,6 +2397,20 @@ $ \overdotteddoublearrow{v} \qquad \overdotteddoublearrow{AB} $
 %    \begin{macrocode}
 \ifovar@option@esvect@
   \RequirePackage{esvect}
+%    \end{macrocode}
+% \changes{}{}{Fix esvect font sizes}
+% Fix font description in |uesvect.fd| to allow any sizes (taken from Enrico
+% Gregorio, \url{https://tex.stackexchange.com/a/689863/})
+%    \begin{macrocode}
+  \DeclareFontFamily{U}{esvect}{}
+  \DeclareFontShape{U}{esvect}{m}{n}{
+    <-5.5> vect5
+    <5.5-6.5> vect6
+    <6.5-7.5> vect7
+    <7.5-8.5> vect8
+    <8.5-9.5> vect9
+    <9.5-> vect10
+  }{}
 \fi
 %    \end{macrocode}
 % Option \refOpt{tikz}.
@@ -2831,9 +2846,9 @@ $ \overdotteddoublearrow{v} \qquad \overdotteddoublearrow{AB} $
     Previous definition will be overridden}
 }{}
 %    \end{macrocode}
-%  Use a default value of |3.5 mu|, as recommended by egreg (see
+% Use a default value of |3.5 mu|, as recommended by Enrico Gregorio (see
 %  \url{https://tex.stackexchange.com/a/471736}). \cs{joinrel}
-%  uses a value of 3 mu.
+% uses a value of 3 mu.
 %    \begin{macrocode}
 \DeclareRobustCommand{\xjoinrel}[1][3.5]{\mathrel{\mkern-#1mu}}
 %    \end{macrocode}
