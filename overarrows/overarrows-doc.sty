@@ -32,6 +32,7 @@
 \lstdefinestyle{lstovardoc}{%
   language = [LaTeX]TeX,
   columns         = flexible,
+  keepspaces      = true,
   keywordstyle    = {\bfseries\color{ovar_darkblue}},
   texcsstyle      = *{\bfseries\color{ovar_darkblue}},
   commentstyle    = {\color{gray}},
@@ -126,7 +127,7 @@ actual '='
     name=macrocode,
     firstnumber=auto,
     style       = lstovarcode,
-    showlines=false,
+    showlines   = false,
     texcs       = [2]{% commands
       DeclareOverArrowCommand, ProvideOverArrowCommand,%
       NewOverArrowCommand, RenewOverArrowCommand,%
