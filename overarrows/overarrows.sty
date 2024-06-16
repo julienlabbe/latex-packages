@@ -117,12 +117,12 @@
 \ProcessOptions\relax
 \RequirePackage{amsmath}
 \RequirePackage{etoolbox}
-\let\ovar@rightarrow\rightarrow
-\let\ovar@leftarrow\leftarrow
+\def\ovar@rightarrow{\rightarrow}
+\def\ovar@leftarrow{\leftarrow}
 \ifovar@option@oldarrows@
   \RequirePackage[old]{old-arrows}
-  \let\ovar@rightarrow\varrightarrow
-  \let\ovar@leftarrow\varleftarrow
+  \def\ovar@rightarrow{\varrightarrow}
+  \def\ovar@leftarrow{\varleftarrow}
 \fi
 \ifovar@option@esvect@
   \RequirePackage{esvect}

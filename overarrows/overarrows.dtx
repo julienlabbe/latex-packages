@@ -2385,12 +2385,12 @@ $ \overdotteddoublearrow{v} \qquad \overdotteddoublearrow{AB} $
 % Option \refOpt{old-arrows}. Configuration of arrows used for
 % predefined commands.
 %    \begin{macrocode}
-\let\ovar@rightarrow\rightarrow
-\let\ovar@leftarrow\leftarrow
+\def\ovar@rightarrow{\rightarrow}
+\def\ovar@leftarrow{\leftarrow}
 \ifovar@option@oldarrows@
   \RequirePackage[old]{old-arrows}
-  \let\ovar@rightarrow\varrightarrow
-  \let\ovar@leftarrow\varleftarrow
+  \def\ovar@rightarrow{\varrightarrow}
+  \def\ovar@leftarrow{\varleftarrow}
 \fi
 %    \end{macrocode}
 % Option \refOpt{esvect}.
