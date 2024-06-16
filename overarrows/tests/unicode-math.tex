@@ -1,0 +1,58 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Test of the LaTeX overarrows package
+% Package unicode-math
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass{article}
+\title{Test of the \textsf{overarrows} package\\compatibility with \pkg{unicode-math}}
+\author{Julien Labb\'e}
+
+\usepackage[allcommands, tikz]{overarrows}
+\usepackage{overarrows-doc}
+
+\usepackage{unicode-math}
+
+\begin{document}
+
+\maketitle
+
+\section*{Predefined commands}
+
+\begin{dispExample}
+\begin{align*}
+  \vv{AB}                   &  & \vec{v}                    \\
+  \overrightarrow{AB}       &  & \underrightarrow{AB}       \\
+  \overleftarrow{AB}        &  & \underleftarrow{AB}        \\
+  \overleftrightarrow{AB}   &  & \underleftrightarrow{AB}   \\
+  \overrightharpoonup{AB}   &  & \underrightharpoonup{AB}   \\
+  \overrightharpoondown{AB} &  & \underrightharpoondown{AB} \\
+  \overleftharpoonup{AB}    &  & \underleftharpoonup{AB}    \\
+  \overleftharpoondown{AB}  &  & \underleftharpoondown{AB}  \\
+  \overbar{AB}              &  & \underbar{AB}
+\end{align*}
+\end{dispExample}
+
+\section*{TikZ arrows}
+
+\begin{dispExample}
+\NewOverArrowCommand[tikz]{tikzstandardthickness}{%
+  path options={
+    x=\overarrowlength, line width=\overarrowthickness
+  },
+  path={(0,0) -- (1,0)}, arrows={->}
+}
+\NewOverArrowCommand[tikz]{tikzsmallerthickness}{%
+  path options={
+    x=\overarrowlength, line width=\overarrowsmallerthickness,
+  },
+  path={(0,0) -- (1,0)}, arrows={->}
+}
+\begin{align*}
+  \tikzstandardthickness{ABCD} & &
+  \scriptscriptstyle \tikzstandardthickness{ABCD} \\
+  \tikzsmallerthickness{ABCD} & &
+  \scriptscriptstyle \tikzsmallerthickness{ABCD}
+\end{align*}
+\end{dispExample}
+
+\end{document}
