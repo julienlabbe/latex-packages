@@ -693,7 +693,7 @@
     \ifovar@option@underbar@
       \DeclareOverArrowCommand{underbar}{%
         amsmath, middle config=relbar,
-        start={\std@minus}, end={\std@minus},% \relbar is defined with \mathsm@sh
+        start={\vphantom{+}\std@minus}, end={\std@minus},% \relbar is defined with \mathsm@sh
         shift leftright=0,
         arrow under,
         space before arrow=-0.3ex,
