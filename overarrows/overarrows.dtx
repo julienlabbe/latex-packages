@@ -3167,215 +3167,230 @@ $ \overdotteddoublearrow{v} \qquad \overdotteddoublearrow{AB} $
 %
 % \subsubsection*{Predefined commands}
 %
+% Declare predefined commands after \pkg{unicode-math} settings.
+%
+%    \begin{macrocode}
+\DeclareHookRule{begindocument}{overarrows}{after}{unicode-math-luatex}
+\DeclareHookRule{begindocument}{overarrows}{after}{unicode-math-xetex}
+\AddToHook{begindocument}[overarrows]
+  {
+%    \end{macrocode}
+%
 % \begin{macro}{\overrightarrow}
 %    \begin{macrocode}
-\ifovar@option@overrightarrow@
-  \DeclareOverArrowCommand{overrightarrow}{%
-    amsmath, middle config=relbar,
-    end=\ovar@rightarrow,
-    right arrow,
-  }
-\fi
+    \ifovar@option@overrightarrow@
+      \DeclareOverArrowCommand{overrightarrow}{%
+        amsmath, middle config=relbar,
+        end=\ovar@rightarrow,
+        right arrow,
+      }
+    \fi
 %    \end{macrocode}
 % \end{macro}
 %
 % \begin{macro}{\underrightarrow}
 %    \begin{macrocode}
-\ifovar@option@underrightarrow@
-  \DeclareOverArrowCommand{underrightarrow}{%
-    amsmath, middle config=relbar,
-    end=\ovar@rightarrow,
-    right arrow,
-    arrow under,
-  }
-\fi
+    \ifovar@option@underrightarrow@
+      \DeclareOverArrowCommand{underrightarrow}{%
+        amsmath, middle config=relbar,
+        end=\ovar@rightarrow,
+        right arrow,
+        arrow under,
+      }
+    \fi
 %    \end{macrocode}
 % \end{macro}
 %
 % \begin{macro}{\overleftarrow}
 %    \begin{macrocode}
-\ifovar@option@overleftarrow@
-  \DeclareOverArrowCommand{overleftarrow}{%
-    amsmath, middle config=relbar,
-    start=\ovar@leftarrow,
-    end=\relbar,
-    left arrow,
-  }
-\fi
+    \ifovar@option@overleftarrow@
+      \DeclareOverArrowCommand{overleftarrow}{%
+        amsmath, middle config=relbar,
+        start=\ovar@leftarrow,
+        end=\relbar,
+        left arrow,
+      }
+    \fi
 %    \end{macrocode}
 % \end{macro}
 %
 % \begin{macro}{\underleftarrow}
 %    \begin{macrocode}
-\ifovar@option@underleftarrow@
-  \DeclareOverArrowCommand{underleftarrow}{%
-    amsmath, middle config=relbar,
-    start=\ovar@leftarrow,
-    end=\relbar,
-    left arrow,
-    arrow under,
-  }
-\fi
+    \ifovar@option@underleftarrow@
+      \DeclareOverArrowCommand{underleftarrow}{%
+        amsmath, middle config=relbar,
+        start=\ovar@leftarrow,
+        end=\relbar,
+        left arrow,
+        arrow under,
+      }
+    \fi
 %    \end{macrocode}
 % \end{macro}
 %
 % \begin{macro}{\overleftrightarrow}
 %    \begin{macrocode}
-\ifovar@option@overleftrightarrow@
-  \DeclareOverArrowCommand{overleftrightarrow}{%
-    amsmath, middle config=relbar,
-    start=\ovar@leftarrow,
-    end=\ovar@rightarrow,
-    center arrow,
-  }
-\fi
+    \ifovar@option@overleftrightarrow@
+      \DeclareOverArrowCommand{overleftrightarrow}{%
+        amsmath, middle config=relbar,
+        start=\ovar@leftarrow,
+        end=\ovar@rightarrow,
+        center arrow,
+      }
+    \fi
 %    \end{macrocode}
 % \end{macro}
 %
 % \begin{macro}{\underleftrightarrow}
 %    \begin{macrocode}
-\ifovar@option@underleftrightarrow@
-  \DeclareOverArrowCommand{underleftrightarrow}{%
-    amsmath, middle config=relbar,
-    start=\ovar@leftarrow,
-    end=\ovar@rightarrow,
-    center arrow,
-    arrow under,
-  }
-\fi
+    \ifovar@option@underleftrightarrow@
+      \DeclareOverArrowCommand{underleftrightarrow}{%
+        amsmath, middle config=relbar,
+        start=\ovar@leftarrow,
+        end=\ovar@rightarrow,
+        center arrow,
+        arrow under,
+      }
+    \fi
 %    \end{macrocode}
 % \end{macro}
 %
 % \begin{macro}{\overrightharpoonup}
 %    \begin{macrocode}
-\ifovar@option@overrightharpoonup@
-  \DeclareOverArrowCommand{overrightharpoonup}{%
-    amsmath, middle config=relbar,
-    end=\rightharpoonup,
-    right arrow,
-  }
-\fi
+    \ifovar@option@overrightharpoonup@
+      \DeclareOverArrowCommand{overrightharpoonup}{%
+        amsmath, middle config=relbar,
+        end=\rightharpoonup,
+        right arrow,
+      }
+    \fi
 %    \end{macrocode}
 % \end{macro}
 %
 % \begin{macro}{\underrightharpoonup}
 %    \begin{macrocode}
-\ifovar@option@underrightharpoonup@
-  \DeclareOverArrowCommand{underrightharpoonup}{%
-    amsmath, middle config=relbar,
-    end=\rightharpoonup,
-    right arrow,
-    arrow under,
-  }
-\fi
+    \ifovar@option@underrightharpoonup@
+      \DeclareOverArrowCommand{underrightharpoonup}{%
+        amsmath, middle config=relbar,
+        end=\rightharpoonup,
+        right arrow,
+        arrow under,
+      }
+    \fi
 %    \end{macrocode}
 % \end{macro}
 %
 % \begin{macro}{\overrightharpoondown}
 %    \begin{macrocode}
-\ifovar@option@overrightharpoondown@
-  \DeclareOverArrowCommand{overrightharpoondown}{%
-    amsmath, middle config=relbar,
-    end=\rightharpoondown,
-    right arrow,
-  }
-\fi
+    \ifovar@option@overrightharpoondown@
+      \DeclareOverArrowCommand{overrightharpoondown}{%
+        amsmath, middle config=relbar,
+        end=\rightharpoondown,
+        right arrow,
+      }
+    \fi
 %    \end{macrocode}
 % \end{macro}
 %
 % \begin{macro}{\underrightharpoondown}
 %    \begin{macrocode}
-\ifovar@option@underrightharpoondown@
-  \DeclareOverArrowCommand{underrightharpoondown}{%
-    amsmath, middle config=relbar,
-    end=\rightharpoondown,
-    right arrow,
-    arrow under,
-  }
-\fi
+    \ifovar@option@underrightharpoondown@
+      \DeclareOverArrowCommand{underrightharpoondown}{%
+        amsmath, middle config=relbar,
+        end=\rightharpoondown,
+        right arrow,
+        arrow under,
+      }
+    \fi
 %    \end{macrocode}
 % \end{macro}
 %
 % \begin{macro}{\overleftharpoonup}
 %    \begin{macrocode}
-\ifovar@option@overleftharpoonup@
-  \DeclareOverArrowCommand{overleftharpoonup}{%
-    amsmath, middle config=relbar,
-    start=\leftharpoonup,
-    end=\relbar,
-    left arrow,
-  }
-\fi
+    \ifovar@option@overleftharpoonup@
+      \DeclareOverArrowCommand{overleftharpoonup}{%
+        amsmath, middle config=relbar,
+        start=\leftharpoonup,
+        end=\relbar,
+        left arrow,
+      }
+    \fi
 %    \end{macrocode}
 % \end{macro}
 %
 % \begin{macro}{\underleftharpoonup}
 %    \begin{macrocode}
-\ifovar@option@underleftharpoonup@
-  \DeclareOverArrowCommand{underleftharpoonup}{%
-    amsmath, middle config=relbar,
-    start=\leftharpoonup,
-    end=\relbar,
-    left arrow,
-    arrow under,
-  }
-\fi
+    \ifovar@option@underleftharpoonup@
+      \DeclareOverArrowCommand{underleftharpoonup}{%
+        amsmath, middle config=relbar,
+        start=\leftharpoonup,
+        end=\relbar,
+        left arrow,
+        arrow under,
+      }
+    \fi
 %    \end{macrocode}
 % \end{macro}
 %
 % \begin{macro}{\overleftharpoondown}
 %    \begin{macrocode}
-\ifovar@option@overleftharpoondown@
-  \DeclareOverArrowCommand{overleftharpoondown}{%
-    amsmath, middle config=relbar,
-    start=\leftharpoondown,
-    end=\relbar,
-    left arrow,
-  }
-\fi
+    \ifovar@option@overleftharpoondown@
+      \DeclareOverArrowCommand{overleftharpoondown}{%
+        amsmath, middle config=relbar,
+        start=\leftharpoondown,
+        end=\relbar,
+        left arrow,
+      }
+    \fi
 %    \end{macrocode}
 % \end{macro}
 %
 % \begin{macro}{\underleftharpoondown}
 %    \begin{macrocode}
-\ifovar@option@underleftharpoondown@
-  \DeclareOverArrowCommand{underleftharpoondown}{%
-    amsmath, middle config=relbar,
-    start=\leftharpoondown,
-    end=\relbar,
-    left arrow,
-    arrow under,
-  }
-\fi
+    \ifovar@option@underleftharpoondown@
+      \DeclareOverArrowCommand{underleftharpoondown}{%
+        amsmath, middle config=relbar,
+        start=\leftharpoondown,
+        end=\relbar,
+        left arrow,
+        arrow under,
+      }
+    \fi
 %    \end{macrocode}
 % \end{macro}
 %
 % \begin{macro}{\overbar}
 %    \begin{macrocode}
-\ifovar@option@overbar@
-  \DeclareOverArrowCommand{overbar}{%
-    amsmath, middle config=relbar,
-    start={\std@minus}, end={\std@minus},% \relbar is defined with \mathsm@sh
-    shift leftright=0,
-    space after arrow=-0.3ex,
-  }
-\fi
+    \ifovar@option@overbar@
+      \DeclareOverArrowCommand{overbar}{%
+        amsmath, middle config=relbar,
+        start={\std@minus}, end={\std@minus},% \relbar is defined with \mathsm@sh
+        shift leftright=0,
+        space after arrow=-0.3ex,
+      }
+    \fi
 %    \end{macrocode}
 % \end{macro}
 %
 % \begin{macro}{\underbar}
 %    \begin{macrocode}
-\ifovar@option@underbar@
-  \DeclareOverArrowCommand{underbar}{%
-    amsmath, middle config=relbar,
-    start={\std@minus}, end={\std@minus},% \relbar is defined with \mathsm@sh
-    shift leftright=0,
-    arrow under,
-    space before arrow=-0.3ex,
-  }
-\fi
+    \ifovar@option@underbar@
+      \DeclareOverArrowCommand{underbar}{%
+        amsmath, middle config=relbar,
+        start={\std@minus}, end={\std@minus},% \relbar is defined with \mathsm@sh
+        shift leftright=0,
+        arrow under,
+        space before arrow=-0.3ex,
+      }
+    \fi
 %    \end{macrocode}
 % \end{macro}
+%
+% End of |\AddToHook{begindocument}| hook.
+%    \begin{macrocode}
+  }
+%    \end{macrocode}
+%
 %
 % \subsubsection*{Test macros}
 %

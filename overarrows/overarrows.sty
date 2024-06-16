@@ -565,136 +565,141 @@
   \undef\vv
   \NewOverArrowCommand{vv}{esvect, middle config = relbareda}
 \fi
-\ifovar@option@overrightarrow@
-  \DeclareOverArrowCommand{overrightarrow}{%
-    amsmath, middle config=relbar,
-    end=\ovar@rightarrow,
-    right arrow,
+\DeclareHookRule{begindocument}{overarrows}{after}{unicode-math-luatex}
+\DeclareHookRule{begindocument}{overarrows}{after}{unicode-math-xetex}
+\AddToHook{begindocument}[overarrows]
+  {
+    \ifovar@option@overrightarrow@
+      \DeclareOverArrowCommand{overrightarrow}{%
+        amsmath, middle config=relbar,
+        end=\ovar@rightarrow,
+        right arrow,
+      }
+    \fi
+    \ifovar@option@underrightarrow@
+      \DeclareOverArrowCommand{underrightarrow}{%
+        amsmath, middle config=relbar,
+        end=\ovar@rightarrow,
+        right arrow,
+        arrow under,
+      }
+    \fi
+    \ifovar@option@overleftarrow@
+      \DeclareOverArrowCommand{overleftarrow}{%
+        amsmath, middle config=relbar,
+        start=\ovar@leftarrow,
+        end=\relbar,
+        left arrow,
+      }
+    \fi
+    \ifovar@option@underleftarrow@
+      \DeclareOverArrowCommand{underleftarrow}{%
+        amsmath, middle config=relbar,
+        start=\ovar@leftarrow,
+        end=\relbar,
+        left arrow,
+        arrow under,
+      }
+    \fi
+    \ifovar@option@overleftrightarrow@
+      \DeclareOverArrowCommand{overleftrightarrow}{%
+        amsmath, middle config=relbar,
+        start=\ovar@leftarrow,
+        end=\ovar@rightarrow,
+        center arrow,
+      }
+    \fi
+    \ifovar@option@underleftrightarrow@
+      \DeclareOverArrowCommand{underleftrightarrow}{%
+        amsmath, middle config=relbar,
+        start=\ovar@leftarrow,
+        end=\ovar@rightarrow,
+        center arrow,
+        arrow under,
+      }
+    \fi
+    \ifovar@option@overrightharpoonup@
+      \DeclareOverArrowCommand{overrightharpoonup}{%
+        amsmath, middle config=relbar,
+        end=\rightharpoonup,
+        right arrow,
+      }
+    \fi
+    \ifovar@option@underrightharpoonup@
+      \DeclareOverArrowCommand{underrightharpoonup}{%
+        amsmath, middle config=relbar,
+        end=\rightharpoonup,
+        right arrow,
+        arrow under,
+      }
+    \fi
+    \ifovar@option@overrightharpoondown@
+      \DeclareOverArrowCommand{overrightharpoondown}{%
+        amsmath, middle config=relbar,
+        end=\rightharpoondown,
+        right arrow,
+      }
+    \fi
+    \ifovar@option@underrightharpoondown@
+      \DeclareOverArrowCommand{underrightharpoondown}{%
+        amsmath, middle config=relbar,
+        end=\rightharpoondown,
+        right arrow,
+        arrow under,
+      }
+    \fi
+    \ifovar@option@overleftharpoonup@
+      \DeclareOverArrowCommand{overleftharpoonup}{%
+        amsmath, middle config=relbar,
+        start=\leftharpoonup,
+        end=\relbar,
+        left arrow,
+      }
+    \fi
+    \ifovar@option@underleftharpoonup@
+      \DeclareOverArrowCommand{underleftharpoonup}{%
+        amsmath, middle config=relbar,
+        start=\leftharpoonup,
+        end=\relbar,
+        left arrow,
+        arrow under,
+      }
+    \fi
+    \ifovar@option@overleftharpoondown@
+      \DeclareOverArrowCommand{overleftharpoondown}{%
+        amsmath, middle config=relbar,
+        start=\leftharpoondown,
+        end=\relbar,
+        left arrow,
+      }
+    \fi
+    \ifovar@option@underleftharpoondown@
+      \DeclareOverArrowCommand{underleftharpoondown}{%
+        amsmath, middle config=relbar,
+        start=\leftharpoondown,
+        end=\relbar,
+        left arrow,
+        arrow under,
+      }
+    \fi
+    \ifovar@option@overbar@
+      \DeclareOverArrowCommand{overbar}{%
+        amsmath, middle config=relbar,
+        start={\std@minus}, end={\std@minus},% \relbar is defined with \mathsm@sh
+        shift leftright=0,
+        space after arrow=-0.3ex,
+      }
+    \fi
+    \ifovar@option@underbar@
+      \DeclareOverArrowCommand{underbar}{%
+        amsmath, middle config=relbar,
+        start={\std@minus}, end={\std@minus},% \relbar is defined with \mathsm@sh
+        shift leftright=0,
+        arrow under,
+        space before arrow=-0.3ex,
+      }
+    \fi
   }
-\fi
-\ifovar@option@underrightarrow@
-  \DeclareOverArrowCommand{underrightarrow}{%
-    amsmath, middle config=relbar,
-    end=\ovar@rightarrow,
-    right arrow,
-    arrow under,
-  }
-\fi
-\ifovar@option@overleftarrow@
-  \DeclareOverArrowCommand{overleftarrow}{%
-    amsmath, middle config=relbar,
-    start=\ovar@leftarrow,
-    end=\relbar,
-    left arrow,
-  }
-\fi
-\ifovar@option@underleftarrow@
-  \DeclareOverArrowCommand{underleftarrow}{%
-    amsmath, middle config=relbar,
-    start=\ovar@leftarrow,
-    end=\relbar,
-    left arrow,
-    arrow under,
-  }
-\fi
-\ifovar@option@overleftrightarrow@
-  \DeclareOverArrowCommand{overleftrightarrow}{%
-    amsmath, middle config=relbar,
-    start=\ovar@leftarrow,
-    end=\ovar@rightarrow,
-    center arrow,
-  }
-\fi
-\ifovar@option@underleftrightarrow@
-  \DeclareOverArrowCommand{underleftrightarrow}{%
-    amsmath, middle config=relbar,
-    start=\ovar@leftarrow,
-    end=\ovar@rightarrow,
-    center arrow,
-    arrow under,
-  }
-\fi
-\ifovar@option@overrightharpoonup@
-  \DeclareOverArrowCommand{overrightharpoonup}{%
-    amsmath, middle config=relbar,
-    end=\rightharpoonup,
-    right arrow,
-  }
-\fi
-\ifovar@option@underrightharpoonup@
-  \DeclareOverArrowCommand{underrightharpoonup}{%
-    amsmath, middle config=relbar,
-    end=\rightharpoonup,
-    right arrow,
-    arrow under,
-  }
-\fi
-\ifovar@option@overrightharpoondown@
-  \DeclareOverArrowCommand{overrightharpoondown}{%
-    amsmath, middle config=relbar,
-    end=\rightharpoondown,
-    right arrow,
-  }
-\fi
-\ifovar@option@underrightharpoondown@
-  \DeclareOverArrowCommand{underrightharpoondown}{%
-    amsmath, middle config=relbar,
-    end=\rightharpoondown,
-    right arrow,
-    arrow under,
-  }
-\fi
-\ifovar@option@overleftharpoonup@
-  \DeclareOverArrowCommand{overleftharpoonup}{%
-    amsmath, middle config=relbar,
-    start=\leftharpoonup,
-    end=\relbar,
-    left arrow,
-  }
-\fi
-\ifovar@option@underleftharpoonup@
-  \DeclareOverArrowCommand{underleftharpoonup}{%
-    amsmath, middle config=relbar,
-    start=\leftharpoonup,
-    end=\relbar,
-    left arrow,
-    arrow under,
-  }
-\fi
-\ifovar@option@overleftharpoondown@
-  \DeclareOverArrowCommand{overleftharpoondown}{%
-    amsmath, middle config=relbar,
-    start=\leftharpoondown,
-    end=\relbar,
-    left arrow,
-  }
-\fi
-\ifovar@option@underleftharpoondown@
-  \DeclareOverArrowCommand{underleftharpoondown}{%
-    amsmath, middle config=relbar,
-    start=\leftharpoondown,
-    end=\relbar,
-    left arrow,
-    arrow under,
-  }
-\fi
-\ifovar@option@overbar@
-  \DeclareOverArrowCommand{overbar}{%
-    amsmath, middle config=relbar,
-    start={\std@minus}, end={\std@minus},% \relbar is defined with \mathsm@sh
-    shift leftright=0,
-    space after arrow=-0.3ex,
-  }
-\fi
-\ifovar@option@underbar@
-  \DeclareOverArrowCommand{underbar}{%
-    amsmath, middle config=relbar,
-    start={\std@minus}, end={\std@minus},% \relbar is defined with \mathsm@sh
-    shift leftright=0,
-    arrow under,
-    space before arrow=-0.3ex,
-  }
-\fi
 \newcommand{\ovar@testmathstyles}[2][]{
   \begingroup
   \newcommand*{\ovar@row@teststyle}[1]{%
