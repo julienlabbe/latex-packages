@@ -148,13 +148,13 @@
 \ifovar@option@subother@
   \begingroup
     \catcode `_=12
-    \AddToHook{begindocument/end}{\SetOverArrowsSubscriptCommand{_}}
+    \SetOverArrowsSubscriptCommand{_}%
   \endgroup
 \fi
 \ifovar@option@subactive@
   \begingroup
     \catcode `_=13
-    \AddToHook{begindocument/end}{\SetOverArrowsSubscriptCommand{_}}
+    \SetOverArrowsSubscriptCommand{_}%
   \endgroup
 \fi
 \RequirePackage{pgfkeys}
