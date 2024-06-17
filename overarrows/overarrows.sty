@@ -429,20 +429,53 @@
   \settowidth{\overarrowlength}{$\m@th#2#3$}%
   \ifdim \overarrowlength < \ovar@tempdim \overarrowlength=\ovar@tempdim\fi%
 }
-\def\ovar@set@arrowthickness#1{% use rule thickness=\fontdimen 8 font family 3
+\def\ovar@rulethickness@fontdimen{8}
+\def\ovar@rulethickness@family{3}
+\def\ovar@set@arrowthickness#1{%
   \ifx#1\displaystyle%
-    \overarrowthickness =        \fontdimen 8 \textfont 3%
-    \overarrowsmallerthickness = \fontdimen 8 \scriptfont 3%
+    \overarrowthickness =
+      \fontdimen \ovar@rulethickness@fontdimen  \textfont \ovar@rulethickness@family%
+    \overarrowsmallerthickness =
+      \fontdimen \ovar@rulethickness@fontdimen \scriptfont \ovar@rulethickness@family%
   \else\ifx#1\textstyle%
-    \overarrowthickness =        \fontdimen 8 \textfont 3%
-    \overarrowsmallerthickness = \fontdimen 8 \scriptfont 3%
+    \overarrowthickness =
+      \fontdimen \ovar@rulethickness@fontdimen \textfont \ovar@rulethickness@family%
+    \overarrowsmallerthickness =
+      \fontdimen \ovar@rulethickness@fontdimen \scriptfont \ovar@rulethickness@family%
   \else\ifx#1\scriptstyle%
-    \overarrowthickness =        \fontdimen 8 \scriptfont 3%
-    \overarrowsmallerthickness = \fontdimen 8 \scriptscriptfont 3%
+    \overarrowthickness =
+      \fontdimen \ovar@rulethickness@fontdimen \scriptfont \ovar@rulethickness@family%
+    \overarrowsmallerthickness =
+      \fontdimen \ovar@rulethickness@fontdimen \scriptscriptfont \ovar@rulethickness@family%
   \else%
-    \overarrowthickness =        \fontdimen 8 \scriptscriptfont 3%
+    \overarrowthickness =
+      \fontdimen \ovar@rulethickness@fontdimen \scriptscriptfont \ovar@rulethickness@family%
     \overarrowsmallerthickness = \overarrowthickness%
   \fi\fi\fi%
+}
+\def\ovar@set@arrowthickness@UM@lua#1{%
+  \overarrowthickness = \Umathoverbarrule #1
+  \ifx#1\displaystyle%
+    \overarrowsmallerthickness = \Umathoverbarrule \textstyle%
+  \else\ifx#1\textstyle%
+    \overarrowsmallerthickness = \Umathoverbarrule \scriptstyle%
+  \else%
+    \overarrowsmallerthickness = \Umathoverbarrule \scriptscriptstyle%
+  \fi\fi%
+}
+\AtBeginDocument{%
+  \@ifpackageloaded{unicode-math-luatex}
+    {%
+      \global\let\ovar@set@arrowthickness\ovar@set@arrowthickness@UM@lua
+    }
+    {%
+      \@ifpackageloaded{unicode-math-xetex}
+        {%
+          \gdef\ovar@rulethickness@fontdimen{54}
+          \gdef\ovar@rulethickness@family{2}
+        }
+        {}
+    }
 }
 \def\ovar@stackover@@#1#2#3#4#5#6{\vbox{\ialign{##\crcr%
       $#5\mskip #1 mu\relax$\crcr%

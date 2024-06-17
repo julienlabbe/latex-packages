@@ -19,10 +19,21 @@ envconfig=TEXINPUTS=$(stydir):${TEXINPUTS} $(texmfcnf)
 
 .PHONY: clean all
 
-all: $(src:.tex=.pdf)
+all: $(filter unicode-math.pdf,$(src:.tex=.pdf)) unicode-math
 
 %.pdf: %.tex $(dep)
 	$(envconfig) $(cmd) $(rcoptions) $(runoptions) $<
+
+.PHONY: unicode-math, unicode-math-luatex, unicode-math-xetex
+unicode-math: unicode-math-luatex unicode-math-xetex
+unicode-math-luatex: engine=lualatex
+unicode-math-luatex: unicode-math.tex $(dep)
+	$(envconfig) $(cmd) $(rcoptions) $(runoptions) $<
+	mv unicode-math.pdf unicode-math-luatex.pdf
+unicode-math-xetex: engine=xelatex
+unicode-math-xetex: unicode-math.tex $(dep)
+	$(envconfig) $(cmd) $(rcoptions) $(runoptions) $<
+	mv unicode-math.pdf unicode-math-xetex.pdf
 
 .PHONY: %.pdf+
 

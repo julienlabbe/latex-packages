@@ -21,6 +21,7 @@
 %
 %<*driver>
 \documentclass[nohyperref]{ltxdoc}
+\usepackage{metalogo}
 
 \usepackage{overarrows-doc} %^^A defined at end of this file, with guard <docstyle>
 \usepackage[old-arrows, esvect, tikz, pstarrows, allcommands]{overarrows}
@@ -1321,6 +1322,10 @@ $\scriptstyle \overparabola{v} \qquad \overparabola{ABCD} $ \par
 %    \item |\fontdimen 8 \scriptscriptfont 3| in
 %     \cs{scriptscriptstyle}.
 %   \end{itemize}
+%
+%   Theses settings are adapted when the package \pkg{unicode-math} is loaded
+%   (using \cs{Umathoverbarrule} with \LuaLaTeX{} or |\fontdimen 54|, family~2
+%   with \XeLaTeX{} --- see the manual of \pkg{unicode-math}).
 % \end{docLength}
 %   
 %  \begin{docLength}{overarrowsmallerthickness}
@@ -1331,6 +1336,10 @@ $\scriptstyle \overparabola{v} \qquad \overparabola{ABCD} $ \par
 %     \item |\fontdimen 8 \scriptscriptfont 3| in \cs{scriptstyle} or
 %      \cs{scriptscriptstyle}.
 %    \end{itemize}
+%
+%   Theses settings are adapted when the package \pkg{unicode-math} is loaded
+%   (using \cs{Umathoverbarrule} with \LuaLaTeX{} or |\fontdimen 54|, family~2
+%   with \XeLaTeX{} --- see the manual of \pkg{unicode-math}).
 %  \end{docLength}
 %
 % \subsubsection{Vectors macros}
@@ -2906,26 +2915,73 @@ $ \overdotteddoublearrow{v} \qquad \overdotteddoublearrow{AB} $
 % \end{macro}
 %
 % \begin{macro}{\ovar@set@arrowthickness}
+% \begin{macro}{\ovar@set@arrowthickness@UM@lua}
 % Sets \refLen{overarrowthickness} and \refLen{overarrowsmallerthickness}.\\
-% |#1|: arrow length\\
-% |#2|: math style
+% |#1|: math style
+%
+% Set to the default rule thickness of the current math style, normaly given by
+% \cs{fontdimen} 8 family 3. With \pkg{unicode-math}, use instead:
+% \begin{itemize}
+%  \item \cs{fontdimen} 54 family 2 with XeTeX,
+%  \item \cs{Umathoverbarrule} with LuaTex.
+% \end{itemize}
 %    \begin{macrocode}
-\def\ovar@set@arrowthickness#1{% use rule thickness=\fontdimen 8 font family 3
+\def\ovar@rulethickness@fontdimen{8}
+\def\ovar@rulethickness@family{3}
+\def\ovar@set@arrowthickness#1{%
   \ifx#1\displaystyle%
-    \overarrowthickness =        \fontdimen 8 \textfont 3%
-    \overarrowsmallerthickness = \fontdimen 8 \scriptfont 3%
+    \overarrowthickness =
+      \fontdimen \ovar@rulethickness@fontdimen  \textfont \ovar@rulethickness@family%
+    \overarrowsmallerthickness =
+      \fontdimen \ovar@rulethickness@fontdimen \scriptfont \ovar@rulethickness@family%
   \else\ifx#1\textstyle%
-    \overarrowthickness =        \fontdimen 8 \textfont 3%
-    \overarrowsmallerthickness = \fontdimen 8 \scriptfont 3%
+    \overarrowthickness =
+      \fontdimen \ovar@rulethickness@fontdimen \textfont \ovar@rulethickness@family%
+    \overarrowsmallerthickness =
+      \fontdimen \ovar@rulethickness@fontdimen \scriptfont \ovar@rulethickness@family%
   \else\ifx#1\scriptstyle%
-    \overarrowthickness =        \fontdimen 8 \scriptfont 3%
-    \overarrowsmallerthickness = \fontdimen 8 \scriptscriptfont 3%
+    \overarrowthickness =
+      \fontdimen \ovar@rulethickness@fontdimen \scriptfont \ovar@rulethickness@family%
+    \overarrowsmallerthickness =
+      \fontdimen \ovar@rulethickness@fontdimen \scriptscriptfont \ovar@rulethickness@family%
   \else%
-    \overarrowthickness =        \fontdimen 8 \scriptscriptfont 3%
+    \overarrowthickness =
+      \fontdimen \ovar@rulethickness@fontdimen \scriptscriptfont \ovar@rulethickness@family%
     \overarrowsmallerthickness = \overarrowthickness%
   \fi\fi\fi%
 }
 %    \end{macrocode}
+%   \pkg{unicode-math} with LuaTeX version.
+%    \begin{macrocode}
+\def\ovar@set@arrowthickness@UM@lua#1{%
+  \overarrowthickness = \Umathoverbarrule #1
+  \ifx#1\displaystyle%
+    \overarrowsmallerthickness = \Umathoverbarrule \textstyle%
+  \else\ifx#1\textstyle%
+    \overarrowsmallerthickness = \Umathoverbarrule \scriptstyle%
+  \else%
+    \overarrowsmallerthickness = \Umathoverbarrule \scriptscriptstyle%
+  \fi\fi%
+}
+%    \end{macrocode}
+%   Test which version to use.
+%    \begin{macrocode}
+\AtBeginDocument{%
+  \@ifpackageloaded{unicode-math-luatex}
+    {%
+      \global\let\ovar@set@arrowthickness\ovar@set@arrowthickness@UM@lua
+    }
+    {%
+      \@ifpackageloaded{unicode-math-xetex}
+        {%
+          \gdef\ovar@rulethickness@fontdimen{54}
+          \gdef\ovar@rulethickness@family{2}
+        }
+        {}
+    }
+}
+%    \end{macrocode}
+% \end{macro}
 % \end{macro}
 %
 % \subsubsection*{Stack macros}
@@ -3698,7 +3754,9 @@ actual '='
       ovar@tikz@command, ovar@tikz@pathoptions, ovar@tikz@path,
       ovar@tikz@options, ovar@picture@geometry, ovar@picture@linethickness,
       ovar@picture@command, ovar@extralength, ovar@tempdim, ovar@set@arrowlength,
-      ovar@set@arrowthickness, ovar@stackover@@, ovar@stackunder@@,
+      ovar@rulethickness@fontdimen, ovar@rulethickness@family,
+      ovar@set@arrowthickness, ovar@set@arrowthickness@UM@lua,
+      ovar@stackover@@, ovar@stackunder@@,
       ovar@stackover@, ovar@stackunder@, ovar@stackover@fill,
       ovar@stackover@lens, ovar@set@common, ovar@starversion,
       ovar@testmathstyles, ovar@row@teststyle,%
