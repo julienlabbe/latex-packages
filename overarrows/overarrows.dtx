@@ -2686,12 +2686,22 @@ $ \overdotteddoublearrow{v} \qquad \overdotteddoublearrow{AB} $
       }
     }
   },
+  middle config/harrowextender/.code={%
+    \pgfkeysalso{%
+      middle={\harrowextender},
+      trim middle={0},
+    }
+  },
   middle config/auto/.code={%
-    \ifovar@option@esvect@
-    \pgfkeysalso{middle config=relbareda}
-    \else
-    \pgfkeysalso{middle config=relbar}
-    \fi
+    \ifundef{\relbareda}{%
+      \ifovar@option@esvect@
+        \pgfkeysalso{middle config=relbareda}
+      \else
+        \pgfkeysalso{middle config=relbar}
+      \fi
+    }{%
+      \pgfkeysalso{middle config=harrowextender}
+    }
   },
 %    \end{macrocode}
 % \refKey{amsmath}.

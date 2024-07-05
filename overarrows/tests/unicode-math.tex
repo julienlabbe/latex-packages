@@ -12,6 +12,21 @@
 
 \usepackage{unicode-math}
 
+%% math fonts\harrowextender
+% \setmathfont{Asana Math}% bad position of hooks
+% \setmathfont{Latin Modern Math}% no harrowextender
+% \setmathfont{XITS Math}
+% \setmathfont{Stix Two Math}% bad position of harrowextender in script and scripscript styles
+% \setmathfont{Tex Gyre Termes Math}% no harrowextender
+% \setmathfont{TeX Gyre Pagella Math}% no harrowextender
+% \setmathfont{DejaVu Math TeX Gyre}% no harrowextender
+% \setmathfont{Fira Math}% no harrowextender
+% \setmathfont{Libertinus Math}% bad position of harrowextender
+% \setmathfont{GFSNeohellenicMath}% bad position of relbar, harrowextender and hooks
+% \setmathfont{ErewhonMath}
+% \setmathfont{XCharterMath}
+% \setmathfont{ConcreteMath}
+
 \begin{document}
 
 \maketitle
@@ -30,6 +45,24 @@
   \overleftharpoondown{AB}  &  & \underleftharpoondown{AB}  \\
   \overbar{AB}              &  & \underbar{AB}
 \end{align*}
+\end{dispExample}
+
+\section*{harrowextender}
+
+\begin{dispExample}
+  \begin{align*}
+    \mathtt{-} ~=~                         & - \\
+    \mathtt{\backslash relbar} ~=~        & \relbar \\
+    \mathtt{\backslash relbareda} ~=~      & \relbareda \\
+    \mathtt{\backslash harrowextender} ~=~ & \harrowextender
+  \end{align*}
+\end{dispExample}
+
+\begin{dispExample}
+\NewOverArrowCommand{testharrowextender}{%
+  middle config=harrowextender
+}
+\TestOverArrow{testharrowextender}
 \end{dispExample}
 
 \section*{TikZ arrows}
