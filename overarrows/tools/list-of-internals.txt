@@ -56,6 +56,9 @@
 \ovar@tempdim
 \ovar@set@arrowlength
 \ovar@set@arrowthickness
+\ovar@set@arrowthickness@UM@lua
+\ovar@rulethickness@fontdimen
+\ovar@rulethickness@family
 \ovar@stackover@@
 \ovar@stackunder@@
 \ovar@stackover@

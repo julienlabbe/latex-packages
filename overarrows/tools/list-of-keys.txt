@@ -30,6 +30,7 @@ no trimming
 middle config
 middle config/relbar
 middle config/relbareda
+middle config/harrowextender
 middle config/auto
 amsmath
 amsmath/mimic
