@@ -2710,7 +2710,7 @@ $ \overdotteddoublearrow{v} \qquad \overdotteddoublearrow{AB} $
 % \changes{v1.2}{2024/07/06}{Use \cs{harrowextender}, if availlable.}
 %    \begin{macrocode}
   middle config/auto/.code={%
-    \ifundef{\relbareda}{%
+    \ifundef{\harrowextender}{%
       \ifovar@option@esvect@
         \pgfkeysalso{middle config=relbareda}
       \else
