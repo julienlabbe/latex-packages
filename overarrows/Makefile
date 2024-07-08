@@ -23,6 +23,12 @@ $(name).sty $(name)-doc.sty&: $(name).ins $(name).dtx
 $(name).pdf: $(name).dtx $(name)-doc.sty
 	$(cmd) $(rcoptions) $(runoptions) $(name).dtx
 
+
+.PHONY: doc+ $(name).pdf+
+doc+: $(name).pdf+
+$(name).pdf+: $(name).dtx $(name)-doc.sty
+	$(cmd) $(rcoptions) $(runoptions) $(pvcoptions) $(name).dtx < /dev/null | texlogfilter
+
 clean:
 	$(cmd) $(rcoptions) -c $(name).dtx
 
