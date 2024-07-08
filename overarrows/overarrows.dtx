@@ -24,7 +24,7 @@
 \usepackage{metalogo}
 
 \usepackage{overarrows-doc} %^^A defined at end of this file, with guard <docstyle>
-\usepackage[old-arrows, esvect, tikz, pstarrows, allcommands]{overarrows}
+\usepackage[old-arrows, esvect, tikz, pstricks, pstarrows, allcommands]{overarrows}
 
 \EnableCrossrefs
 \PageIndex
@@ -189,9 +189,9 @@
 %
 % The \pkg{overarrows} package was primitively written for vectors, but in
 % a highly customisable way. It can be used to define a large variety of arrows,
-% using math symbols, or PGF/TikZ commands. It's also possible to create
-% commands that draw the arrows under. Some predefined commands are provided,
-% giving\footnotemark{}, for arrow over:
+% using math symbols, or drawing commands from PGF/TikZ or PSTricks. It's also
+% possible to create commands that draw the arrows under. Some predefined
+% commands are provided, giving\footnotemark{}, for arrow over:
 % \footnotetext{Displayed here with the \refOpt{old-arrows} option.}
 % \begin{align*}
 %   \overrightarrow{\alpha+\beta}
@@ -250,7 +250,7 @@
 %<*example>
 % \fi
 \begin{dispListing}
-  \long macro:->\mathpalette {\overarrow@ \rightarrowfill@ }
+\long macro:->\mathpalette {\overarrow@ \rightarrowfill@ }
 \end{dispListing}
 % \iffalse
 %</example>
@@ -808,14 +808,65 @@ $ \overarchedleftrightarrow{v} \qquad \overarchedleftrightarrow{ABCD} $
 %</example>
 % \fi
 %
+% \subsection{Drawing the arrow with PSTricks}
+%
+% PSTricks commands can also be used to draw the arrow. For this, the optional
+% argument |pstricks| must be passed to \refCom{NewOverArrowCommand}. Like for
+% TikZ, the three lengths \refCom{overarrowlength}, \refCom{overarrowthickness}
+% and \refCom{overarrowsmallerthickness} can be used in PSTricks commands.
+% By default, a right arrow is drawn:
+% \iffalse
+%<*example>
+% \fi
+\begin{dispExample}
+\NewOverArrowCommand[pstricks]{overpstarrow}{}
+$ \overpstarrow{v} \qquad \overpstarrow{AB} $
+\end{dispExample}
+% \iffalse
+%</example>
+% \fi
+% \noindent The \pkg{pstricks} package has to be loaded (for example, using the
+% \refOpt{pstricks} option to the \pkg{overarrows} package)
+%
+% Keys to use PSTricks commands are described in section~\ref{sec:pstricks-keys},
+% page~\pageref{sec:pstricks-keys}. The main keys are \refKey{pstricks command},
+% \refKey{psset}, \refDoc{key:pstricks}{arrow}, \refDoc{key:pstricks}{geometry}
+% an \refDoc{key:pstricks}{line thickness}. Examples:
+% \iffalse
+%<*example>
+% \fi
+\begin{dispExample}
+\NewOverArrowCommand[pstricks]{overreddisks}{%
+  psset={linecolor=red}, arrow=*-*, center arrow,
+}
+$ \overreddisks{v} \qquad \overreddisks{AB} $
+\end{dispExample}
+\begin{dispExample}
+\NewOverArrowCommand[pstricks]{ellipticarrow}{%
+  pstricks command={%
+    \psellipticarcn{->}%^^A strip spaces
+    (0.5\overarrowlength,0.2\overarrowlength)%^^A strip spaces
+    (0.5\overarrowlength,0.2\overarrowlength)%^^A strip spaces
+    {170}{10}
+  },
+  geometry={(0,0.2\overarrowlength)(\overarrowlength,0.4\overarrowlength)},
+  line thickness={\overarrowsmallerthickness},
+  center arrow,
+}
+$ \ellipticarrow{v} \qquad \ellipticarrow{AB} $
+\end{dispExample}
+% \iffalse
+%</example>
+% \fi
+%
 % \subsection{Drawing the arrow with \LaTeX{} picture environment}
 %
-% As well as TikZ, the \LaTeX{} |picture| environment can be used to draw the
-% arrow. For this, the optional argument |picture| must be passed to
-% \refCom{NewOverArrowCommand}. Like for TikZ, the three lengths
-% \refCom{overarrowlength}, \refCom{overarrowthickness} and
-% \refCom{overarrowsmallerthickness} can be used in |picture| commands.
-% By default, a right vector is drawn:
+% Without any other package, arrows can also be drawn with the \LaTeX{}
+% |picture| environment. In this case, the optional argument |picture| must be
+% passed to \refCom{NewOverArrowCommand}. As for TikZ or PSTricks, the three
+% lengths \refCom{overarrowlength}, \refCom{overarrowthickness} and
+% \refCom{overarrowsmallerthickness} are available and can to be used with
+% |picture| drawing commands. By default, a right vector is drawn:
 % \iffalse
 %<*example>
 % \fi
@@ -875,7 +926,6 @@ $ \overbandedarrow{v} \qquad \overbandedarrow{AB} $
 %
 % \subsection{Package options}
 % \label{sec:package-options}
-%
 %
 % The \pkg{overarrows} package accepts many options, given as a comma-separated
 % list \meta{options} at package loading:
@@ -1100,6 +1150,16 @@ $ \overbandedarrow{v} \qquad \overbandedarrow{AB} $
 %   library are loaded independently.
 % \end{docOption}
 %
+% \begin{docOption}{pstricks}
+%   Loads the package \pkg{pstricks-add}.
+%
+%   Note that, as it, this will compile with \LaTeX{}, \LuaLaTeX{} and
+%   \XeLaTeX{}, but not compile \makebox{pdf\LaTeX} (see the PSTricks
+%   documentation). PSTricks arrows, drawn with the |pstricks| method, are
+%   always available, even if this option is not set, provided the
+%   \pkg{pstricks} package is loaded independently.
+% \end{docOption}
+%
 % \begin{docOption}{pstarrows}
 %   Loads the \pkg{pict2e} package, with its option |pstarrows|. Vectors using
 %   \LaTeX{} |picture| environment gives then \pstarrows$\overpictarrow{AB}$
@@ -1183,6 +1243,7 @@ $ \overbandedarrow{v} \qquad \overbandedarrow{AB} $
 %   \begin{description}
 %    \item[|symb|] to draw the arrow by symbols assemblage (default);
 %    \item[|tikz|] to draw the arrow with PGF/TikZ;
+%    \item[|pstricks|] to draw the arrow with PSTricks;
 %    \item[|picture|] to draw the arrow with the \LaTeX{}
 %     |picture| environment.
 %   \end{description}
@@ -1285,13 +1346,14 @@ $ \displaystyle AB \quad \smallermathstyle AB
 %
 % \end{docCommand}
 %
-% \subsubsection{Useful lengths for TikZ or \texttt{picture} environment}
+% \subsubsection{Useful lengths for TikZ, PSTricks or \texttt{picture} environment}
 %
-% Arrows drawn with graphic languages, like PGF/TikZ or the \LaTeX{} |picture|
-% environment, are not extensible. The three lengths \refLen*{overarrowlength},
-% \refLen*{overarrowthickness} and \refLen*{overarrowsmallerthickness} are
-% computed at each utilisation of a command set with the |tikz| or |picture|
-% method, so they can be used in drawing commands.
+% Arrows drawn with graphic languages, like PGF/TikZ, PSTricks or the \LaTeX{}
+% |picture| environment, are not extensible. The three lengths
+% \refLen*{overarrowlength}, \refLen*{overarrowthickness} and
+% \refLen*{overarrowsmallerthickness} are computed at each utilisation of
+% a command set with the |tikz|, |pstricks| or |picture| method, so they can be
+% used in drawing commands.
 %
 % \iffalse
 %<*example>
@@ -1519,6 +1581,7 @@ $ \esvectvv*{\imath}{0}  \quad \esvectvv*{e}{r} \quad \esvectvv*{L}{\Delta} $
 % \begin{itemize}
 %  \item \meta{number}| = 0 | for the |symb| method (default);
 %  \item \meta{number}| = 12| for the |tikz| method;
+%  \item \meta{number}| = 12| for the |pstricks| method;
 %  \item \meta{number}| = 18| for the |picture| method.
 % \end{itemize}
 %
@@ -1591,7 +1654,7 @@ $ \underhooks{v} \qquad \underhooks{AB} $
 % commands creation):
 % \begin{itemize}
 %  \item \meta{number}| = 0 | for the |symb| method  (default);
-%  \item \meta{number}| = -2| for the |tikz| and |picture| methods.
+%  \item \meta{number}| = -2| for the |tikz|, |pstricks| and |picture| methods.
 % \end{itemize}
 %
 %\end{docKey}
@@ -1926,6 +1989,8 @@ $ \overdotteddoublearrow{v} \qquad \overdotteddoublearrow{AB} $
 %</example>
 % \fi
 %
+% \bigskip
+%
 % The following keys are available when the |tikz| method is chosen.
 %
 % \begin{docKey}[][before lower=\medskip\par]
@@ -1973,6 +2038,86 @@ $ \overdotteddoublearrow{v} \qquad \overdotteddoublearrow{AB} $
 %   value \cs{draw}|[|\refKey*{path options}|] |\refKey*{path}|;| is used.
 %\end{docKey}
 %
+% \subsubsection{PSTricks settings}
+% \label{sec:pstricks-keys}
+%
+% If, at command creation (see section~\ref{sec:macro-for-commands-creation},
+% page~\pageref{sec:macro-for-commands-creation} for the documentation of
+% commands creation), the |pstricks| method is chosen, then the arrow is drawn
+% with by:
+% \begin{flushleft}\leftskip=3cm
+%   \cs{begin}|{pspicture}|\refDoc{key:pstricks}*{geometry}|%|\\
+%    \quad\cs{psset}|{linewidth=|\refDoc{key:pstricks}*{line thickness}|}%|\\
+%    \quad\cs{psset}|{|\refKey*{psset}|}%|\\
+%    \quad\refKey*{pstricks command}|%|\par
+%   \cs{end}|{pspicture}%|
+% \end{flushleft}
+% \noindent where \refDoc{key:pstricks}{geometry}, \refDoc{key:pstricks}{line
+% thickness} \refKey*{psset} and \refKey*{pstricks command} are four keys
+% described below.
+%
+%\iffalse
+%<*example>
+% \fi
+\begin{dispExample*}{grow to left by=-2em}
+\NewOverArrowCommand[pstricks]{overloopandarrow}{
+  pstricks command={%
+    \pscurve{->}(0,0)
+    (0.6\overarrowlength,0.05\overarrowlength)
+    (0.5\overarrowlength,0.1\overarrowlength)
+    (0.4\overarrowlength,0.05\overarrowlength)
+    (\overarrowlength,0)
+  },
+  geometry={(0,0)(\overarrowlength,0.2\overarrowlength)},
+  space after arrow=2pt, min length=20,
+  geometry={(0,0)(\overarrowlength,0.2\overarrowlength)},
+}
+$ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
+\end{dispExample*}
+% \iffalse
+%</example>
+% \fi
+%
+% \bigskip
+%
+% The following keys are available when the |pstricks| method is chosen.
+%
+% \begin{docKey}[][before lower=\bigskip\par]
+% {pstricks command}{=\marg{pstricks command}}
+% {no default, initially \cs{psline}|\{->\}(0,0)(|\refCom*{overarrowlength}|,0)|}
+%  Sets the |pspicture| command to \meta{pstricks command}.
+% \end{docKey}
+%
+% \begin{docKey}[][doc label={pstricks:arrow}]%^^A same name as for TikZ
+% {arrow}{=\marg{arrow}}
+% {no default, initially |->|}
+% Sets \refKey{pstricks command} with
+% |\psline\{|\meta{arrow}|\}(0,0)-|\refCom*{overarrowlength}|,0)|}.
+% \end{docKey}
+%
+% \begin{docKey}[][]
+% {psset}{=\marg{pstricks setting}}
+% {no default, initially empty}
+%  Sets \meta{pstricks setting} with \cs{psset}.
+% \end{docKey}
+%
+% \begin{docKey}[][before lower=\bigskip\par, doc label={pstricks:geometry}]%^^A same name as for picture
+% {geometry}{=\marg{pstricks geometry specification}}
+% {no default, initially |(0,-0.5ex)(|\refCom*{overarrowlength}|,1ex)|}
+%   Sets the |pspicture| geometry to \meta{pstricks geometry specification}.
+% \end{docKey}
+%
+% \begin{docKey}[][doc label={pstricks:line thickness}]%^^A same name as for TikZ
+% {line thickness}{=\marg{length}}{no default}
+% Sets the line thickness to \meta{length}.
+% \end{docKey}
+%
+% \begin{docKey}[][doc label={pstricks:thinner}]%^^A same name as for TikZ
+% {thinner}{}{}
+% Sets the keys \refDoc{key:pstricks}{line thickness} with
+% \cs{overarrowsmallerthickness}.
+% \end{docKey}
+%
 % \subsubsection{Picture environment settings}
 % \label{sec:picture-keys}
 %
@@ -2010,7 +2155,10 @@ $ \overdotteddoublearrow{v} \qquad \overdotteddoublearrow{AB} $
 % \iffalse
 %</example>
 % \fi
-% The following keys are available when the |picture| method is chosen.
+%
+% \bigskip
+% 
+%The following keys are available when the |picture| method is chosen.
 %
 % \begin{docKey}[][before lower=\medskip\par]
 % {picture command}{=\marg{picture command}}
@@ -2242,8 +2390,12 @@ $ \overdotteddoublearrow{v} \qquad \overdotteddoublearrow{AB} $
 % \subsection{Changelog}
 %
 % \begin{description}
-%  \item[v1.2] Fix compatibility issues with \pkg{unicode-math} and remove the
-%  warning about non available font size generated by \pkg{esvect}.
+%  \item[v1.2]
+%    \begin{itemize}
+%      \item Fix compatibility issues with \pkg{unicode-math}.
+%      \item Allow to draw the arrow with PSTricks.
+%      \item Make \pkg{esvect} handle all font sizes.
+%      \end{itemize}
 %  \item[v1.1] Support for non-standard subscripts.
 %  \item[v1.0.1] Bug fix for under* options.
 %  \item[v1.0] Initial version.
@@ -2881,7 +3033,7 @@ $ \overdotteddoublearrow{v} \qquad \overdotteddoublearrow{AB} $
 % Initial configuration.
 %    \begin{macrocode}
   shift right=-2,
-  min length=18,
+  min length=12,
   geometry={(0,-0.5ex)(\overarrowlength,0.5ex)},%
   line thickness={\overarrowthickness},%
   arrow={->},%
