@@ -29,16 +29,16 @@
 
 \section{Default arrows}
 
-\NewOverArrowCommand{oldamsvec}{
+\NewOverArrowCommand{\oldamsvec}{
   amsmath, end=\varrightarrow, trim middle={2.5}, shift left={2},
 }
-\NewOverArrowCommand{amsvec}{
+\NewOverArrowCommand{\amsvec}{
     amsmath, end=\rightarrow, trim middle={2.5}, shift left={2},
 }
-\NewOverArrowCommand{esvec}{esvect}
-\NewOverArrowCommand[tikz]{tikzvec}{}
-\NewOverArrowCommand[pstricks]{pstricksvec}{}
-\NewOverArrowCommand[picture]{picvec}{}
+\NewOverArrowCommand{\esvec}{esvect}
+\NewOverArrowCommand[tikz]{\tikzvec}{}
+\NewOverArrowCommand[pstricks]{\pstricksvec}{}
+\NewOverArrowCommand[picture]{\picvec}{}
 
 \begin{center}
   \begin{tabularx}{\linewidth}{ *{8}{ >{\centering\arraybackslash}X }}
@@ -58,14 +58,14 @@
 
 \section{Package \textsf{esvect} arrows}
 
-\NewOverArrowCommand{esveca}{esvect, end={\fldra}}
-\NewOverArrowCommand{esvecb}{esvect, end={\fldrb}}
-\NewOverArrowCommand{esvecc}{esvect, end={\fldrc}}
-\NewOverArrowCommand{esvecd}{esvect, end={\fldrd}}
-\NewOverArrowCommand{esvece}{esvect, end={\fldre}}
-\NewOverArrowCommand{esvecf}{esvect, end={\fldrf}}
-\NewOverArrowCommand{esvecg}{esvect, end={\fldrg}}
-\NewOverArrowCommand{esvech}{esvect, end={\fldrh}}
+\NewOverArrowCommand{\esveca}{esvect, end={\fldra}}
+\NewOverArrowCommand{\esvecb}{esvect, end={\fldrb}}
+\NewOverArrowCommand{\esvecc}{esvect, end={\fldrc}}
+\NewOverArrowCommand{\esvecd}{esvect, end={\fldrd}}
+\NewOverArrowCommand{\esvece}{esvect, end={\fldre}}
+\NewOverArrowCommand{\esvecf}{esvect, end={\fldrf}}
+\NewOverArrowCommand{\esvecg}{esvect, end={\fldrg}}
+\NewOverArrowCommand{\esvech}{esvect, end={\fldrh}}
 
 \begin{center}
   \begin{tabularx}{\linewidth}{ *{8}{ >{\centering\arraybackslash}X }}
@@ -84,13 +84,13 @@
 \section{Arrow with an hook and two heads}
 
 \begin{dispExample}
-\NewOverArrowCommand{overhooktwoheadrightarrow}{%
+\NewOverArrowCommand{\overhooktwoheadrightarrow}{%
   start=\lhook,
   end=\twoheadrightarrow,% from amssymb package
   trim start=1.5,
   trim end=2,
 }
-\TestOverArrow{overhooktwoheadrightarrow}
+\TestOverArrow{\overhooktwoheadrightarrow}
 \end{dispExample}
 
 \section{Left-right arrow}
@@ -99,52 +99,52 @@ Note: \texttt{\textbackslash overleftrightarrow} is already defined by
 \textsf{amsmath} package.
 
 \begin{dispExample}
-\RenewOverArrowCommand{overleftrightarrow}{%
+\RenewOverArrowCommand{\overleftrightarrow}{%
   start=\varleftarrow,% from old-arrows package
   end=\varrightarrow,% from old-arrows package
   trim start=7,
   trim end=7,
   center arrow,
 }
-\TestOverArrow{overleftrightarrow}
+\TestOverArrow{\overleftrightarrow}
 \end{dispExample}
 
 \section{Arrow with a double line}
 
 \begin{dispExample}
-\NewOverArrowCommand{OverRightarrow}{%
+\NewOverArrowCommand{\OverRightarrow}{%
   start={\smallermathstyle\Relbar},
   middle={\smallermathstyle\Relbar},
   end={\Rightarrow},
   trim=4,
   space after arrow=.25ex,
 }
-\TestOverArrow{OverRightarrow}
+\TestOverArrow{\OverRightarrow}
 \end{dispExample}
 
 \section{Right and left harpoons}
 
 \begin{dispExample}
-\NewOverArrowCommand{overrightharpoon}{%
+\NewOverArrowCommand{\overrightharpoon}{%
   end=\rightharpoonup,
 }
-\TestOverArrow{overrightharpoon}
+\TestOverArrow{\overrightharpoon}
 \end{dispExample}
 
 \begin{dispExample}
-\NewOverArrowCommand{overleftharpoon}{%
+\NewOverArrowCommand{\overleftharpoon}{%
   start=\leftharpoonup,
   end=\relbar,
   shift left=0,
   shift right=2,
 }
-\TestOverArrow{overleftharpoon}
+\TestOverArrow{\overleftharpoon}
 \end{dispExample}
 
 \section{Double arrow, right and left inverted}
 
 \begin{dispExample}
-\NewOverArrowCommand{overrightleftarrow}{%
+\NewOverArrowCommand{\overrightleftarrow}{%
   start=\text{\usefont{U}{lasy}{m}{n}\symbol{41}},
   end=\text{\usefont{U}{lasy}{m}{n}\symbol{40}},
   trim start=0.7,
@@ -152,13 +152,13 @@ Note: \texttt{\textbackslash overleftrightarrow} is already defined by
   min length=20,
   shift leftright=-2,
 }
-\TestOverArrow{overrightleftarrow}
+\TestOverArrow{\overrightleftarrow}
 \end{dispExample}
 
 \section{Arrow with a triple tail}
 
 \begin{dispExample}
-\NewOverArrowCommand{overtttailrightarrow}{%
+\NewOverArrowCommand{\overtttailrightarrow}{%
   start={\vcenter{\hbox{%
         $\smallermathstyle\succ\xjoinrel[10]\succ\xjoinrel[10]\succ$
       }}},
@@ -169,13 +169,13 @@ Note: \texttt{\textbackslash overleftrightarrow} is already defined by
   min length=24,
   space after arrow=.15ex,
 }
-\TestOverArrow{overtttailrightarrow}
+\TestOverArrow{\overtttailrightarrow}
 \end{dispExample}
 
 \section{Arched left and right arrow, with \textsf{tikz} package}
 
 \begin{dispExample}
-\NewOverArrowCommand[tikz]{overarchedleftrightarrow}{%
+\NewOverArrowCommand[tikz]{\overarchedleftrightarrow}{%
   arrows={<[scale=0.5]->[scale=0.5]},
   add tikz options={y=\overarrowlength},
   path={(0,0) arc (-250:70:0.5 and 0.1)},
@@ -184,13 +184,13 @@ Note: \texttt{\textbackslash overleftrightarrow} is already defined by
   min length=25,
   space after arrow=0.4ex,
 }
-\TestOverArrow{overarchedleftrightarrow}
+\TestOverArrow{\overarchedleftrightarrow}
 \end{dispExample}
 
 \section{Loop and arrow, with \textsf{PSTricks}}
 
 \begin{dispExample}
-\NewOverArrowCommand[pstricks]{overloopandarrow}{
+\NewOverArrowCommand[pstricks]{\overloopandarrow}{
   pstricks command={%
     \pscurve{->}(0,0)
     (0.6\overarrowlength,0.05\overarrowlength)
@@ -202,13 +202,13 @@ Note: \texttt{\textbackslash overleftrightarrow} is already defined by
   space after arrow=2pt, min length=20,
   geometry={(0,0)(\overarrowlength,0.2\overarrowlength)},
 }
-\TestOverArrow{overloopandarrow}
+\TestOverArrow{\overloopandarrow}
 \end{dispExample}
 
 \section{Banded arrow, with \texttt{picture} environment}
 
 \begin{dispExample}
-\NewOverArrowCommand[picture]{overbandedarrow}{
+\NewOverArrowCommand[picture]{\overbandedarrow}{
   picture command={%
     \qbezier
     (0.0\overarrowlength,0)
@@ -221,7 +221,7 @@ Note: \texttt{\textbackslash overleftrightarrow} is already defined by
   center arrow,
   space after arrow=0.4ex,
 }
-\TestOverArrow{overbandedarrow}
+\TestOverArrow{\overbandedarrow}
 \end{dispExample}
 
 \section{Under arrow}
@@ -230,12 +230,12 @@ Note: \texttt{\textbackslash underleftrightarrow} is already defined by
 \textsf{amsmath} package.
 
 \begin{dispExample}
-  \DeclareOverArrowCommand{underleftrightarrow}{%
+  \DeclareOverArrowCommand{\underleftrightarrow}{%
     start=\varleftarrow,
     center arrow,
     arrow under,
   }
-  \TestOverArrow{underleftrightarrow}
+  \TestOverArrow{\underleftrightarrow}
 \end{dispExample}
 
 \end{document}

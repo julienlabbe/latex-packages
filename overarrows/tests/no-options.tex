@@ -23,31 +23,31 @@
 \section{Tests of type \texttt{symb} with \texttt{amsmath} config}
 
 \begin{dispExample}
-\NewOverArrowCommand{amsvector}{amsmath}
-\TestOverArrow*{amsvector}
+\NewOverArrowCommand{\amsvector}{amsmath}
+\TestOverArrow*{\amsvector}
 \end{dispExample}
 
 \begin{dispExample}
-\NewOverArrowCommand{amsstrictvector}{amsmath=strict}
-\TestOverArrow*{amsstrictvector}
+\NewOverArrowCommand{\amsstrictvector}{amsmath=strict}
+\TestOverArrow*{\amsstrictvector}
 \end{dispExample}
 
 \section{Tests of type \texttt{symb} with \texttt{esvect} config}
 
 \begin{dispExample}
-\NewOverArrowCommand{esvector}{esvect}
-\TestOverArrow*{esvector}
+\NewOverArrowCommand{\esvector}{esvect}
+\TestOverArrow*{\esvector}
 \end{dispExample}
 
 \begin{dispExample}
-\NewOverArrowCommand{esstrictvector}{esvect=strict}
-\TestOverArrow*{esstrictvector}
+\NewOverArrowCommand{\esstrictvector}{esvect=strict}
+\TestOverArrow*{\esstrictvector}
 \end{dispExample}
 
 \section{Tests of type \texttt{symb} with options}
 
 \begin{dispExample}
-\NewOverArrowCommand{testovertextarrow}{%
+\NewOverArrowCommand{\testovertextarrow}{%
   min length = 30,
   space before arrow=5ex,
   space after arrow=-.5ex,
@@ -61,23 +61,23 @@
   trim end=5,
   detect subscripts,
 }
-\TestOverArrow*{testovertextarrow}
+\TestOverArrow*{\testovertextarrow}
 \end{dispExample}
 
 \section{Tests of type \texttt{picture} without options}
 
 \begin{dispExample}
-\NewOverArrowCommand[picture]{picvector}{}
-\TestOverArrow*{picvector}
+\NewOverArrowCommand[picture]{\picvector}{}
+\TestOverArrow*{\picvector}
 \end{dispExample}
 
 \section{Tests of type \texttt{picture} with options}
 
 \begin{dispExample}
-\NewOverArrowCommand[picture]{thinnerpicvector}{%
+\NewOverArrowCommand[picture]{\thinnerpicvector}{%
   thinner,
 }
-\NewOverArrowCommand[picture]{thickerpicvector}{%
+\NewOverArrowCommand[picture]{\thickerpicvector}{%
   line thickness=2\overarrowthickness,
 }
 
@@ -85,7 +85,7 @@ $$ \thinnerpicvector{v} \qquad \picvector{v} \qquad \thickerpicvector{v} $$
 \end{dispExample}
 
 \begin{dispExample}
-\NewOverArrowCommand[picture]{testoverpicarrow}{%
+\NewOverArrowCommand[picture]{\testoverpicarrow}{%
   shift left=2,
   shift right=-5,
   min length=30,
@@ -96,7 +96,7 @@ $$ \thinnerpicvector{v} \qquad \picvector{v} \qquad \thickerpicvector{v} $$
     }%
     \put(0,0){\vector(4,1){0.85\overarrowlength}}},%
 }
-\TestOverArrow*{testoverpicarrow}
+\TestOverArrow*{\testoverpicarrow}
 \end{dispExample}
 
 \end{document}

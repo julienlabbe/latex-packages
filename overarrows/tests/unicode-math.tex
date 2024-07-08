@@ -59,22 +59,22 @@
 \end{dispExample}
 
 \begin{dispExample}
-\NewOverArrowCommand{testharrowextender}{%
+\NewOverArrowCommand{\testharrowextender}{%
   middle config=harrowextender
 }
-\TestOverArrow{testharrowextender}
+\TestOverArrow{\testharrowextender}
 \end{dispExample}
 
 \section*{TikZ arrows}
 
 \begin{dispExample}
-\NewOverArrowCommand[tikz]{tikzstandardthickness}{%
+\NewOverArrowCommand[tikz]{\tikzstandardthickness}{%
   path options={
     x=\overarrowlength, line width=\overarrowthickness
   },
   path={(0,0) -- (1,0)}, arrows={->}
 }
-\NewOverArrowCommand[tikz]{tikzsmallerthickness}{%
+\NewOverArrowCommand[tikz]{\tikzsmallerthickness}{%
   path options={
     x=\overarrowlength, line width=\overarrowsmallerthickness,
   },

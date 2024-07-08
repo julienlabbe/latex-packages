@@ -19,7 +19,7 @@ envconfig=TEXINPUTS=$(stydir):${TEXINPUTS} $(texmfcnf)
 
 .PHONY: clean all
 
-all: $(filter unicode-math.pdf,$(src:.tex=.pdf)) unicode-math
+all: $(filter-out unicode-math.pdf,$(src:.tex=.pdf)) unicode-math
 
 %.pdf: %.tex $(dep)
 	$(envconfig) $(cmd) $(rcoptions) $(runoptions) $<

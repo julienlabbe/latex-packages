@@ -9,10 +9,10 @@
 \title{Test of the \textsf{overarrows} package}
 \author{Julien Labb\'e}
 
-\NewOverArrowCommand{amsvec}{end={\rightarrow}}
-\NewOverArrowCommand[tikz]{tikzvec}{}
-\NewOverArrowCommand[pstricks]{pstricksvec}{}
-\NewOverArrowCommand[picture]{picvec}{}
+\NewOverArrowCommand{\amsvec}{end={\rightarrow}}
+\NewOverArrowCommand[tikz]{\tikzvec}{}
+\NewOverArrowCommand[pstricks]{\pstricksvec}{}
+\NewOverArrowCommand[picture]{\picvec}{}
 
 \NewDocumentCommand{\repeatntimes}{ O{1000} m}{
   \newcount\i
@@ -36,11 +36,11 @@
 % \repeatntimes[1000]{$\pstricksvec{v}$}
 % \repeatntimes[10000]{$\picvec{v}$}
 
-% \repeatntimes[1000]{\TestOverArrow{overrightarrow}}
-% \repeatntimes[1000]{\TestOverArrow{esvectvv}}
-% \repeatntimes[1000]{\TestOverArrow{vv}}
-% \repeatntimes[100]{\TestOverArrow{tikzvec}}
-% \repeatntimes[100]{\TestOverArrow{pstricksvec}}
-% \repeatntimes[500]{\TestOverArrow{picvec}}
+% \repeatntimes[1000]{\TestOverArrow{\overrightarrow}}
+% \repeatntimes[1000]{\TestOverArrow{\esvectvv}}
+% \repeatntimes[1000]{\TestOverArrow{\vv}}
+% \repeatntimes[100]{\TestOverArrow{\tikzvec}}
+% \repeatntimes[100]{\TestOverArrow{\pstricksvec}}
+% \repeatntimes[500]{\TestOverArrow{\picvec}}
 
 \end{document}

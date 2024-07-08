@@ -17,10 +17,10 @@
 \usepackage{altsubsup}
 
 %% define commands in preamble, before altsubsup catcode redefinition of `_
-\DeclareOverArrowCommand{withsubdetection}{%
+\DeclareOverArrowCommand{\withsubdetection}{%
   detect subscripts=true,
 }
-\DeclareOverArrowCommand{nosubdetection}{%
+\DeclareOverArrowCommand{\nosubdetection}{%
   detect subscripts=false,
 }
 
@@ -35,7 +35,7 @@
 \section{Subscript detection enabled}
 
 \begin{dispExample}
-\TestOverArrow*{withsubdetection}
+\TestOverArrow*{\withsubdetection}
 
 $ \withsubdetection{\imath}_{sub} \qquad \withsubdetection{\imath}_[altsub]$
 \end{dispExample}
@@ -43,7 +43,7 @@ $ \withsubdetection{\imath}_{sub} \qquad \withsubdetection{\imath}_[altsub]$
 \section{Subscript detection disabled}
 
 \begin{dispExample}
-\TestOverArrow*{nosubdetection}
+\TestOverArrow*{\nosubdetection}
 
 $ \nosubdetection{\imath}_{sub} \qquad \nosubdetection{\imath}_[altsub]$
 \end{dispExample}

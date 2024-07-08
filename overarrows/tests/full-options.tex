@@ -31,33 +31,33 @@
 \section{Options \texttt{old-arrows} and \texttt{allcommands}}
 
 \begin{dispExample}
-\TestOverArrow*{overrightarrow}
+\TestOverArrow*{\overrightarrow}
 \end{dispExample}
 
 \begin{dispExample}
-\NewOverArrowCommand{amsvec}{amsmath, end={\rightarrow}, shift left=2}
-\TestOverArrow*{amsvec}
+\NewOverArrowCommand{\amsvec}{amsmath, end={\rightarrow}, shift left=2}
+\TestOverArrow*{\amsvec}
 \end{dispExample}
 
 \section{Option \texttt{esvech}}
 
 \begin{dispExample}
-\NewOverArrowCommand{esvec}{esvect}
-\TestOverArrow*{esvec}
+\NewOverArrowCommand{\esvec}{esvect}
+\TestOverArrow*{\esvec}
 \end{dispExample}
 
 \section{Option \texttt{tikz}}
 
 \begin{dispExample}
-\NewOverArrowCommand[tikz]{tikzvec}{}
-\TestOverArrow*{tikzvec}
+\NewOverArrowCommand[tikz]{\tikzvec}{}
+\TestOverArrow*{\tikzvec}
 \end{dispExample}
 
 \begin{dispExample}
-\NewOverArrowCommand[tikz]{thinnertikzvec}{%
+\NewOverArrowCommand[tikz]{\thinnertikzvec}{%
   thinner,
 }
-\NewOverArrowCommand[tikz]{thickertikzvec}{%
+\NewOverArrowCommand[tikz]{\thickertikzvec}{%
   line thickness={2\overarrowthickness},
 }
 
@@ -65,54 +65,54 @@ $$ \thinnertikzvec{v} \qquad \tikzvec{v} \qquad \thickertikzvec{v} $$
 \end{dispExample}
 
 \begin{dispExample}
-\NewOverArrowCommand[tikz]{tikzoptvec}{%
+\NewOverArrowCommand[tikz]{\tikzoptvec}{%
   tikz options={line width=2\overarrowthickness},
   path options={arrows={<->}},
   path={(0,0)--(0.5,0.05)},
 }
-\TestOverArrow*{tikzoptvec}
+\TestOverArrow*{\tikzoptvec}
 \end{dispExample}
 
 \begin{dispExample}
-\NewOverArrowCommand[tikz]{tikzaddoptvec}{%
+\NewOverArrowCommand[tikz]{\tikzaddoptvec}{%
   add tikz options={blue},
   add path options={thick},
   arrows={->>}, min length=20,
 }
-\TestOverArrow*{tikzaddoptvec}
+\TestOverArrow*{\tikzaddoptvec}
 \end{dispExample}
 
 \begin{dispExample}
-\NewOverArrowCommand[tikz]{tikcodevec}{%
+\NewOverArrowCommand[tikz]{\tikcodevec}{%
   tikz command={\draw[Circle-Circle](0,0).. controls (0.5,0.3).. (1,0);},
   shift left=-2, space after arrow=0.2ex,
 }
-\TestOverArrow*{tikcodevec}
+\TestOverArrow*{\tikcodevec}
 \end{dispExample}
 
 
 \section{Option \texttt{pstricks}}
 
 \begin{dispExample}
-\NewOverArrowCommand[pstricks]{pstvec}{}
-\TestOverArrow*{pstvec}
+\NewOverArrowCommand[pstricks]{\pstvec}{}
+\TestOverArrow*{\pstvec}
 \end{dispExample}
 
 \begin{dispExample}
-\NewOverArrowCommand[pstricks]{pstTbarandarrows}{arrow={|<->|}, center arrow}
-\TestOverArrow*{pstTbarandarrows}
+\NewOverArrowCommand[pstricks]{\pstTbarandarrows}{arrow={|<->|}, center arrow}
+\TestOverArrow*{\pstTbarandarrows}
 \end{dispExample}
 
 \begin{dispExample}
-\NewOverArrowCommand[pstricks]{pstsmallbluearrow}{
+\NewOverArrowCommand[pstricks]{\pstsmallbluearrow}{
   psset = {arrowscale=0.5, arrowinset=0, linecolor=blue},
   thinner,
 }
-\TestOverArrow*{pstsmallbluearrow}
+\TestOverArrow*{\pstsmallbluearrow}
 \end{dispExample}
 
 \begin{dispExample}
-\NewOverArrowCommand[pstricks]{psellipticarrow}{
+\NewOverArrowCommand[pstricks]{\psellipticarrow}{
   pstricks command={%
     \psellipticarcn{->}%
     (0.5\overarrowlength,0.2\overarrowlength)%
@@ -122,23 +122,23 @@ $$ \thinnertikzvec{v} \qquad \tikzvec{v} \qquad \thickertikzvec{v} $$
   geometry={(0,0.2\overarrowlength)(\overarrowlength,0.4\overarrowlength)},
   center arrow,
 }
-\TestOverArrow*{psellipticarrow}
+\TestOverArrow*{\psellipticarrow}
 \end{dispExample}
 
 \section{Option \texttt{pstarrows}}
 
 \begin{dispExample}
-\NewOverArrowCommand[picture]{picvec}{}
-\TestOverArrow*{picvec}
+\NewOverArrowCommand[picture]{\picvec}{}
+\TestOverArrow*{\picvec}
 \end{dispExample}
 
 \section{Option \texttt{subscripts}}
 
 \begin{dispExample}
-\NewOverArrowCommand{subvec}{min length=30}
-\NewOverArrowCommand{nosubvec}{min length=30, detect subscripts=false}
-\TestOverArrow*{subvec}
-\TestOverArrow*{nosubvec}
+\NewOverArrowCommand{\subvec}{min length=30}
+\NewOverArrowCommand{\nosubvec}{min length=30, detect subscripts=false}
+\TestOverArrow*{\subvec}
+\TestOverArrow*{\nosubvec}
 \end{dispExample}
 
 \end{document}
