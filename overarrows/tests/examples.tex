@@ -7,7 +7,7 @@
 \title{Package \textsf{overarrows} examples}
 \author{Julien Labb\'e}
 
-\usepackage[old-arrows, esvect, tikz, pstarrows, debug]{overarrows}
+\usepackage[old-arrows, esvect, tikz, pstricks, pstarrows, debug]{overarrows}
 \usepackage{overarrows-doc}
 \usepackage{amssymb}
 \usepackage{tabularx}
@@ -37,20 +37,22 @@
 }
 \NewOverArrowCommand{esvec}{esvect}
 \NewOverArrowCommand[tikz]{tikzvec}{}
+\NewOverArrowCommand[pstricks]{pstricksvec}{}
 \NewOverArrowCommand[picture]{picvec}{}
 
 \begin{center}
-  \begin{tabularx}{\linewidth}{ *{7}{ >{\centering\arraybackslash}X }}
-  \scriptsize \texttt{\textbackslash vec}
-    & \scriptsize ams & \scriptsize old-arrows & \scriptsize esvect
-    & \scriptsize tikz & \scriptsize picture & \scriptsize pstarrows \\[1em]
-    $\displaystyle \vec{v}$
-    & $\displaystyle \amsvec{v}$
-    & $\displaystyle \oldamsvec{v}$
-    & $\displaystyle \esvec{v}$
-    & $\displaystyle \tikzvec{v}$
-    & \ltxarrows $\displaystyle \picvec{v}$
-    & \pstarrows $\displaystyle \picvec{v}$
+  \begin{tabularx}{\linewidth}{ *{8}{ >{\centering\arraybackslash}X }}
+    \scriptsize \texttt{\textbackslash vec} &
+    \scriptsize ams                         & \scriptsize old-arrows & \scriptsize esvect  &
+    \scriptsize tikz                        & \scriptsize pstricks   & \scriptsize picture & \scriptsize pstarrows \\[1em]
+    $\displaystyle \vec{v}$                 &
+    $\displaystyle \amsvec{v}$              &
+    $\displaystyle \oldamsvec{v}$           &
+    $\displaystyle \esvec{v}$               &
+    $\displaystyle  \tikzvec{v}$            &
+    $\displaystyle \pstricksvec{v}$         &
+    \ltxarrows $\displaystyle \picvec{v}$   &
+    \pstarrows $\displaystyle \picvec{v}$
   \end{tabularx}
 \end{center}
 
@@ -183,6 +185,23 @@ Note: \texttt{\textbackslash overleftrightarrow} is already defined by
   space after arrow=0.4ex,
 }
 \TestOverArrow{overarchedleftrightarrow}
+\end{dispExample}
+
+\section{Loop and arrow, with \textsf{PSTricks}}
+
+\begin{dispExample}
+\NewOverArrowCommand[pstricks]{overloopandarrow}{
+  pstricks command={%
+    \pscurve{->}(0,0)
+    (0.6\overarrowlength,0.05\overarrowlength)
+    (0.5\overarrowlength,0.1\overarrowlength)
+    (0.4\overarrowlength,0.05\overarrowlength)
+    (\overarrowlength,0\overarrowlength)
+  },
+  geometry={(0,0)(\overarrowlength,0.2\overarrowlength)},
+  space after arrow=2pt,
+}
+\TestOverArrow{overloopandarrow}
 \end{dispExample}
 
 \section{Banded arrow, with \texttt{picture} environment}

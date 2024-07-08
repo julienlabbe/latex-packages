@@ -8,8 +8,10 @@
 \title{Test of the \textsf{overarrows} package\\with all options}
 \author{Julien Labb\'e}
 
-\usepackage[
-old-arrows, esvecth, tikz, pstarrows, subscripts, allcommands, debug
+\usepackage[%
+  old-arrows, esvecth,
+  tikz, pstricks, pstarrows,
+  subscripts, allcommands, debug
 ]{overarrows}
 \usepackage{overarrows-doc}
 
@@ -19,9 +21,11 @@ old-arrows, esvecth, tikz, pstarrows, subscripts, allcommands, debug
 \section{Loading the package with many options}
 
 \begin{dispListing}
-  \usepackage[
-  old-arrows, esvecth, tikz, pstarrows, subscripts, allcommands, debug
-  ]{overarrows}
+\usepackage[%
+  old-arrows, esvecth,
+  tikz, pstricks, pstarrows,
+  subscripts, allcommands, debug
+]{overarrows}
 \end{dispListing}
 
 \section{Options \texttt{old-arrows} and \texttt{allcommands}}
@@ -84,6 +88,41 @@ $$ \thinnertikzvec{v} \qquad \tikzvec{v} \qquad \thickertikzvec{v} $$
   shift left=-2, space after arrow=0.2ex,
 }
 \TestOverArrow*{tikcodevec}
+\end{dispExample}
+
+
+\section{Option \texttt{pstricks}}
+
+\begin{dispExample}
+\NewOverArrowCommand[pstricks]{pstvec}{}
+\TestOverArrow*{pstvec}
+\end{dispExample}
+
+\begin{dispExample}
+\NewOverArrowCommand[pstricks]{pstTbarandarrows}{arrow={|<->|}, center arrow}
+\TestOverArrow*{pstTbarandarrows}
+\end{dispExample}
+
+\begin{dispExample}
+\NewOverArrowCommand[pstricks]{pstsmallbluearrow}{
+  psset = {arrowscale=0.5, arrowinset=0, linecolor=blue},
+  thinner,
+}
+\TestOverArrow*{pstsmallbluearrow}
+\end{dispExample}
+
+\begin{dispExample}
+\NewOverArrowCommand[pstricks]{psellipticarrow}{
+  pstricks command={%
+    \psellipticarcn{->}%
+    (0.5\overarrowlength,0.2\overarrowlength)%
+    (0.5\overarrowlength,0.2\overarrowlength)%
+    {170}{10}
+  },
+  geometry={(0,0.2\overarrowlength)(\overarrowlength,0.4\overarrowlength)},
+  center arrow,
+}
+\TestOverArrow*{psellipticarrow}
 \end{dispExample}
 
 \section{Option \texttt{pstarrows}}
