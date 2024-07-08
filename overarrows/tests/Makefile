@@ -40,6 +40,10 @@ unicode-math-xetex: unicode-math.tex $(dep)
 %.pdf+: %.tex $(dep)
 	$(envconfig) $(cmd) $(rcoptions) $(runoptions) $(pvcoptions) $<
 
+.PHONY: speed
+speed: speed-test.tex
+	$(envconfig) $(cmd) $(rcoptions) $(runoptions) $<
+
 clean:
 	$(envconfig) $(cmd) $(rcoptions) -c
 
