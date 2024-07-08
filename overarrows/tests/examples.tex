@@ -196,10 +196,11 @@ Note: \texttt{\textbackslash overleftrightarrow} is already defined by
     (0.6\overarrowlength,0.05\overarrowlength)
     (0.5\overarrowlength,0.1\overarrowlength)
     (0.4\overarrowlength,0.05\overarrowlength)
-    (\overarrowlength,0\overarrowlength)
+    (\overarrowlength,0)
   },
   geometry={(0,0)(\overarrowlength,0.2\overarrowlength)},
-  space after arrow=2pt,
+  space after arrow=2pt, min length=20,
+  geometry={(0,0)(\overarrowlength,0.2\overarrowlength)},
 }
 \TestOverArrow{overloopandarrow}
 \end{dispExample}
