@@ -3331,9 +3331,30 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 %
 % \subsubsection*{Macro for commands creation}
 %
+% \changes{v1.4}{2024/07/06}{Allow backslash in command name}
+% In the initial version, the commands names must be given as csname (without
+% backslash). To harmonize the syntax with standard \cs{NewDocumentCommand},
+% define an argument processor so that both
+% \cs{NewOverArrowCommand}|\{\myarrow\}| and
+% \cs{NewOverArrowCommand}|\{myarrow\}| are accepted.
+%
+%    \begin{macrocode}
+\ExplSyntaxOn
+\cs_new_protected:Npn \__overarrows_processor_strip_escape_char:n #1
+  {
+     \regex_match:nnTF { ^\cC. } { #1 }
+     { \tl_set:Nx \ProcessedArgument { \cs_to_str:N #1 } }
+     { \tl_set:Nx \ProcessedArgument { #1 } }
+  }
+\cs_new_eq:NN \ovar@cmdname@processor \__overarrows_processor_strip_escape_char:n
+\ExplSyntaxOff
+%    \end{macrocode}
+%
 % \begin{macro}{\DeclareOverArrowCommand}
 %    \begin{macrocode}
-\NewDocumentCommand{\DeclareOverArrowCommand}{ O{symb} m m }{%
+\NewDocumentCommand{\DeclareOverArrowCommand}{
+ O{symb} >{\ovar@cmdname@processor} m m
+}{%
   \begingroup
   \ovar@set@common
   \ifcsdef{ovar@set@#1}{%
@@ -3394,7 +3415,9 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 %
 % \begin{macro}{\ProvideOverArrowCommand}
 %    \begin{macrocode}
-\NewDocumentCommand{\ProvideOverArrowCommand}{ O{symb} m m }{%
+\NewDocumentCommand{\ProvideOverArrowCommand}{
+ O{symb} >{\ovar@cmdname@processor} m m
+}{%
   \ifcsdef{#2}{}{
     \DeclareOverArrowCommand[#1]{#2}{#3}
   }
@@ -3404,7 +3427,9 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 %
 % \begin{macro}{\NewOverArrowCommand}
 %    \begin{macrocode}
-\NewDocumentCommand{\NewOverArrowCommand}{ O{symb} m m }{%
+\NewDocumentCommand{\NewOverArrowCommand}{
+ O{symb} >{\ovar@cmdname@processor} m m
+}{%
   \ifcsdef{#2}{%
     \PackageError{overarrows}{Command \csname #2\endcsname already defined}%
     {You have used \protect\NewOverArrowCommand\space with a command that
@@ -3419,7 +3444,9 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 %
 % \begin{macro}{\RenewOverArrowCommand}
 %    \begin{macrocode}
-\NewDocumentCommand{\RenewOverArrowCommand}{ O{symb} m m }{%
+\NewDocumentCommand{\RenewOverArrowCommand}{
+ O{symb} >{\ovar@cmdname@processor} m m
+}{%
   \ifcsundef{#2}{%
     \PackageError{overarrows}{Command  \csname #2\endcsname undefined}%
     {You have used \protect\RenewOverArrowCommand\space with a command that was
@@ -3757,7 +3784,9 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 %
 % \begin{macro}{\TestOverArrow}
 %    \begin{macrocode}
-\NewDocumentCommand{\TestOverArrow}{ s o m }{
+\NewDocumentCommand{\TestOverArrow}{
+  s o >{\ovar@cmdname@processor} m
+}{%
   \ifcsdef{#3}{}{%
     \PackageWarning{overarrows}{Unknown name '#3' passed to
       \protect\TestOverArrow}

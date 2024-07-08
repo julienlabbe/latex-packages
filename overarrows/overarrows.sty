@@ -557,7 +557,18 @@
   \ovar@stackunder@{#2}{#3}{#4}{#5}{#6}%
 }
 \def\ovar@stack@lens{\ovar@stackover@lens}
-\NewDocumentCommand{\DeclareOverArrowCommand}{ O{symb} m m }{%
+\ExplSyntaxOn
+\cs_new_protected:Npn \__overarrows_processor_strip_escape_char:n #1
+  {
+     \regex_match:nnTF { ^\cC. } { #1 }
+     { \tl_set:Nx \ProcessedArgument { \cs_to_str:N #1 } }
+     { \tl_set:Nx \ProcessedArgument { #1 } }
+  }
+\cs_new_eq:NN \ovar@cmdname@processor \__overarrows_processor_strip_escape_char:n
+\ExplSyntaxOff
+\NewDocumentCommand{\DeclareOverArrowCommand}{
+ O{symb} >{\ovar@cmdname@processor} m m
+}{%
   \begingroup
   \ovar@set@common
   \ifcsdef{ovar@set@#1}{%
@@ -609,12 +620,16 @@
   \fi
   \endgroup
 }
-\NewDocumentCommand{\ProvideOverArrowCommand}{ O{symb} m m }{%
+\NewDocumentCommand{\ProvideOverArrowCommand}{
+ O{symb} >{\ovar@cmdname@processor} m m
+}{%
   \ifcsdef{#2}{}{
     \DeclareOverArrowCommand[#1]{#2}{#3}
   }
 }
-\NewDocumentCommand{\NewOverArrowCommand}{ O{symb} m m }{%
+\NewDocumentCommand{\NewOverArrowCommand}{
+ O{symb} >{\ovar@cmdname@processor} m m
+}{%
   \ifcsdef{#2}{%
     \PackageError{overarrows}{Command \csname #2\endcsname already defined}%
     {You have used \protect\NewOverArrowCommand\space with a command that
@@ -624,7 +639,9 @@
     \DeclareOverArrowCommand[#1]{#2}{#3}
   }
 }
-\NewDocumentCommand{\RenewOverArrowCommand}{ O{symb} m m }{%
+\NewDocumentCommand{\RenewOverArrowCommand}{
+ O{symb} >{\ovar@cmdname@processor} m m
+}{%
   \ifcsundef{#2}{%
     \PackageError{overarrows}{Command  \csname #2\endcsname undefined}%
     {You have used \protect\RenewOverArrowCommand\space with a command that was
@@ -823,7 +840,9 @@
   \end{displaymath}
 }
 \endgroup
-\NewDocumentCommand{\TestOverArrow}{ s o m }{
+\NewDocumentCommand{\TestOverArrow}{
+  s o >{\ovar@cmdname@processor} m
+}{%
   \ifcsdef{#3}{}{%
     \PackageWarning{overarrows}{Unknown name '#3' passed to
       \protect\TestOverArrow}
