@@ -661,21 +661,21 @@
 \ifovar@option@esvect@
   \let\esvectvv\vv
   \undef\vv
-  \NewOverArrowCommand{vv}{esvect, middle config = relbareda}
+  \NewOverArrowCommand{\vv}{esvect, middle config = relbareda}
 \fi
 \DeclareHookRule{begindocument}{overarrows}{after}{unicode-math-luatex}
 \DeclareHookRule{begindocument}{overarrows}{after}{unicode-math-xetex}
 \AddToHook{begindocument}[overarrows]
   {
     \ifovar@option@overrightarrow@
-      \DeclareOverArrowCommand{overrightarrow}{%
+      \DeclareOverArrowCommand{\overrightarrow}{%
         amsmath, middle config=relbar,
         end=\ovar@rightarrow,
         right arrow,
       }
     \fi
     \ifovar@option@underrightarrow@
-      \DeclareOverArrowCommand{underrightarrow}{%
+      \DeclareOverArrowCommand{\underrightarrow}{%
         amsmath, middle config=relbar,
         end=\ovar@rightarrow,
         right arrow,
@@ -683,7 +683,7 @@
       }
     \fi
     \ifovar@option@overleftarrow@
-      \DeclareOverArrowCommand{overleftarrow}{%
+      \DeclareOverArrowCommand{\overleftarrow}{%
         amsmath, middle config=relbar,
         start=\ovar@leftarrow,
         end=\relbar,
@@ -691,7 +691,7 @@
       }
     \fi
     \ifovar@option@underleftarrow@
-      \DeclareOverArrowCommand{underleftarrow}{%
+      \DeclareOverArrowCommand{\underleftarrow}{%
         amsmath, middle config=relbar,
         start=\ovar@leftarrow,
         end=\relbar,
@@ -700,7 +700,7 @@
       }
     \fi
     \ifovar@option@overleftrightarrow@
-      \DeclareOverArrowCommand{overleftrightarrow}{%
+      \DeclareOverArrowCommand{\overleftrightarrow}{%
         amsmath, middle config=relbar,
         start=\ovar@leftarrow,
         end=\ovar@rightarrow,
@@ -708,7 +708,7 @@
       }
     \fi
     \ifovar@option@underleftrightarrow@
-      \DeclareOverArrowCommand{underleftrightarrow}{%
+      \DeclareOverArrowCommand{\underleftrightarrow}{%
         amsmath, middle config=relbar,
         start=\ovar@leftarrow,
         end=\ovar@rightarrow,
@@ -717,14 +717,14 @@
       }
     \fi
     \ifovar@option@overrightharpoonup@
-      \DeclareOverArrowCommand{overrightharpoonup}{%
+      \DeclareOverArrowCommand{\overrightharpoonup}{%
         amsmath, middle config=relbar,
         end=\rightharpoonup,
         right arrow,
       }
     \fi
     \ifovar@option@underrightharpoonup@
-      \DeclareOverArrowCommand{underrightharpoonup}{%
+      \DeclareOverArrowCommand{\underrightharpoonup}{%
         amsmath, middle config=relbar,
         end=\rightharpoonup,
         right arrow,
@@ -732,14 +732,14 @@
       }
     \fi
     \ifovar@option@overrightharpoondown@
-      \DeclareOverArrowCommand{overrightharpoondown}{%
+      \DeclareOverArrowCommand{\overrightharpoondown}{%
         amsmath, middle config=relbar,
         end=\rightharpoondown,
         right arrow,
       }
     \fi
     \ifovar@option@underrightharpoondown@
-      \DeclareOverArrowCommand{underrightharpoondown}{%
+      \DeclareOverArrowCommand{\underrightharpoondown}{%
         amsmath, middle config=relbar,
         end=\rightharpoondown,
         right arrow,
@@ -747,7 +747,7 @@
       }
     \fi
     \ifovar@option@overleftharpoonup@
-      \DeclareOverArrowCommand{overleftharpoonup}{%
+      \DeclareOverArrowCommand{\overleftharpoonup}{%
         amsmath, middle config=relbar,
         start=\leftharpoonup,
         end=\relbar,
@@ -755,7 +755,7 @@
       }
     \fi
     \ifovar@option@underleftharpoonup@
-      \DeclareOverArrowCommand{underleftharpoonup}{%
+      \DeclareOverArrowCommand{\underleftharpoonup}{%
         amsmath, middle config=relbar,
         start=\leftharpoonup,
         end=\relbar,
@@ -764,7 +764,7 @@
       }
     \fi
     \ifovar@option@overleftharpoondown@
-      \DeclareOverArrowCommand{overleftharpoondown}{%
+      \DeclareOverArrowCommand{\overleftharpoondown}{%
         amsmath, middle config=relbar,
         start=\leftharpoondown,
         end=\relbar,
@@ -772,7 +772,7 @@
       }
     \fi
     \ifovar@option@underleftharpoondown@
-      \DeclareOverArrowCommand{underleftharpoondown}{%
+      \DeclareOverArrowCommand{\underleftharpoondown}{%
         amsmath, middle config=relbar,
         start=\leftharpoondown,
         end=\relbar,
@@ -781,7 +781,7 @@
       }
     \fi
     \ifovar@option@overbar@
-      \DeclareOverArrowCommand{overbar}{%
+      \DeclareOverArrowCommand{\overbar}{%
         amsmath, middle config=relbar,
         start={\std@minus}, end={\std@minus},% \relbar is defined with \mathsm@sh
         shift leftright=0,
@@ -789,7 +789,7 @@
       }
     \fi
     \ifovar@option@underbar@
-      \DeclareOverArrowCommand{underbar}{%
+      \DeclareOverArrowCommand{\underbar}{%
         amsmath, middle config=relbar,
         start={\vphantom{+}\std@minus}, end={\std@minus},% \relbar is defined with \mathsm@sh
         shift leftright=0,

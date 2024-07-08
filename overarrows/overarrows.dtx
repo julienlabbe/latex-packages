@@ -37,8 +37,8 @@
 
 %% Arrows used in doc
 \usepackage{amssymb}% for \twoheadrightarrow
-\NewOverArrowCommand{amsoverrightarrow}{amsmath=strict, end={\rightarrow}}
-\NewOverArrowCommand{overrightnewarrow}{%
+\NewOverArrowCommand{\amsoverrightarrow}{amsmath=strict, end={\rightarrow}}
+\NewOverArrowCommand{\overrightnewarrow}{%
     amsmath, middle config=relbar,  end=\rightarrow,
     right arrow,
   }
@@ -50,22 +50,22 @@
 \DeclareMathSymbol{\fldrf}{\mathrel}{esvector}{'026}
 \DeclareMathSymbol{\fldrg}{\mathrel}{esvector}{'027}
 \DeclareMathSymbol{\fldrh}{\mathrel}{esvector}{'030}
-\NewOverArrowCommand{esveca}{esvect=strict, end={\fldra}}
-\NewOverArrowCommand{esvecb}{esvect=strict, end={\fldrb}}
-\NewOverArrowCommand{esvecc}{esvect=strict, end={\fldrc}}
-\NewOverArrowCommand{esvecd}{esvect=strict, end={\fldrd}}
-\NewOverArrowCommand{esvece}{esvect=strict, end={\fldre}}
-\NewOverArrowCommand{esvecg}{esvect=strict, end={\fldrg}}
-\NewOverArrowCommand{esvech}{esvect=strict, end={\fldrh}}
-\NewOverArrowCommand{vva}{esvect, middle config=auto, end=\fldra}
-\NewOverArrowCommand{esvecf}{esvect=strict, end={\fldrf}}
-\NewOverArrowCommand{vvb}{esvect, middle config=auto, end=\fldrb}
-\NewOverArrowCommand{vvc}{esvect, middle config=auto, end=\fldrc}
-\NewOverArrowCommand{vvd}{esvect, middle config=auto, end=\fldrd}
-\NewOverArrowCommand{vve}{esvect, middle config=auto, end=\fldre}
-\NewOverArrowCommand{vvf}{esvect, middle config=auto, end=\fldrf}
-\NewOverArrowCommand{vvg}{esvect, middle config=auto, end=\fldrg}
-\NewOverArrowCommand{vvh}{esvect, middle config=auto, end=\fldrh}
+\NewOverArrowCommand{\esveca}{esvect=strict, end={\fldra}}
+\NewOverArrowCommand{\esvecb}{esvect=strict, end={\fldrb}}
+\NewOverArrowCommand{\esvecc}{esvect=strict, end={\fldrc}}
+\NewOverArrowCommand{\esvecd}{esvect=strict, end={\fldrd}}
+\NewOverArrowCommand{\esvece}{esvect=strict, end={\fldre}}
+\NewOverArrowCommand{\esvecg}{esvect=strict, end={\fldrg}}
+\NewOverArrowCommand{\esvech}{esvect=strict, end={\fldrh}}
+\NewOverArrowCommand{\vva}{esvect, middle config=auto, end=\fldra}
+\NewOverArrowCommand{\esvecf}{esvect=strict, end={\fldrf}}
+\NewOverArrowCommand{\vvb}{esvect, middle config=auto, end=\fldrb}
+\NewOverArrowCommand{\vvc}{esvect, middle config=auto, end=\fldrc}
+\NewOverArrowCommand{\vvd}{esvect, middle config=auto, end=\fldrd}
+\NewOverArrowCommand{\vve}{esvect, middle config=auto, end=\fldre}
+\NewOverArrowCommand{\vvf}{esvect, middle config=auto, end=\fldrf}
+\NewOverArrowCommand{\vvg}{esvect, middle config=auto, end=\fldrg}
+\NewOverArrowCommand{\vvh}{esvect, middle config=auto, end=\fldrh}
 
 \makeatletter
 \newcommand{\unsetoldarrows}{
@@ -112,7 +112,7 @@
 %<*example>
 % \fi
 \begin{dispExample}
-\NewOverArrowCommand{overrightharpoon}{%
+\NewOverArrowCommand{\overrightharpoon}{%
   end=\rightharpoonup
 }
 
@@ -390,7 +390,7 @@
 %<*example>
 % \fi
 \begin{dispExample}
-\NewOverArrowCommand{myovercmd}{}
+\NewOverArrowCommand{\myovercmd}{}
 $\myovercmd{test}$
 \end{dispExample}
 % \iffalse
@@ -418,7 +418,7 @@ $ v_{sub} \qquad \myovercmd{v}_{sub} \qquad \myovercmd*{v}_{sub} $
 %<*example>
 % \fi
 \begin{dispListing}
-\NewOverArrowCommand{overhooktwoheadrightarrow}{%
+\NewOverArrowCommand{\overhooktwoheadrightarrow}{%
   start=\lhook, end=\twoheadrightarrow,
 }
 \end{dispListing}
@@ -442,7 +442,7 @@ $ v_{sub} \qquad \myovercmd{v}_{sub} \qquad \myovercmd*{v}_{sub} $
 % \iffalse
 %<*example>
 % \fi
-\NewOverArrowCommand{overhooktwoheadrightarrow}{%
+\NewOverArrowCommand{\overhooktwoheadrightarrow}{%
   start=\lhook, end=\twoheadrightarrow,
 }
 \begin{dispExample}
@@ -460,7 +460,7 @@ $ \overhooktwoheadrightarrow{v} \qquad \overhooktwoheadrightarrow{AB} $
 % \fi
 \csundef{overhooktwoheadrightarrow}
 \begin{dispExample}
-\NewOverArrowCommand{overhooktwoheadrightarrow}{%
+\NewOverArrowCommand{\overhooktwoheadrightarrow}{%
   start=\lhook, end=\twoheadrightarrow,
   trim start=1.5, trim end=2,
 }
@@ -483,7 +483,7 @@ $ \overhooktwoheadrightarrow{v} \qquad \overhooktwoheadrightarrow{AB} $
 % \fi
 \csundef{overhooktwoheadrightarrow}
 \begin{dispExample}
-\NewOverArrowCommand{overhooktwoheadrightarrow}{%
+\NewOverArrowCommand{\overhooktwoheadrightarrow}{%
   start=\lhook, end=\twoheadrightarrow, middle=\relbar, %
   trim start=0, trim end=3, trim middle=5,
 }
@@ -501,7 +501,7 @@ $ \overhooktwoheadrightarrow{v} \qquad \overhooktwoheadrightarrow{AB} $
 %<*example>
 % \fi
 \begin{dispExample}
-\TestOverArrow{overhooktwoheadrightarrow}
+\TestOverArrow{\overhooktwoheadrightarrow}
 \end{dispExample}
 % \iffalse
 %</example>
@@ -515,7 +515,7 @@ $ \overhooktwoheadrightarrow{v} \qquad \overhooktwoheadrightarrow{AB} $
 %<*example>
 % \fi
 \begin{dispExample}
-\NewOverArrowCommand{OverRightarrow}{%
+\NewOverArrowCommand{\OverRightarrow}{%
   start=\Relbar,
   middle=\Relbar,
   end=\Rightarrow,
@@ -536,7 +536,7 @@ $ \OverRightarrow{v} \qquad \OverRightarrow{AB} $
 % \fi
 \csundef{OverRightarrow}
 \begin{dispExample}
-\NewOverArrowCommand{OverRightarrow}{%
+\NewOverArrowCommand{\OverRightarrow}{%
   start={\smallermathstyle\Relbar},
   middle={\smallermathstyle\Relbar},
   end=\Rightarrow,
@@ -558,7 +558,7 @@ $ \OverRightarrow{v} \qquad \OverRightarrow{AB} $
 % \fi
 \csundef{OverRightarrow}
 \begin{dispExample}
-\NewOverArrowCommand{OverRightarrow}{%
+\NewOverArrowCommand{\OverRightarrow}{%
   start={\smallermathstyle\Relbar},
   middle={\smallermathstyle\Relbar},
   end=\Rightarrow,
@@ -580,7 +580,7 @@ $ \OverRightarrow{v} \qquad \OverRightarrow{AB} $
 %<*example>
 % \fi
 \begin{dispExample}
-\NewOverArrowCommand{OverLeftarrow}{%
+\NewOverArrowCommand{\OverLeftarrow}{%
   start={\smallermathstyle\Leftarrow},
   middle={\smallermathstyle\Relbar},
   end=\Relbar,
@@ -602,7 +602,7 @@ $ \OverLeftarrow{v} \qquad \OverLeftarrow{AB} $
 %<*example>
 % \fi
 \begin{dispExample}
-\NewOverArrowCommand{UnderLeftRightarrow}{%
+\NewOverArrowCommand{\UnderLeftRightarrow}{%
   start={\smallermathstyle\Leftarrow},
   middle={\smallermathstyle\Relbar},
   end=\Rightarrow,
@@ -651,7 +651,7 @@ $ \tttail $
 %<*example>
 % \fi
 \begin{dispExample}
-\NewOverArrowCommand{overtttailrightarrow}{%
+\NewOverArrowCommand{\overtttailrightarrow}{%
   start={\tttail},
   end={\rightarrow},
   trim start=12,
@@ -684,7 +684,7 @@ $ \overtttailrightarrow{v} \qquad \overtttailrightarrow{AB} $
 % \fi
 \csundef{overtttailrightarrow}
 \begin{dispExample}
-\NewOverArrowCommand{overtttailrightarrow}{%
+\NewOverArrowCommand{\overtttailrightarrow}{%
   start={\vcenter{\hbox{$\smallermathstyle\tttail$}}},
   end={\rightarrow},
   trim start=12,
@@ -711,7 +711,7 @@ $ \overtttailrightarrow{v} \qquad \overtttailrightarrow{AB} $
 \begin{dispExample}
 \newcommand*{\leftarrowhead}{\usefont{U}{lasy}{m}{n}\symbol{40}}
 \newcommand*{\righttarrowhead}{\usefont{U}{lasy}{m}{n}\symbol{41}}
-\NewOverArrowCommand{overrightleftarrow}{%
+\NewOverArrowCommand{\overrightleftarrow}{%
   start=\text{\righttarrowhead},
   end=\text{\leftarrowhead},
   trim start=0.7,  trim end=0.7,
@@ -768,7 +768,7 @@ $ \overrightleftarrow{AB} \qquad \scriptstyle\overrightleftarrow{AB} $
 %<*example>
 % \fi
 \begin{dispExample}
-\NewOverArrowCommand[tikz]{overtikzarrow}{}
+\NewOverArrowCommand[tikz]{\overtikzarrow}{}
 $ \overtikzarrow{v} \qquad \overtikzarrow{AB} $
 \end{dispExample}
 % \iffalse
@@ -792,7 +792,7 @@ $ \overtikzarrow{v} \qquad \overtikzarrow{AB} $
 %<*example>
 % \fi
 \begin{dispExample}
-\NewOverArrowCommand[tikz]{overarchedleftrightarrow}{%
+\NewOverArrowCommand[tikz]{\overarchedleftrightarrow}{%
   add tikz options={y=\overarrowlength},
   add tikz options={line width={\overarrowsmallerthickness}},
   path options={arrows={<[scale=0.5]->[scale=0.5]}},
@@ -819,7 +819,7 @@ $ \overarchedleftrightarrow{v} \qquad \overarchedleftrightarrow{ABCD} $
 %<*example>
 % \fi
 \begin{dispExample}
-\NewOverArrowCommand[pstricks]{overpstarrow}{}
+\NewOverArrowCommand[pstricks]{\overpstarrow}{}
 $ \overpstarrow{v} \qquad \overpstarrow{AB} $
 \end{dispExample}
 % \iffalse
@@ -836,13 +836,13 @@ $ \overpstarrow{v} \qquad \overpstarrow{AB} $
 %<*example>
 % \fi
 \begin{dispExample}
-\NewOverArrowCommand[pstricks]{overreddisks}{%
+\NewOverArrowCommand[pstricks]{\overreddisks}{%
   psset={linecolor=red}, arrow=*-*, center arrow,
 }
 $ \overreddisks{v} \qquad \overreddisks{AB} $
 \end{dispExample}
 \begin{dispExample}
-\NewOverArrowCommand[pstricks]{ellipticarrow}{%
+\NewOverArrowCommand[pstricks]{\ellipticarrow}{%
   pstricks command={%
     \psellipticarcn{->}%^^A strip spaces
     (0.5\overarrowlength,0.2\overarrowlength)%^^A strip spaces
@@ -872,7 +872,7 @@ $ \ellipticarrow{v} \qquad \ellipticarrow{AB} $
 % \fi
 \ltxarrows%^^A classic arrows
 \begin{dispExample}
-\NewOverArrowCommand[picture]{overpictarrow}{}
+\NewOverArrowCommand[picture]{\overpictarrow}{}
 $ \overpictarrow{v} \qquad \overpictarrow{AB} $
 \end{dispExample}
 % \iffalse
@@ -887,7 +887,7 @@ $ \overpictarrow{v} \qquad \overpictarrow{AB} $
 \pstarrows%^^A pst arrows
 \csundef{overpictarrow}
 \begin{dispExample}
-\NewOverArrowCommand[picture]{overpictarrow}{}
+\NewOverArrowCommand[picture]{\overpictarrow}{}
 $ \overpictarrow{v} \qquad \overpictarrow{AB} $
 \end{dispExample}
 % \iffalse
@@ -902,7 +902,7 @@ $ \overpictarrow{v} \qquad \overpictarrow{AB} $
 %<*example>
 % \fi
 \begin{dispExample}
-\NewOverArrowCommand[picture]{overbandedarrow}{
+\NewOverArrowCommand[picture]{\overbandedarrow}{
   picture command={%
     \qbezier
     (0.0\overarrowlength,0)
@@ -1259,7 +1259,7 @@ $ \overbandedarrow{v} \qquad \overbandedarrow{AB} $
 %<*example>
 % \fi
 \begin{dispExample}
-\NewOverArrowCommand[tikz]{myoverarrow}{arrows={Bar-Bar}, center arrow}
+\NewOverArrowCommand[tikz]{\myoverarrow}{arrows={Bar-Bar}, center arrow}
 $ \myoverarrow{v} \qquad \myoverarrow{ABCD} $
 \end{dispExample}
 % \iffalse
@@ -1359,7 +1359,7 @@ $ \displaystyle AB \quad \smallermathstyle AB
 %<*example>
 % \fi
 \begin{dispExample*}{grow to left by=-2em}
-\NewOverArrowCommand[tikz]{overparabola}{%
+\NewOverArrowCommand[tikz]{\overparabola}{%
   path options={x=\overarrowlength, line width=\overarrowsmallerthickness},
   path={(0,0) parabola[parabola height=0.2\overarrowlength] (1,0)},
   arrows={-}, center arrow, min length=30,
@@ -1589,7 +1589,7 @@ $ \esvectvv*{\imath}{0}  \quad \esvectvv*{e}{r} \quad \esvectvv*{L}{\Delta} $
 %<*example>
 % \fi
 \begin{dispExample}
-\NewOverArrowCommand{overlongarrow}{min length=50}
+\NewOverArrowCommand{\overlongarrow}{min length=50}
 $ \overlongarrow{v} \qquad \overlongarrow{ABCDEF} $
 \end{dispExample}
 % \iffalse
@@ -1623,7 +1623,7 @@ $ \overlongarrow{v} \qquad \overlongarrow{ABCDEF} $
 %<*example>
 % \fi
 \begin{dispExample}
-\NewOverArrowCommand{underhooks}{%
+\NewOverArrowCommand{\underhooks}{%
   start={\lhook}, end={\rhook},  trim=1,
   arrow under, shift leftright=-4,
 }
@@ -1663,7 +1663,7 @@ $ \underhooks{v} \qquad \underhooks{AB} $
 %<*example>
 % \fi
 \begin{dispExample*}{grow to left by=-2em}
-\NewOverArrowCommand{lookback}{%
+\NewOverArrowCommand{\lookback}{%
   start={\leftarrow}, end={\rightharpoondown},
   shift left=-50, shift right=-10,
 }
@@ -1731,7 +1731,7 @@ $ \lookback{\text{look back}} $
 %<*example>
 % \fi
 \begin{dispExample*}{grow to left by=-2em}
-\NewOverArrowCommand{overharpoonsdown}{%
+\NewOverArrowCommand{\overharpoonsdown}{%
   start=\leftharpoondown, end=\rightharpoondown, center arrow,
   space before arrow=-0.2ex, space after arrow=0.3ex,
 }
@@ -1766,7 +1766,7 @@ $ \dot{\overharpoonsdown{v}} \qquad \ddot{\overharpoonsdown{AB}}$
 %<*example>
 % \fi
 \begin{dispExample}
-\NewOverArrowCommand{autosub}{detect subscripts}
+\NewOverArrowCommand{\autosub}{detect subscripts}
 $ \imath_0 \qquad \autosub{\imath}_0 \qquad
  {\autosub{\imath}}_0 \qquad {\autosub*{\imath}}_0 $
 \end{dispExample}
@@ -1818,7 +1818,7 @@ $ \imath_0 \qquad \autosub{\imath}_0 \qquad
 %<*example>
 % \fi
 \begin{dispExample}
-\NewOverArrowCommand{smalleroverrightarrow}{%
+\NewOverArrowCommand{\smalleroverrightarrow}{%
   start={\smallermathstyle\relbar},
   middle={\smallermathstyle\relbareda},
   end={\rightarrow},
@@ -1978,7 +1978,7 @@ $ \smalleroverrightarrow{v} \qquad \smalleroverrightarrow{AB} $
 %<*example>
 % \fi
 \begin{dispExample*}{grow to left by=-2em}
-\NewOverArrowCommand[tikz]{overdotteddoublearrow}{%
+\NewOverArrowCommand[tikz]{\overdotteddoublearrow}{%
   add tikz options={blue}, add path options={densely dotted},
   arrows={->[scale=0.5]>[scale=0.5]}, thinner,
   min length=20, space after arrow={0.3ex},
@@ -2060,7 +2060,7 @@ $ \overdotteddoublearrow{v} \qquad \overdotteddoublearrow{AB} $
 %<*example>
 % \fi
 \begin{dispExample*}{grow to left by=-2em}
-\NewOverArrowCommand[pstricks]{overloopandarrow}{
+\NewOverArrowCommand[pstricks]{\overloopandarrow}{
   pstricks command={%
     \pscurve{->}(0,0)
     (0.6\overarrowlength,0.05\overarrowlength)
@@ -2092,7 +2092,7 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 % {arrow}{=\marg{arrow}}
 % {no default, initially |->|}
 % Sets \refKey{pstricks command} with
-% |\psline\{|\meta{arrow}|\}(0,0)-|\refCom*{overarrowlength}|,0)|}.
+% |\psline{|\meta{arrow}|}(0,0)(|\refCom*{overarrowlength}|,0)|.
 % \end{docKey}
 %
 % \begin{docKey}[][]
@@ -2140,7 +2140,7 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 \begin{dispExample*}{grow to left by=-2em}
   % ^^A \arc and \roundcap commands are from the pict2e package
   % ^^A this example needs \usepackage{pict2e} in the preamble
-  \NewOverArrowCommand[picture]{overarc}{%
+  \NewOverArrowCommand[picture]{\overarc}{%
     picture command={%
       \roundcap
       \put(0.5\overarrowlength,0){\arc[180,0]{0.6\overarrowlength}}
@@ -3489,7 +3489,7 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 % \changes{v1.2}{2024/07/06}{Use \refKey{middle config/relbareda} instead of
 % \refKey{middle config/auto}}
 %    \begin{macrocode}
-  \NewOverArrowCommand{vv}{esvect, middle config = relbareda}
+  \NewOverArrowCommand{\vv}{esvect, middle config = relbareda}
 \fi
 %    \end{macrocode}
 % \end{macro}
@@ -3510,7 +3510,7 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 % \begin{macro}{\overrightarrow}
 %    \begin{macrocode}
     \ifovar@option@overrightarrow@
-      \DeclareOverArrowCommand{overrightarrow}{%
+      \DeclareOverArrowCommand{\overrightarrow}{%
         amsmath, middle config=relbar,
         end=\ovar@rightarrow,
         right arrow,
@@ -3522,7 +3522,7 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 % \begin{macro}{\underrightarrow}
 %    \begin{macrocode}
     \ifovar@option@underrightarrow@
-      \DeclareOverArrowCommand{underrightarrow}{%
+      \DeclareOverArrowCommand{\underrightarrow}{%
         amsmath, middle config=relbar,
         end=\ovar@rightarrow,
         right arrow,
@@ -3535,7 +3535,7 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 % \begin{macro}{\overleftarrow}
 %    \begin{macrocode}
     \ifovar@option@overleftarrow@
-      \DeclareOverArrowCommand{overleftarrow}{%
+      \DeclareOverArrowCommand{\overleftarrow}{%
         amsmath, middle config=relbar,
         start=\ovar@leftarrow,
         end=\relbar,
@@ -3548,7 +3548,7 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 % \begin{macro}{\underleftarrow}
 %    \begin{macrocode}
     \ifovar@option@underleftarrow@
-      \DeclareOverArrowCommand{underleftarrow}{%
+      \DeclareOverArrowCommand{\underleftarrow}{%
         amsmath, middle config=relbar,
         start=\ovar@leftarrow,
         end=\relbar,
@@ -3562,7 +3562,7 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 % \begin{macro}{\overleftrightarrow}
 %    \begin{macrocode}
     \ifovar@option@overleftrightarrow@
-      \DeclareOverArrowCommand{overleftrightarrow}{%
+      \DeclareOverArrowCommand{\overleftrightarrow}{%
         amsmath, middle config=relbar,
         start=\ovar@leftarrow,
         end=\ovar@rightarrow,
@@ -3575,7 +3575,7 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 % \begin{macro}{\underleftrightarrow}
 %    \begin{macrocode}
     \ifovar@option@underleftrightarrow@
-      \DeclareOverArrowCommand{underleftrightarrow}{%
+      \DeclareOverArrowCommand{\underleftrightarrow}{%
         amsmath, middle config=relbar,
         start=\ovar@leftarrow,
         end=\ovar@rightarrow,
@@ -3589,7 +3589,7 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 % \begin{macro}{\overrightharpoonup}
 %    \begin{macrocode}
     \ifovar@option@overrightharpoonup@
-      \DeclareOverArrowCommand{overrightharpoonup}{%
+      \DeclareOverArrowCommand{\overrightharpoonup}{%
         amsmath, middle config=relbar,
         end=\rightharpoonup,
         right arrow,
@@ -3601,7 +3601,7 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 % \begin{macro}{\underrightharpoonup}
 %    \begin{macrocode}
     \ifovar@option@underrightharpoonup@
-      \DeclareOverArrowCommand{underrightharpoonup}{%
+      \DeclareOverArrowCommand{\underrightharpoonup}{%
         amsmath, middle config=relbar,
         end=\rightharpoonup,
         right arrow,
@@ -3614,7 +3614,7 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 % \begin{macro}{\overrightharpoondown}
 %    \begin{macrocode}
     \ifovar@option@overrightharpoondown@
-      \DeclareOverArrowCommand{overrightharpoondown}{%
+      \DeclareOverArrowCommand{\overrightharpoondown}{%
         amsmath, middle config=relbar,
         end=\rightharpoondown,
         right arrow,
@@ -3626,7 +3626,7 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 % \begin{macro}{\underrightharpoondown}
 %    \begin{macrocode}
     \ifovar@option@underrightharpoondown@
-      \DeclareOverArrowCommand{underrightharpoondown}{%
+      \DeclareOverArrowCommand{\underrightharpoondown}{%
         amsmath, middle config=relbar,
         end=\rightharpoondown,
         right arrow,
@@ -3639,7 +3639,7 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 % \begin{macro}{\overleftharpoonup}
 %    \begin{macrocode}
     \ifovar@option@overleftharpoonup@
-      \DeclareOverArrowCommand{overleftharpoonup}{%
+      \DeclareOverArrowCommand{\overleftharpoonup}{%
         amsmath, middle config=relbar,
         start=\leftharpoonup,
         end=\relbar,
@@ -3652,7 +3652,7 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 % \begin{macro}{\underleftharpoonup}
 %    \begin{macrocode}
     \ifovar@option@underleftharpoonup@
-      \DeclareOverArrowCommand{underleftharpoonup}{%
+      \DeclareOverArrowCommand{\underleftharpoonup}{%
         amsmath, middle config=relbar,
         start=\leftharpoonup,
         end=\relbar,
@@ -3666,7 +3666,7 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 % \begin{macro}{\overleftharpoondown}
 %    \begin{macrocode}
     \ifovar@option@overleftharpoondown@
-      \DeclareOverArrowCommand{overleftharpoondown}{%
+      \DeclareOverArrowCommand{\overleftharpoondown}{%
         amsmath, middle config=relbar,
         start=\leftharpoondown,
         end=\relbar,
@@ -3679,7 +3679,7 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 % \begin{macro}{\underleftharpoondown}
 %    \begin{macrocode}
     \ifovar@option@underleftharpoondown@
-      \DeclareOverArrowCommand{underleftharpoondown}{%
+      \DeclareOverArrowCommand{\underleftharpoondown}{%
         amsmath, middle config=relbar,
         start=\leftharpoondown,
         end=\relbar,
@@ -3693,7 +3693,7 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 % \begin{macro}{\overbar}
 %    \begin{macrocode}
     \ifovar@option@overbar@
-      \DeclareOverArrowCommand{overbar}{%
+      \DeclareOverArrowCommand{\overbar}{%
         amsmath, middle config=relbar,
         start={\std@minus}, end={\std@minus},% \relbar is defined with \mathsm@sh
         shift leftright=0,
@@ -3707,7 +3707,7 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 % \begin{macro}{\underbar}
 %    \begin{macrocode}
     \ifovar@option@underbar@
-      \DeclareOverArrowCommand{underbar}{%
+      \DeclareOverArrowCommand{\underbar}{%
         amsmath, middle config=relbar,
         start={\vphantom{+}\std@minus}, end={\std@minus},% \relbar is defined with \mathsm@sh
         shift leftright=0,
