@@ -845,8 +845,8 @@ $ \overpictarrow{v} \qquad \overpictarrow{AB} $
 %
 % Keys to use \LaTeX{} |picture| environment are described in
 % section~\ref{sec:picture-keys}, page~\pageref{sec:picture-keys}. The main keys
-% are \refKey{picture command}, \refKey{geometry} an \refDoc{key:picture}{line
-% thickness}. Here is an example:
+% are \refKey{picture command}, \refDoc{key:picture}{geometry} an
+% \refDoc{key:picture}{line thickness}. Here is an example:
 % \iffalse
 %<*example>
 % \fi
@@ -1981,13 +1981,13 @@ $ \overdotteddoublearrow{v} \qquad \overdotteddoublearrow{AB} $
 % commands creation), the |picture| method is chosen, then the arrow is drawn
 % with by:
 % \begin{flushleft}\leftskip=3cm
-%   \cs{begin}|{picture}|\refKey*{geometry}|%|\\
+%   \cs{begin}|{picture}|\refDoc{key:picture}*{geometry}|%|\\
 %    \quad\cs{linethickness}|{|\refDoc{key:picture}*{line thickness}|}%|\\
 %    \quad\refKey*{picture command}|%|\par
 %   \cs{end}|{picture}%|
 % \end{flushleft}
-% \noindent where \refKey{geometry}, \refDoc{key:picture}{line thickness} and
-% \refKey*{picture command} are three keys described below.
+% \noindent where \refDoc{key:picture}{geometry}, \refDoc{key:picture}{line
+% thickness} and \refKey*{picture command} are three keys described below.
 %
 %\iffalse
 %<*example>
@@ -2018,7 +2018,7 @@ $ \overdotteddoublearrow{v} \qquad \overdotteddoublearrow{AB} $
 %   Sets picture command to \meta{picture command}.
 % \end{docKey}
 %
-% \begin{docKey}[][before lower=\medskip\par]
+% \begin{docKey}[][before lower=\medskip\par, doc label={picture:geometry}]%^^A same name as for pstricks
 % {geometry}{=\marg{picture geometry specification}}
 % {no default, initially |(|\refCom*{overarrowlength}|,1ex)(0,-0.5ex)|}
 %   Sets picture geometry to \meta{picture geometry specification}.
@@ -2268,6 +2268,7 @@ $ \overdotteddoublearrow{v} \qquad \overdotteddoublearrow{AB} $
 \newif\ifovar@option@oldarrows@
 \newif\ifovar@option@esvect@ \ovar@option@esvect@true \PassOptionsToPackage{f}{esvect}
 \newif\ifovar@option@tikz@
+\newif\ifovar@option@pstricks@
 \newif\ifovar@option@pstarrows@
 \newif\ifovar@detectsubscripts@
 \newif\ifovar@option@subother@
@@ -2298,6 +2299,8 @@ $ \overdotteddoublearrow{v} \qquad \overdotteddoublearrow{AB} $
 %
 % \subsubsection*{Declaration of options}
 %
+% \changes{v1.4}{2024/07/06}{Add option pstricks}
+%
 %    \begin{macrocode}
 \DeclareOption{esvect}{\ovar@option@esvect@true}
 \DeclareOption{noesvect}{\ovar@option@esvect@false}
@@ -2311,6 +2314,7 @@ $ \overdotteddoublearrow{v} \qquad \overdotteddoublearrow{AB} $
 \DeclareOption{esvecth}{\ovar@option@esvect@true\PassOptionsToPackage{h}{esvect}}
 \DeclareOption{old-arrows}{\ovar@option@oldarrows@true}
 \DeclareOption{tikz}{\ovar@option@tikz@true}
+\DeclareOption{pstricks}{\ovar@option@pstricks@true}
 \DeclareOption{pstarrows}{\ovar@option@pstarrows@true}
 \DeclareOption{subscripts}{\ovar@detectsubscripts@true}
 \DeclareOption{subother}{\ovar@option@subother@true}
@@ -2437,6 +2441,12 @@ $ \overdotteddoublearrow{v} \qquad \overdotteddoublearrow{AB} $
 \ifovar@option@tikz@
   \RequirePackage{tikz}
   \usetikzlibrary{arrows.meta}
+\fi
+%    \end{macrocode}
+% Option \refOpt{pstricks}.
+%    \begin{macrocode}
+\ifovar@option@pstricks@
+  \RequirePackage{pstricks-add}
 \fi
 %    \end{macrocode}
 % Option \refOpt{pstarrows}.
@@ -2826,6 +2836,59 @@ $ \overdotteddoublearrow{v} \qquad \overdotteddoublearrow{AB} $
 }
 %    \end{macrocode}
 %
+% \subsubsection*{Keys for the \texttt{pstricks} method}
+%
+% \changes{v1.4}{2024/07/06}{Add the method pstricks}
+%
+%    \begin{macrocode}
+\SetOverArrowsMethod[lens]{pstricks}{%
+%    \end{macrocode}
+% Arrow macro.
+%    \begin{macrocode}
+  no arrow macro hook/.code={%
+    \ovar@set{%
+      arrow macro/.expanded={%
+        $\noexpand\mkern \expandonce{\ovar@shift@left} mu\noexpand\relax$%
+        \noexpand\begin{pspicture}\expandonce{\ovar@pstricks@geometry}%
+          \noexpand\psset{linewidth=\expandonce{\ovar@pstricks@linethickness}}%
+          \noexpand\psset{\expandonce{\ovar@pstricks@psset}}%
+          \expandonce{\ovar@pstricks@command}%
+        \noexpand\end{pspicture}%
+        $\noexpand\mkern \expandonce{\ovar@shift@right} mu\noexpand\relax$%
+      }
+    }
+  },
+%    \end{macrocode}
+% Pstricks parts: \refKey{pstricks command}, \refKey{psset},
+% \refDoc{key:pstricks}{geometry}, \refDoc{key:pstricks}{line thickness}.
+%    \begin{macrocode}
+  pstricks command/.store in=\ovar@pstricks@command,
+  psset/.store in=\ovar@pstricks@psset,
+  geometry/.store in=\ovar@pstricks@geometry,
+  line thickness/.store in=\ovar@pstricks@linethickness,
+  pstricks command/.value required,
+  psset/.value required,
+  geometry/.value required,
+  line thickness/.value required,
+%    \end{macrocode}
+% Pstricks handy key: \refDoc{key:pstricks}{arrow}, \refDoc{key:pstricks}{thinner}.
+%    \begin{macrocode}
+  arrow/.style={pstricks command={\psline{##1}(0,0)(\overarrowlength,0)}},%
+  arrow/.value required,%
+  thinner/.style={line thickness={\overarrowsmallerthickness}},%
+  thinner/.value forbidden,%
+%    \end{macrocode}
+% Initial configuration.
+%    \begin{macrocode}
+  shift right=-2,
+  min length=18,
+  geometry={(0,-0.5ex)(\overarrowlength,0.5ex)},%
+  line thickness={\overarrowthickness},%
+  arrow={->},%
+  psset={},%
+}
+%    \end{macrocode}
+%
 % \subsubsection*{Keys for the \texttt{picture} method}
 %
 %    \begin{macrocode}
@@ -2846,7 +2909,7 @@ $ \overdotteddoublearrow{v} \qquad \overdotteddoublearrow{AB} $
     }
   },
 %    \end{macrocode}
-% Picture parts: \refKey{picture command}, \refKey{geometry},
+% Picture parts: \refKey{picture command}, \refDoc{key:picture}{geometry},
 % \refDoc{key:picture}{line thickness}.
 %    \begin{macrocode}
   picture command/.store in=\ovar@picture@command,

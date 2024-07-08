@@ -21,6 +21,7 @@
 \newif\ifovar@option@oldarrows@
 \newif\ifovar@option@esvect@ \ovar@option@esvect@true \PassOptionsToPackage{f}{esvect}
 \newif\ifovar@option@tikz@
+\newif\ifovar@option@pstricks@
 \newif\ifovar@option@pstarrows@
 \newif\ifovar@detectsubscripts@
 \newif\ifovar@option@subother@
@@ -54,6 +55,7 @@
 \DeclareOption{esvecth}{\ovar@option@esvect@true\PassOptionsToPackage{h}{esvect}}
 \DeclareOption{old-arrows}{\ovar@option@oldarrows@true}
 \DeclareOption{tikz}{\ovar@option@tikz@true}
+\DeclareOption{pstricks}{\ovar@option@pstricks@true}
 \DeclareOption{pstarrows}{\ovar@option@pstarrows@true}
 \DeclareOption{subscripts}{\ovar@detectsubscripts@true}
 \DeclareOption{subother}{\ovar@option@subother@true}
@@ -139,6 +141,9 @@
 \ifovar@option@tikz@
   \RequirePackage{tikz}
   \usetikzlibrary{arrows.meta}
+\fi
+\ifovar@option@pstricks@
+  \RequirePackage{pstricks-add}
 \fi
 \ifovar@option@pstarrows@
   \RequirePackage[pstarrows]{pict2e}
@@ -387,6 +392,39 @@
   thinner/.value forbidden,%
   shift right=-2,
   min length=12,
+}
+\SetOverArrowsMethod[lens]{pstricks}{%
+  no arrow macro hook/.code={%
+    \ovar@set{%
+      arrow macro/.expanded={%
+        $\noexpand\mkern \expandonce{\ovar@shift@left} mu\noexpand\relax$%
+        \noexpand\begin{pspicture}\expandonce{\ovar@pstricks@geometry}%
+          \noexpand\psset{linewidth=\expandonce{\ovar@pstricks@linethickness}}%
+          \noexpand\psset{\expandonce{\ovar@pstricks@psset}}%
+          \expandonce{\ovar@pstricks@command}%
+        \noexpand\end{pspicture}%
+        $\noexpand\mkern \expandonce{\ovar@shift@right} mu\noexpand\relax$%
+      }
+    }
+  },
+  pstricks command/.store in=\ovar@pstricks@command,
+  psset/.store in=\ovar@pstricks@psset,
+  geometry/.store in=\ovar@pstricks@geometry,
+  line thickness/.store in=\ovar@pstricks@linethickness,
+  pstricks command/.value required,
+  psset/.value required,
+  geometry/.value required,
+  line thickness/.value required,
+  arrow/.style={pstricks command={\psline{##1}(0,0)(\overarrowlength,0)}},%
+  arrow/.value required,%
+  thinner/.style={line thickness={\overarrowsmallerthickness}},%
+  thinner/.value forbidden,%
+  shift right=-2,
+  min length=18,
+  geometry={(0,-0.5ex)(\overarrowlength,0.5ex)},%
+  line thickness={\overarrowthickness},%
+  arrow={->},%
+  psset={},%
 }
 \SetOverArrowsMethod[lens]{picture}{%
   no arrow macro hook/.code={%
