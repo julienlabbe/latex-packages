@@ -2608,6 +2608,43 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 \fi
 %    \end{macrocode}
 %
+% Add hook rules to make settings after \pkg{unicode-math}.
+%    \begin{macrocode}
+\DeclareHookRule{begindocument}{overarrows}{after}{unicode-math-luatex}
+\DeclareHookRule{begindocument}{overarrows}{after}{unicode-math-xetex}
+%    \end{macrocode}
+%
+% \changes{v1.2}{2024/07/10}{Use \cs{harrowextender}, if availlable.}
+% Set \cs{ovar@auto@middle} and \cs{ovar@auto@trim@middle}, used by
+% \refKey*{middle config}|=auto|.
+%    \begin{macrocode}
+\AddToHook{begindocument}[overarrows]
+  {%
+    \ifdef{\relbareda}
+      {%
+        \gdef\ovar@auto@middle{\relbareda}
+        \gdef\ovar@auto@trim@middle{1}
+      }
+      {%
+        \gdef\ovar@auto@middle{\relbar}
+        \gdef\ovar@auto@trim@middle{2.5}
+      }%
+    \@ifpackageloaded{unicode-math}
+      {%
+%    \end{macrocode}
+% Test of \cs{harrowextender} availability taken from Enrico Gregorio,
+% (\url{https://tex.stackexchange.com/a/218407/}).
+%    \begin{macrocode}
+        \check@mathfonts
+        \iffontchar\textfont\tw@\string"23AF
+          \gdef\ovar@auto@middle{\mathrel\harrowextender}
+          \gdef\ovar@auto@trim@middle{0}
+        \fi
+      }
+      {}%
+  }
+%    \end{macrocode}
+%
 % \subsection*{Configuration of subscripts detection}
 %
 % \changes{v1.1}{2023/02/15}{Support for non-standard subscripts}
@@ -2869,17 +2906,14 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
     }
   },
 %    \end{macrocode}
-% \changes{v1.2}{2024/07/06}{Use \cs{harrowextender}, if availlable.}
+% Set \refKey*{middle config} with (hopefully) a good configuration. It would be
+% better to reuse the previous \refKey*{middle config} settings, but we have to
+% wait for the |begindocument| hook to know which one to use.
 %    \begin{macrocode}
   middle config/auto/.code={%
-    \ifundef{\harrowextender}{%
-      \ifovar@option@esvect@
-        \pgfkeysalso{middle config=relbareda}
-      \else
-        \pgfkeysalso{middle config=relbar}
-      \fi
-    }{%
-      \pgfkeysalso{middle config=harrowextender}
+    \pgfkeysalso{%
+      middle={\ovar@auto@middle},
+      trim middle={\ovar@auto@trim@middle},
     }
   },
 %    \end{macrocode}
@@ -3208,20 +3242,21 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 %    \end{macrocode}
 % Test which version to use.
 %    \begin{macrocode}
-\AtBeginDocument{%
-  \@ifpackageloaded{unicode-math-luatex}
-    {%
-      \global\let\ovar@set@arrowthickness\ovar@set@arrowthickness@UM@lua
-    }
-    {%
-      \@ifpackageloaded{unicode-math-xetex}
-        {%
-          \gdef\ovar@rulethickness@fontdimen{54}
-          \gdef\ovar@rulethickness@family{2}
-        }
-        {}
-    }
-}
+\AddToHook{begindocument}[overarrows]
+  {%
+    \@ifpackageloaded{unicode-math-luatex}
+      {%
+        \global\let\ovar@set@arrowthickness\ovar@set@arrowthickness@UM@lua
+      }
+      {%
+        \@ifpackageloaded{unicode-math-xetex}
+          {%
+            \gdef\ovar@rulethickness@fontdimen{54}
+            \gdef\ovar@rulethickness@family{2}
+          }
+          {}
+      }
+  }
 %    \end{macrocode}
 % \end{macro}
 % \end{macro}
@@ -3500,12 +3535,10 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 %
 % \subsubsection*{Predefined commands}
 %
-% \changes{v1.2}{2024/07/06}{Declare Declare predefined commands after \pkg{unicode-math} settings.}
+% \changes{v1.2}{2024/07/10}{Declare predefined commands after \pkg{unicode-math} settings}
 % Declare predefined commands after \pkg{unicode-math} settings.
 %
 %    \begin{macrocode}
-\DeclareHookRule{begindocument}{overarrows}{after}{unicode-math-luatex}
-\DeclareHookRule{begindocument}{overarrows}{after}{unicode-math-xetex}
 \AddToHook{begindocument}[overarrows]
   {
 %    \end{macrocode}

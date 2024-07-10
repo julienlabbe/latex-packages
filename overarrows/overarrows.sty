@@ -17,7 +17,7 @@
 %% 
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{overarrows}
-[2023/02/15 v1.1 Custom extensible arrows over math expressions]
+[2024/07/10 v1.2 Custom extensible arrows over math expressions]
 \newif\ifovar@option@oldarrows@
 \newif\ifovar@option@esvect@ \ovar@option@esvect@true \PassOptionsToPackage{f}{esvect}
 \newif\ifovar@option@tikz@
@@ -148,6 +148,29 @@
 \ifovar@option@pstarrows@
   \RequirePackage[pstarrows]{pict2e}
 \fi
+\DeclareHookRule{begindocument}{overarrows}{after}{unicode-math-luatex}
+\DeclareHookRule{begindocument}{overarrows}{after}{unicode-math-xetex}
+\AddToHook{begindocument}[overarrows]
+  {%
+    \ifdef{\relbareda}
+      {%
+        \gdef\ovar@auto@middle{\relbareda}
+        \gdef\ovar@auto@trim@middle{1}
+      }
+      {%
+        \gdef\ovar@auto@middle{\relbar}
+        \gdef\ovar@auto@trim@middle{2.5}
+      }%
+    \@ifpackageloaded{unicode-math}
+      {%
+        \check@mathfonts
+        \iffontchar\textfont\tw@\string"23AF
+          \gdef\ovar@auto@middle{\mathrel\harrowextender}
+          \gdef\ovar@auto@trim@middle{0}
+        \fi
+      }
+      {}%
+  }
 \newcommand{\SetOverArrowsSubscriptCommand}[1]{\global\let\ovar@subcmd=#1}
 \SetOverArrowsSubscriptCommand{_}
 \ifovar@option@subother@
@@ -307,14 +330,9 @@
     }
   },
   middle config/auto/.code={%
-    \ifundef{\harrowextender}{%
-      \ifovar@option@esvect@
-        \pgfkeysalso{middle config=relbareda}
-      \else
-        \pgfkeysalso{middle config=relbar}
-      \fi
-    }{%
-      \pgfkeysalso{middle config=harrowextender}
+    \pgfkeysalso{%
+      middle={\ovar@auto@middle},
+      trim middle={\ovar@auto@trim@middle},
     }
   },
   amsmath/.is choice,%
@@ -510,20 +528,21 @@
     \overarrowsmallerthickness = \Umathoverbarrule \scriptscriptstyle%
   \fi\fi%
 }
-\AtBeginDocument{%
-  \@ifpackageloaded{unicode-math-luatex}
-    {%
-      \global\let\ovar@set@arrowthickness\ovar@set@arrowthickness@UM@lua
-    }
-    {%
-      \@ifpackageloaded{unicode-math-xetex}
-        {%
-          \gdef\ovar@rulethickness@fontdimen{54}
-          \gdef\ovar@rulethickness@family{2}
-        }
-        {}
-    }
-}
+\AddToHook{begindocument}[overarrows]
+  {%
+    \@ifpackageloaded{unicode-math-luatex}
+      {%
+        \global\let\ovar@set@arrowthickness\ovar@set@arrowthickness@UM@lua
+      }
+      {%
+        \@ifpackageloaded{unicode-math-xetex}
+          {%
+            \gdef\ovar@rulethickness@fontdimen{54}
+            \gdef\ovar@rulethickness@family{2}
+          }
+          {}
+      }
+  }
 \def\ovar@stackover@@#1#2#3#4#5#6{\vbox{\ialign{##\crcr%
       $#5\mskip #1 mu\relax$\crcr%
       \noalign{#2\nointerlineskip}#4\crcr%
@@ -662,8 +681,6 @@
   \undef\vv
   \NewOverArrowCommand{\vv}{esvect, middle config = relbareda}
 \fi
-\DeclareHookRule{begindocument}{overarrows}{after}{unicode-math-luatex}
-\DeclareHookRule{begindocument}{overarrows}{after}{unicode-math-xetex}
 \AddToHook{begindocument}[overarrows]
   {
     \ifovar@option@overrightarrow@
