@@ -22,6 +22,8 @@
 %<*driver>
 \documentclass[nohyperref]{ltxdoc}
 \usepackage{metalogo}
+\usepackage{enumitem}
+\usepackage{array}
 
 \usepackage{overarrows-doc} %^^A defined at end of this file, with guard <docstyle>
 \usepackage[old-arrows, esvect, tikz, pstricks, pstarrows, allcommands]{overarrows}
@@ -223,30 +225,38 @@
 % above\footnotemark{}. For this second convention, \TeX/\LaTeX provides the
 % command \cs{vec}, which accents its content (using the \cs{mathaccent}
 % command) with the character~\symb{\mathchar "017E\relax}
-% (\cs{mathchar}|"017E| in Computer Modern font).
-% But \symb{\mathchar "017E\relax} isn't extensible, and gives: $\vec{v}$,
-% $\vec{AB}$ or $\vec{\text{grad}}$ (there's no command \cs{widevec} analogous
-% to \cs{widehat}).
+% (\cs{mathchar}|"017E| in Computer Modern font). But \symb{\mathchar
+% "017E\relax} isn't extensible\footnotemark{}, and gives: $\vec{v}$, $\vec{AB}$
+% or $\vec{\text{grad}}$ (there's no command \cs{widevec} analogous to
+% \cs{widehat}).
 %
+% \addtocounter{footnote}{-2}%^^A two footnotemarks
+%
+% \stepcounter{footnote}
 % \footnotetext{See, for example: International Organization for
 % Standardization. (2019). \emph{Quantities and units -- Part 2: Mathematics}
 % (ISO Standard No. 80000-2:2019).
 % \url{https://www.iso.org/standard/64973.html}.}
 %
+% \stepcounter{footnote}
+% \footnotetext{In fact, with the unicode engines \LuaTeX{} and \XeTeX{}, the
+% command \cs{Umathaccent} can now define extensible accents. This is used by
+% the \pkg{unicode-math} package, which also set the arrows displayed by \cs{vec}
+% and \cs{overrightarrow} in a coherent manner.}
+%
 % An extensible alternative is given by the command \cs{overrightarrow},
 % available in \TeX/\LaTeX, and which is redefined by the commonly used
 % \pkg{amsmath} package. But its arrow, built with the \cs{rightarrow} symbol
-% \symb{\rightarrow}, is too large with the default \emph{Computer Modern} font:
-% $\amsoverrightarrow{AB}$. Another alternative is the \pkg{esvect} package,
-% which provides the \cs{vv} command and a set of custom arrows: $\esveca{AB}$,
-% $\esvecb{AB}$, $\esvecc{AB}$, $\esvecd{AB}$, $\esvece{AB}$, $\esvecf{AB}$,
-% $\esvecg{AB}$, $\esvech{AB}$.
+% \symb{\rightarrow}, is too large, using the default \emph{Computer Modern}
+% font: $\amsoverrightarrow{AB}$. Another alternative is the \pkg{esvect}
+% package, which provides the \cs{vv} command and a set of custom arrows:
+% $\esveca{AB}$, $\esvecb{AB}$, $\esvecc{AB}$, $\esvecd{AB}$, $\esvece{AB}$,
+% $\esvecf{AB}$, $\esvecg{AB}$, $\esvech{AB}$.
 %
 % \subsection{Stack and arrow macros}
 %
 % It's worth looking at the definition of \pkg{amsmath} \cs{overrightarrow}
-% command:
-% \iffalse
+% command: \iffalse
 %<*example>
 % \fi
 \begin{dispListing}
@@ -315,7 +325,7 @@
 % The \pkg{overarrows} package also provides an alternative mechanism.
 % When used, the length \cs{overarrowlength} is set, according to the arrow
 % command content, and can be employed, for example, to draw arrows using
-% PGF/TikZ or the \LaTeX{} picture environment.
+% PGF/TikZ, PSTricks or the \LaTeX{} picture environment.
 %
 % \section{Quick start}
 %
@@ -383,9 +393,8 @@
 % \subsection{Commands creation}
 %
 % Commands are created with \refCom{NewOverArrowCommand}. This macro take two
-% mandatory arguments : the name of the command (without backslash), and the
-% arrow configuration as comma-separated list of key-values. By default, a right
-% arrow is set:
+% mandatory arguments : the name of the command and the arrow configuration as
+% comma-separated list of key-values. By default, a right arrow is set:
 % \iffalse
 %<*example>
 % \fi
@@ -437,7 +446,7 @@ $ v_{sub} \qquad \myovercmd{v}_{sub} \qquad \myovercmd*{v}_{sub} $
 % \iffalse
 %</example>
 % \fi
-% With the previous definition, the result of the command
+% But with the previous definition, the result of the command
 % \cs{overhooktwoheadrightarrow} is faulty:
 % \iffalse
 %<*example>
@@ -475,16 +484,18 @@ $ \overhooktwoheadrightarrow{v} \qquad \overhooktwoheadrightarrow{AB} $
 % If the math font differs from the default \emph{Computer Modern}, the central
 % part of the arrow may have inappropriate position or line width. This is
 % because the default symbol used for the arrow line is \cs{relbareda}
-% \symb{\relbareda} from the \pkg{esvect} package. If needed, try to set the
-% \refKey{middle} key with the symbol \cs{relbar} \symb{\relbar}. The trimming
-% should also be adapted:
+% \symb{\relbareda} from the \pkg{esvect} package\footnote{Except if the
+% \pkg{unicode-math} package is used with a math font that provides the
+% \cs{harrowextender} symbol (see the \refKey*{middle config}|=auto| key).}.
+% If needed, try to set the \refKey{middle} key with the symbol \cs{relbar}
+% \symb{\relbar}. The trimming should also be adapted:
 % \iffalse
 %<*example>
 % \fi
 \csundef{overhooktwoheadrightarrow}
 \begin{dispExample}
 \NewOverArrowCommand{\overhooktwoheadrightarrow}{%
-  start=\lhook, end=\twoheadrightarrow, middle=\relbar, %
+  start=\lhook, end=\twoheadrightarrow, middle=\relbar,
   trim start=0, trim end=3, trim middle=5,
 }
 $ \overhooktwoheadrightarrow{v} \qquad \overhooktwoheadrightarrow{AB} $
@@ -752,7 +763,7 @@ $ \overrightleftarrow{AB} \qquad \scriptstyle\overrightleftarrow{AB} $
 % \medskip
 %
 % To use PGF/TikZ language, the optional argument |tikz| must be passed to
-% \refCom{NewOverArrowCommand} . TikZ picture are not extensible. That's why the
+% \refCom{NewOverArrowCommand}. TikZ pictures are not extensible. That's why the
 % \pkg{overarrows} package provides three lengths that can be used in TikZ
 % commands:
 % \begin{itemize}
@@ -810,9 +821,10 @@ $ \overarchedleftrightarrow{v} \qquad \overarchedleftrightarrow{ABCD} $
 %
 % \subsection{Drawing the arrow with PSTricks}
 %
-% PSTricks commands can also be used to draw the arrow. For this, the optional
-% argument |pstricks| must be passed to \refCom{NewOverArrowCommand}. Like for
-% TikZ, the three lengths \refCom{overarrowlength}, \refCom{overarrowthickness}
+% In addition to PGF/TikZ, the arrow can be drawn with PSTricks macros.
+% For this, the optional argument |pstricks| must be passed to
+% \refCom{NewOverArrowCommand}. Like with
+% |tikz|, the three lengths \refCom{overarrowlength}, \refCom{overarrowthickness}
 % and \refCom{overarrowsmallerthickness} can be used in PSTricks commands.
 % By default, a right arrow is drawn:
 % \iffalse
@@ -826,7 +838,7 @@ $ \overpstarrow{v} \qquad \overpstarrow{AB} $
 %</example>
 % \fi
 % \noindent The \pkg{pstricks} package has to be loaded (for example, using the
-% \refOpt{pstricks} option to the \pkg{overarrows} package)
+% \refOpt{pstricks} option of the \pkg{overarrows} package)
 %
 % Keys to use PSTricks commands are described in section~\ref{sec:pstricks-keys},
 % page~\pageref{sec:pstricks-keys}. The main keys are \refKey{pstricks command},
@@ -844,9 +856,9 @@ $ \overreddisks{v} \qquad \overreddisks{AB} $
 \begin{dispExample}
 \NewOverArrowCommand[pstricks]{\ellipticarrow}{%
   pstricks command={%
-    \psellipticarcn{->}%^^A strip spaces
-    (0.5\overarrowlength,0.2\overarrowlength)%^^A strip spaces
-    (0.5\overarrowlength,0.2\overarrowlength)%^^A strip spaces
+    \psellipticarcn{->}%^^A avoid space before coordinates
+    (0.5\overarrowlength,0.2\overarrowlength)%^^A avoid space before coordinates
+    (0.5\overarrowlength,0.2\overarrowlength)
     {170}{10}
   },
   geometry={(0,0.2\overarrowlength)(\overarrowlength,0.4\overarrowlength)},
@@ -863,9 +875,9 @@ $ \ellipticarrow{v} \qquad \ellipticarrow{AB} $
 %
 % Without any other package, arrows can also be drawn with the \LaTeX{}
 % |picture| environment. In this case, the optional argument |picture| must be
-% passed to \refCom{NewOverArrowCommand}. As for TikZ or PSTricks, the three
-% lengths \refCom{overarrowlength}, \refCom{overarrowthickness} and
-% \refCom{overarrowsmallerthickness} are available and can to be used with
+% passed to \refCom{NewOverArrowCommand}. As with |tikz| or |pstricks|, the
+% three lengths \refCom{overarrowlength}, \refCom{overarrowthickness} and
+% \refCom{overarrowsmallerthickness} are available and can be used in
 % |picture| drawing commands. By default, a right vector is drawn:
 % \iffalse
 %<*example>
@@ -1154,7 +1166,7 @@ $ \overbandedarrow{v} \qquad \overbandedarrow{AB} $
 %   Loads the package \pkg{pstricks-add}.
 %
 %   Note that, as it, this will compile with \LaTeX{}, \LuaLaTeX{} and
-%   \XeLaTeX{}, but not compile \makebox{pdf\LaTeX} (see the PSTricks
+%   \XeLaTeX{}, but not with \makebox{pdf\LaTeX} (see the PSTricks
 %   documentation). PSTricks arrows, drawn with the |pstricks| method, are
 %   always available, even if this option is not set, provided the
 %   \pkg{pstricks} package is loaded independently.
@@ -1179,6 +1191,7 @@ $ \overbandedarrow{v} \qquad \overbandedarrow{AB} $
 % \end{docOption}
 %
 % \begin{docOption}{subother}
+%   \tcbdocmarginnote{\tcbdocnew{v1.1 2023/02/15}}
 %   Sets to 12 (\emph{other} catcode category) the catcode of the ``|_|" symbol
 %   used for subscript detection, when this is enabled by the key \refKey{detect
 %   subscripts} (see the section~\ref{sec:non-standard-subscripts},
@@ -1186,6 +1199,7 @@ $ \overbandedarrow{v} \qquad \overbandedarrow{AB} $
 % \end{docOption}
 %
 % \begin{docOption}{subactive}
+%   \tcbdocmarginnote{\tcbdocnew{v1.1 2023/02/15}}
 %   Sets to 13 (\emph{active} catcode category) the catcode of the ``|_|" symbol
 %   used for subscript detection, when this is enabled by the key \refKey{detect
 %   subscripts} (see the section~\ref{sec:non-standard-subscripts},
@@ -1204,39 +1218,43 @@ $ \overbandedarrow{v} \qquad \overbandedarrow{AB} $
 % \begin{docCommands}{%
 %   {
 %     doc name=NewOverArrowCommand,
-%     doc parameter=\oarg{method}\marg{name}\marg{keys},
+%     doc parameter=\oarg{method}\marg{command}\marg{keys},
 %   },
 %   {
 %     doc name=RenewOverArrowCommand,
-%     doc parameter=\oarg{method}\marg{name}\marg{keys},
+%     doc parameter=\oarg{method}\marg{command}\marg{keys},
 %   },
 %   {
 %     doc name=ProvideOverArrowCommand,
-%     doc parameter=\oarg{method}\marg{name}\marg{keys},
+%     doc parameter=\oarg{method}\marg{command}\marg{keys},
 %   },
 %   {
 %     doc name=DeclareOverArrowCommand,
-%     doc parameter=\oarg{method}\marg{name}\marg{keys},
+%     doc parameter=\oarg{method}\marg{command}\marg{keys},
 %   },
 % }
-%   Creates the command \cs{\meta{name}} and its starred variant
-%   \cs{\meta{name}*}. The starred variant \cs{\meta{name}*} removes the extra
+%   Creates the command \meta{command} and its starred variant
+%   \meta{command}|*|. The starred variant \meta{command}|*| removes the extra
 %   end space generated by the arrow, which is suitable, as example, when
 %   a subscript follows.
 %
+%   \tcbdocmarginnote{\tcbdocupdated{v1.2 2024/07/10}}
+%   \meta{command} can be given with or without backslash (prior to the version
+%   1.2, only the name, without backslash, was accepted).
+%
 % \begin{description}
-%   \item[\cs{NewOverArrowCommand}] raises an error if \cs{\meta{name}} is
-%   already defined.
+%   \item[\cs{NewOverArrowCommand}] raises an error if \meta{command} is
+%     already defined.
 %
-%   \item[\cs{RenewOverArrowCommand}] raises an error if \cs{\meta{name}} is undefined.
+%   \item[\cs{RenewOverArrowCommand}] raises an error if \meta{command}
+%     is undefined.
 %
-%   \item[\cs{ProvideOverArrowCommand}] sets \cs{\meta{name}} if the command is
-%   undefined and does nothing if it is already defined, without raising
-%   any error.
+%   \item[\cs{ProvideOverArrowCommand}] sets \meta{command} if the command is
+%     undefined and does nothing if it is already defined, without raising
+%     any error.
 %
-%   \item[\cs{DeclareOverArrowCommand}] sets \cs{\meta{name}}, whether the
-%   command is already defined
-%   or not, without raising any error.
+%   \item[\cs{DeclareOverArrowCommand}] sets \meta{command}, whether the command
+%     is already defined or not, without raising any error.
 %   \end{description}
 %
 %   The \meta{method} used to draw the arrow must be:
@@ -1244,6 +1262,7 @@ $ \overbandedarrow{v} \qquad \overbandedarrow{AB} $
 %    \item[|symb|] to draw the arrow by symbols assemblage (default);
 %    \item[|tikz|] to draw the arrow with PGF/TikZ;
 %    \item[|pstricks|] to draw the arrow with PSTricks;
+%     \tcbdocmarginnote{\tcbdocnew{v1.2 2024/07/10}}
 %    \item[|picture|] to draw the arrow with the \LaTeX{}
 %     |picture| environment.
 %   \end{description}
@@ -1270,19 +1289,23 @@ $ \myoverarrow{v} \qquad \myoverarrow{ABCD} $
 % \begin{docCommands}{%
 %   {
 %     doc name=TestOverArrow,
-%     doc parameter=\oarg{pattern}\marg{name},
+%     doc parameter=\oarg{pattern}\marg{command},
 %   },
 %   {
 %     doc name=TestOverArrow*,
-%     doc parameter=\oarg{pattern}\marg{name},
+%     doc parameter=\oarg{pattern}\marg{command},
 %   },
 % }
-%   Displays the result of the command \meta{name} for patterns of various
+%   Displays the result of the command \meta{command} for patterns of various
 %   lengths and for the four math styles. A custom \meta{pattern} can be added
 %   to the predefined ones.
 %
 %   The starred variant \cs{TestOverArrow*} displays a full report, including
-%   kerning tests of the commands \cs{\meta{name}} and \cs{\meta{name}*} .
+%   kerning tests of the commands \meta{command} and \meta{command}|*|.
+%
+%   \tcbdocmarginnote{\tcbdocupdated{v1.2 2024/07/10}}
+%   \meta{command} can be given with or without backslash (prior to the version
+%   1.2, only the name, without backslash, was accepted).
 %
 % \iffalse
 %<*example>
@@ -1324,9 +1347,9 @@ $ \myoverarrow{v} \qquad \myoverarrow{ABCD} $
 % \begin{docCommand}{smallermathstyle}{}
 %   Applies the next math style, smaller than the current. That is:
 % \begin{itemize}
-%     \item sets \cs{scriptstyle} if the current math style is \cs{displaystyle}
+%     \item uses \cs{scriptstyle} if the current math style is \cs{displaystyle}
 %           or \cs{textstyle};
-%     \item sets \cs{scriptscriptstyle} if the current math style is
+%     \item uses \cs{scriptscriptstyle} if the current math style is
 %           \cs{scriptstyle};
 %     \item does nothing if the current math style is \cs{scriptscriptstyle}.
 % \end{itemize}
@@ -1385,11 +1408,12 @@ $\scriptstyle \overparabola{v} \qquad \overparabola{ABCD} $ \par
 %     \cs{scriptscriptstyle}.
 %   \end{itemize}
 %
+%   \tcbdocmarginnote{\tcbdocupdated{v1.2 2024/07/10}}
 %   Theses settings are adapted when the package \pkg{unicode-math} is loaded
 %   (using \cs{Umathoverbarrule} with \LuaLaTeX{} or |\fontdimen 54|, family~2
 %   with \XeLaTeX{} --- see the manual of \pkg{unicode-math}).
 % \end{docLength}
-%   
+%
 %  \begin{docLength}{overarrowsmallerthickness}
 %    Is set to the default rule thickness of the next smaller math style.
 %    That is:
@@ -1399,6 +1423,7 @@ $\scriptstyle \overparabola{v} \qquad \overparabola{ABCD} $ \par
 %      \cs{scriptscriptstyle}.
 %    \end{itemize}
 %
+%   \tcbdocmarginnote{\tcbdocupdated{v1.2 2024/07/10}}
 %   Theses settings are adapted when the package \pkg{unicode-math} is loaded
 %   (using \cs{Umathoverbarrule} with \LuaLaTeX{} or |\fontdimen 54|, family~2
 %   with \XeLaTeX{} --- see the manual of \pkg{unicode-math}).
@@ -1579,7 +1604,7 @@ $ \esvectvv*{\imath}{0}  \quad \esvectvv*{e}{r} \quad \esvectvv*{L}{\Delta} $
 % page~\pageref{sec:macro-for-commands-creation} for the documentation of
 % commands creation):
 % \begin{itemize}
-%  \item \meta{number}| = 0 | for the |symb| method (default);
+%  \item \meta{number}| = 0 | for the |symb| method (method by default);
 %  \item \meta{number}| = 12| for the |tikz| method;
 %  \item \meta{number}| = 12| for the |pstricks| method;
 %  \item \meta{number}| = 18| for the |picture| method.
@@ -1653,7 +1678,7 @@ $ \underhooks{v} \qquad \underhooks{AB} $
 % page~\pageref{sec:macro-for-commands-creation} for the documentation of
 % commands creation):
 % \begin{itemize}
-%  \item \meta{number}| = 0 | for the |symb| method  (default);
+%  \item \meta{number}| = 0 | for the |symb| method (method by default);
 %  \item \meta{number}| = -2| for the |tikz|, |pstricks| and |picture| methods.
 % \end{itemize}
 %
@@ -1857,22 +1882,26 @@ $ \smalleroverrightarrow{v} \qquad \smalleroverrightarrow{AB} $
 %   Clears \refKey{trim start}, \refKey{trim middle} and \refKey{trim end}.
 % \end{docKey}
 %
-%\begin{docKey}{middle config}{=auto\textbar relbar\textbar relbareda \textbar harrowextender}{no default}
-%  Sets a suitable configuration for the keys \refKey{middle} and \refKey{trim middle}:
+%\begin{docKey}{middle config}{=auto\textbar relbar\textbar relbareda\textbar harrowextender}{no default}
+%  Sets a suitable configuration for the keys \refKey{middle} and \refKey{trim
+%  middle}:
 %  \begin{description}
-%   \item[For \refKey*{middle config}| = relbar|,] \refKey{middle} is set to
-%    \cs{relbar} \symb{\relbar} and \refKey{trim middle} to |2.5|.
-%   \item[For \refKey*{middle config}| = relbareda|,] \refKey{middle} is set to
-%    \cs{relbareda} \symb{\relbareda} and \refKey{trim middle} to |1|.
-%   \item[For \refKey*{middle config}| = harrowextender|,] \refKey{middle} is
-%   set to \cs{harrowextender} and \refKey{trim middle} to |0|.
-%    \item[For \refKey*{middle config}| = auto|,] if \cs{harrowextender} is
-%      provided by the math font\footnote{See the documentation of the package
-%      \pkg{unicode-math}.}, \refKey{middle} is set with \refKey*{middle
-%      config}| = harrowextender|. If \cs{harrowextender} isn't availlable,
-%      \refKey{middle} is set with \refKey*{middle config}| = relbareda| if the
-%      option \refOpt{esvect} is set (which is the default) and \refKey*{middle
-%      config}| = relabar| if not.
+%    \item[For \refKey*{middle config}| = relbar|,] \refKey{middle} is set to
+%      \cs{relbar} \symb{\relbar} and \refKey{trim middle} to |2.5|.
+%    \item[For \refKey*{middle config}| = relbareda|,] \refKey{middle} is set to
+%      \cs{relbareda} \symb{\relbareda} and \refKey{trim middle} to |1|.
+%    \item[For \refKey*{middle config}| = harrowextender|,]
+%     \tcbdocmarginnote{\tcbdocupdated{v1.2 2024/07/10}}
+%     \refKey{middle} is set to \cs{harrowextender} and \refKey{trim middle} to
+%      |0|.
+%    \item[For \refKey*{middle config}| = auto|,]
+%      \tcbdocmarginnote{\tcbdocupdated{v1.2 2024/07/10}}
+%      if \cs{harrowextender} is provided by the math font\footnote{See the
+%      documentation of the package \pkg{unicode-math}.}, \refKey{middle} is set
+%      with \refKey*{middle config}| = harrowextender|. If \cs{harrowextender}
+%      isn't availlable, \refKey{middle} is set with \refKey*{middle config}%
+%      | = relbareda| if the option \refOpt{esvect} is set (which is the
+%      default) and \refKey*{middle config}| = relabar| if not.
 %   \end{description}
 %\end{docKey}
 %
@@ -2041,6 +2070,7 @@ $ \overdotteddoublearrow{v} \qquad \overdotteddoublearrow{AB} $
 % \subsubsection{PSTricks settings}
 % \label{sec:pstricks-keys}
 %
+% \tcbdocmarginnote{\tcbdocnew{v1.2 2024/07/10}}
 % If, at command creation (see section~\ref{sec:macro-for-commands-creation},
 % page~\pageref{sec:macro-for-commands-creation} for the documentation of
 % commands creation), the |pstricks| method is chosen, then the arrow is drawn
@@ -2193,6 +2223,7 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 % \subsubsection{Advanced commands}
 %
 % \begin{docCommand}{SetOverArrowsSubscriptCommand}{\marg{command}}
+%   \tcbdocmarginnote{\tcbdocnew{v1.1 2023/02/15}}
 %   Sets to \meta{command} the command used for subscript detection, when this
 %   is enabled by the key \refKey{detect subscripts} (see the
 %   section~\ref{sec:non-standard-subscripts},
@@ -2295,6 +2326,12 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 % \symb{\relbareda} from the \pkg{esvect} package. This can be fixed with the
 % \refOpt{noesvect} option.
 %
+% Depending of the math font, predefined command may be faulty. For example, at
+% the time of writing, the hook vertical position is incorrect with \emph{Asana
+% Math} or \cs{harrowextender} is badly positioned with \emph{Stix two Math}
+% (for the smaller math styles), \emph{Libertinus Math} and
+% \emph{GFSNeohellenicMath}.
+%
 % \subsubsection{Detection of non standard subscripts}
 % \label{sec:non-standard-subscripts}
 %
@@ -2389,17 +2426,25 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 %
 % \subsection{Changelog}
 %
-% \begin{description}
-%  \item[v1.2]
-%    \begin{itemize}
-%      \item Fix compatibility issues with \pkg{unicode-math}.
-%      \item Allow to draw the arrow with PSTricks.
-%      \item Make \pkg{esvect} handle all font sizes.
-%      \end{itemize}
-%  \item[v1.1] Support for non-standard subscripts.
-%  \item[v1.0.1] Bug fix for under* options.
-%  \item[v1.0] Initial version.
-% \end{description}
+% \begingroup
+% \renewcommand{\arraystretch}{2}
+% \begin{tabular*}{\linewidth}
+% {@{} l @{\extracolsep{\fill}} p{0.9\linewidth} @{}}
+% v1.2   & \noindent\par\vspace{-\baselineskip}
+%   \begin{itemize}[left=0pt, topsep=0pt, partopsep=0pt]
+%   \item Fix compatibility issues with \pkg{unicode-math}.
+%   \item Allow to draw the arrow with PSTricks.
+%   \item Make \pkg{esvect} handle all font sizes.
+%   \item Rewrite starred variant for better performances.
+%   \end{itemize}
+% \\
+%   v1.1 & Support for non-standard subscripts.
+% \\
+% v1.0.1 & Bug fix for under* options.
+% \\
+% v1.0   & Initial version.
+% \end{tabular*}
+% \endgroup
 %
 % \StopEventually{}
 %
@@ -2590,6 +2635,7 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
   }{}
 \fi
 %    \end{macrocode}
+%
 % Option \refOpt{tikz}.
 %    \begin{macrocode}
 \ifovar@option@tikz@
@@ -2597,12 +2643,14 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
   \usetikzlibrary{arrows.meta}
 \fi
 %    \end{macrocode}
+%
 % Option \refOpt{pstricks}.
 %    \begin{macrocode}
 \ifovar@option@pstricks@
   \RequirePackage{pstricks-add}
 \fi
 %    \end{macrocode}
+%
 % Option \refOpt{pstarrows}.
 %    \begin{macrocode}
 \ifovar@option@pstarrows@
@@ -3371,8 +3419,8 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 % In the initial version, the commands names must be given as csname (without
 % backslash). To harmonize the syntax with standard \cs{NewDocumentCommand},
 % define an argument processor so that both
-% \cs{NewOverArrowCommand}|\{\myarrow\}| and
-% \cs{NewOverArrowCommand}|\{myarrow\}| are accepted.
+% \cs{NewOverArrowCommand}|{\myarrow}| and
+% \cs{NewOverArrowCommand}|{myarrow}| are accepted.
 %
 %    \begin{macrocode}
 \ExplSyntaxOn
@@ -4085,8 +4133,8 @@ actual '='
 % Other macros identification
 %    \begin{macrocode}
     moretexcs   = [5]{% other macros
-      Relbar, relbareda, relbaredd, rightarrow, Rightarrow, varleftarrow,
-      varrightarrow, twoheadrightarrow,%
+      relbar, Relbar, relbareda, relbaredd, harrowextender, rightarrow,
+      Rightarrow, varleftarrow, varrightarrow, twoheadrightarrow,%
     },
 %    \end{macrocode}
 % Il would be nice to also index keys, but spaces are badly handled by
