@@ -470,7 +470,6 @@
 \newlength{\overarrowlength}
 \newlength{\overarrowthickness}
 \newlength{\overarrowsmallerthickness}
-\newlength{\ovar@extralength}
 \newlength{\ovar@tempdim}
 \def\ovar@set@arrowlength#1#2#3{%
   \settowidth{\ovar@tempdim}{$\m@th#2\mskip #1 mu\relax$}%
@@ -651,12 +650,12 @@
     \DeclareOverArrowCommand[#1]{#2}{#3}
   }
 }
+\newsavebox\ovar@tempbox
 \def\ovar@starversion#1#2#3{%
-  #1#2{#3}%
-  \settowidth{\ovar@extralength}{$\m@th#1#2{#3}$}
-  \settowidth{\ovar@tempdim}{$\m@th#2{#3}$}
-  \deflength{\ovar@extralength}{0.5\ovar@extralength-0.5\ovar@tempdim}%
-  \kern-\ovar@extralength%
+  \sbox{\ovar@tempbox}{$\m@th #1#2{#3}$}%
+  \usebox{\ovar@tempbox}%
+  \settowidth{\ovar@tempdim}{$\m@th #2{#3}$}%
+  \kern\dimeval{0.5\ovar@tempdim - 0.5\wd\ovar@tempbox}%
 }
 \ifovar@option@esvect@
   \let\esvectvv\vv

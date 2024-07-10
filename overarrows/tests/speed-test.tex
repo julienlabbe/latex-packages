@@ -27,20 +27,25 @@
 
 \begin{document}
 
+%% standard command
 % \repeatntimes[100000]{$\vec{v}$}
 % \repeatntimes[10000]{$\overrightarrow{v}$}
 % \repeatntimes[10000]{$\esvectvv{v}$}
 % \repeatntimes[10000]{$\amsvec{v}$}
-\repeatntimes[10000]{$\vv{v}$}
+% \repeatntimes[10000]{$\vv{v}$}
 % \repeatntimes[1000]{$\tikzvec{v}$}
 % \repeatntimes[1000]{$\pstricksvec{v}$}
 % \repeatntimes[10000]{$\picvec{v}$}
 
+%% standard command with \TestOverArrow
 % \repeatntimes[1000]{\TestOverArrow{\overrightarrow}}
 % \repeatntimes[1000]{\TestOverArrow{\esvectvv}}
 % \repeatntimes[1000]{\TestOverArrow{\vv}}
 % \repeatntimes[100]{\TestOverArrow{\tikzvec}}
 % \repeatntimes[100]{\TestOverArrow{\pstricksvec}}
 % \repeatntimes[500]{\TestOverArrow{\picvec}}
+
+%% starred command
+\repeatntimes[1000]{$\tikzvec*{v}_0$}
 
 \end{document}
