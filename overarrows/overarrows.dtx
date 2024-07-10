@@ -16,7 +16,7 @@
 %<package>\NeedsTeXFormat{LaTeX2e}
 %<package>\ProvidesPackage{overarrows}
 %<*package>
-[2023/02/15 v1.1 Custom extensible arrows over math expressions]
+[2024/07/10 v1.2 Custom extensible arrows over math expressions]
 %</package>
 %
 %<*driver>
@@ -2451,7 +2451,7 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 %
 % \subsubsection*{Declaration of options}
 %
-% \changes{v1.4}{2024/07/06}{Add option pstricks}
+% \changes{v1.2}{2024/07/10}{Add option pstricks}
 %
 %    \begin{macrocode}
 \DeclareOption{esvect}{\ovar@option@esvect@true}
@@ -2555,9 +2555,10 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 \RequirePackage{amsmath}
 \RequirePackage{etoolbox}
 %    \end{macrocode}
+%
 % Option \refOpt{old-arrows}. Configuration of arrows used for
 % predefined commands.
-% \changes{v1.2}{2024/07/06}{Use \cs{def} instead of \cs{let} for
+% \changes{v1.2}{2024/07/10}{Use \cs{def} instead of \cs{let} for
 % \cs{ovar@rightarrow} and \cs{ovar@leftarrow}}
 %    \begin{macrocode}
 \def\ovar@rightarrow{\rightarrow}
@@ -2568,12 +2569,13 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
   \def\ovar@leftarrow{\varleftarrow}
 \fi
 %    \end{macrocode}
+%
 % Option \refOpt{esvect}.
 %    \begin{macrocode}
 \ifovar@option@esvect@
   \RequirePackage{esvect}
 %    \end{macrocode}
-% \changes{v1.2}{2024/07/06}{Fix esvect font sizes}
+% \changes{v1.2}{2024/07/10}{Fix esvect font sizes}
 % Fix font description in |uesvect.fd| to allow any sizes (taken from Enrico
 % Gregorio, \url{https://tex.stackexchange.com/a/689863/})
 %    \begin{macrocode}
@@ -2657,7 +2659,7 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 % \end{macro}
 %
 % Initial configuration.
-% \changes{v1.2}{2024/07/06}{Remove useless \cs{AtBeginDocument}}
+% \changes{v1.2}{2024/07/10}{Remove useless \cs{AtBeginDocument}}
 %    \begin{macrocode}
 \SetOverArrowsSubscriptCommand{_}
 %    \end{macrocode}
@@ -2897,7 +2899,7 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
     }
   },
 %    \end{macrocode}
-% \changes{v1.2}{2024/07/06}{Add key \refKey{harrowextender}}
+% \changes{v1.2}{2024/07/10}{Add config \refKey*{middle config}|=harrowextender|}
 %    \begin{macrocode}
   middle config/harrowextender/.code={%
     \pgfkeysalso{%
@@ -3024,7 +3026,7 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 %
 % \subsubsection*{Keys for the \texttt{pstricks} method}
 %
-% \changes{v1.4}{2024/07/06}{Add the method pstricks}
+% \changes{v1.2}{2024/07/10}{Add the method pstricks}
 %
 %    \begin{macrocode}
 \SetOverArrowsMethod[lens]{pstricks}{%
@@ -3200,7 +3202,7 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 %  \item \cs{fontdimen} 54 family 2 with XeTeX,
 %  \item \cs{Umathoverbarrule} with LuaTex.
 % \end{itemize}
-% \changes{v1.2}{2024/07/06}{Get the correct rule thickness with unicode-math}
+% \changes{v1.2}{2024/07/10}{Get the correct rule thickness with unicode-math}
 %    \begin{macrocode}
 \def\ovar@rulethickness@fontdimen{8}
 \def\ovar@rulethickness@family{3}
@@ -3365,7 +3367,7 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 %
 % \subsubsection*{Macro for commands creation}
 %
-% \changes{v1.4}{2024/07/06}{Allow backslash in command name}
+% \changes{v1.2}{2024/07/10}{Allow backslash in command name}
 % In the initial version, the commands names must be given as csname (without
 % backslash). To harmonize the syntax with standard \cs{NewDocumentCommand},
 % define an argument processor so that both
@@ -3495,7 +3497,7 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 %
 % \subsubsection*{Starred variant}
 %
-% \changes{v1.4}{2024/07/06}{Use boxes in starred variant for better performances}
+% \changes{v1.2}{2024/07/10}{Use boxes in starred variant for better performances}
 % \begin{macro}{\ovar@starversion}
 % |#1|: definition (stack macro + arrow macro)\\
 % |#2|: math style\\
@@ -3524,8 +3526,8 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
   \let\esvectvv\vv
   \undef\vv
 %    \end{macrocode}
-% \changes{v1.2}{2024/07/06}{Use \refKey{middle config/relbareda} instead of
-% \refKey{middle config/auto}}
+% \changes{v1.2}{2024/07/10}{Use \refKey{middle config}|=relbareda| instead of
+% \refKey{middle config}|=auto|}
 %    \begin{macrocode}
   \NewOverArrowCommand{\vv}{esvect, middle config = relbareda}
 \fi
