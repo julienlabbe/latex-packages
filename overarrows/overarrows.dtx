@@ -4016,8 +4016,9 @@ actual '='
 %    \begin{macrocode}
     texcs       = [4]{% internal macros
       ovar@rightarrow, ovar@leftarrow, ifovar@option@oldarrows@,
-      ifovar@option@esvect@, ifovar@option@tikz@, ifovar@option@pstarrows@,
-      ifovar@detectsubscripts@, ifovar@option@debug@,
+      ifovar@option@esvect@, ifovar@option@tikz@, ifovar@option@pstricks@,
+      ifovar@option@pstarrows@, ifovar@detectsubscripts@,
+      ifovar@option@subother@, ifovar@option@subactive@, ifovar@option@debug@,
       ifovar@option@overrightarrow@, ifovar@option@underrightarrow@,
       ifovar@option@overleftarrow@, ifovar@option@underleftarrow@,
       ifovar@option@overleftrightarrow@, ifovar@option@underleftrightarrow@,
@@ -4025,22 +4026,23 @@ actual '='
       ifovar@option@overrightharpoondown@, ifovar@option@underrightharpoondown@,
       ifovar@option@overleftharpoonup@, ifovar@option@underleftharpoonup@,
       ifovar@option@overleftharpoondown@, ifovar@option@underleftharpoondown@,
-      ifovar@option@overbar@, ifovar@option@underbar@, ovar@set, ovar@length@min,
-      ovar@before@arrow, ovar@after@arrow, ovar@macro@stack, ovar@macro@arrow,
-      ovar@set@, ovar@shift@left, ovar@shift@right, ovar@stack@fill,
+      ifovar@option@overbar@, ifovar@option@underbar@, ovar@subcmd, ovar@set,
+      ovar@length@min, ovar@before@arrow, ovar@after@arrow, ovar@macro@stack,
+      ovar@macro@arrow, ovar@shift@left, ovar@shift@right, ovar@stack@fill,
       ovar@stackunder@fill, ovar@stack@lens, ovar@stackunder@lens,
       ovar@macro@arrowfill, ovar@arrow@fill, ovar@arrow@start, ovar@trim@start,
       ovar@trim@middle, ovar@arrow@middle, ovar@trim@end, ovar@arrow@end,
       ovar@tikz@command, ovar@tikz@pathoptions, ovar@tikz@path,
-      ovar@tikz@options, ovar@picture@geometry, ovar@picture@linethickness,
-      ovar@picture@command, ovar@tempdim, ovar@set@arrowlength,
-      ovar@rulethickness@fontdimen, ovar@rulethickness@family,
-      ovar@set@arrowthickness, ovar@set@arrowthickness@UM@lua,
-      ovar@stackover@@, ovar@stackunder@@,
+      ovar@tikz@options, ovar@pstricks@geometry, ovar@pstricks@linethickness,
+      ovar@pstricks@psset, ovar@pstricks@command, ovar@picture@geometry,
+      ovar@picture@linethickness, ovar@picture@command, ovar@tempdim,
+      ovar@set@arrowlength, ovar@set@arrowthickness,
+      ovar@set@arrowthickness@UM@lua, ovar@rulethickness@fontdimen,
+      ovar@rulethickness@family, ovar@stackover@@, ovar@stackunder@@,
       ovar@stackover@, ovar@stackunder@, ovar@stackover@fill,
-      ovar@stackover@lens, ovar@set@common, ovar@starversion,
-      ovar@testmathstyles, ovar@row@teststyle,%
-      ifovar@option@subother@,ifovar@option@subactive@,ovar@subcmd,ovar@testkerning,%
+      ovar@stackover@lens, ovar@cmdname@processor, ovar@set@common,
+      ovar@starversion, ovar@tempbox, ovar@testmathstyles, ovar@row@teststyle,
+      ovar@testkerning%
     },
     index       = [4][texcs4],%
     indexstyle  = [4]\indexmacrointernal,%
@@ -4052,16 +4054,21 @@ actual '='
       varrightarrow, twoheadrightarrow,%
     },
 %    \end{macrocode}
-% Il would be nice to also index keys, but spaces are badly handled by listings.
+% Il would be nice to also index keys, but spaces are badly handled by
+% \pkg{listings}.
 %    \begin{macrocode}
 %^^A    morekeywords = [2]{%
-%^^A      no stack macro hook, stack macro, arrow macro, no arrow macro hook, min
-%^^A      length, before arrow, after arrow, space before arrow, space after arrow,
-%^^A      shift left, shift right, shift leftright, center arrow, left arrow, right
-%^^A      arrow, arrow under, fill macro, start, middle, end, trim start, trim
-%^^A      middle, trim end, trim, no trimming, middle config, amsmath, esvect, tikz
-%^^A      command, tikz options, path options, path, add path options, add tikz
-%^^A      options, arrows, line thickness, thinner, picture command, geometry, detect subscripts,
+%^^A      overarrows, no stack macro hook, stack macro, detect subscripts, arrow
+%^^A      macro, no arrow macro hook, min length, before arrow, after arrow, space
+%^^A      before arrow, space after arrow, shift left, shift right, shift leftright,
+%^^A      center arrow, left arrow, right arrow, arrow under, arrow under/noconfig,
+%^^A      arrow under/autoconfig, fill macro, start, middle, end, trim start, trim
+%^^A      middle, trim end, trim, no trimming, middle config, middle config/relbar,
+%^^A      middle config/relbareda, middle config/harrowextender, middle config/auto,
+%^^A      amsmath, amsmath/mimic, amsmath/strict, esvect, esvect/mimic,
+%^^A      esvect/strict, tikz command, tikz options, path options, path, add path
+%^^A      options, add tikz options, arrows, line thickness, thinner, pstricks
+%^^A      command, psset, geometry, arrow, picture command,%
 %^^A    },
 %^^A    index       = [3][keywords2],%
 %^^A    indexstyle  = [3]\lstindexmacro,%

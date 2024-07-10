@@ -47,5 +47,8 @@ add tikz options
 arrows
 line thickness
 thinner
-picture command
+pstricks command
+psset
 geometry
+arrow
+picture command
