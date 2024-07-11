@@ -25,6 +25,8 @@
 \ifovar@option@underleftharpoondown@
 \ifovar@option@overbar@
 \ifovar@option@underbar@
+\ovar@auto@middle
+\ovar@auto@trim@middle
 \ovar@subcmd
 \ovar@set
 \ovar@length@min
