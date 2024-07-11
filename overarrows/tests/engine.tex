@@ -4,16 +4,20 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \documentclass{article}
-\title{Test of the \textsf{overarrows} package\\compatibility with \pkg{unicode-math}}
+\title{Test of the \textsf{overarrows} package\\compatibility with \LaTeX{} engines}
 \author{Julien Labb\'e}
 
-\usepackage[allcommands, tikz]{overarrows}
+\usepackage[
+  allcommands, tikz,
+  % noesvect
+]{overarrows}
 \usepackage{overarrows-doc}
 
+\usepackage{iftex}
+\iftutex% LuaLaTeX / XeLaTeX
 \usepackage{unicode-math}
-
 %% math fonts\harrowextender
-% \setmathfont{Asana Math}% bad position of hooks
+\setmathfont{Asana-Math.otf}% bad position of hooks
 % \setmathfont{Latin Modern Math}% no harrowextender
 % \setmathfont{XITS Math}
 % \setmathfont{Stix Two Math}% bad position of harrowextender in script and scripscript styles
@@ -26,12 +30,15 @@
 % \setmathfont{ErewhonMath}
 % \setmathfont{XCharterMath}
 % \setmathfont{ConcreteMath}
+\fi
 
 \begin{document}
 
 \maketitle
 
 \section*{Predefined commands}
+
+\ifundef{\vv}{\gdef\vv#1{}}{}
 
 \begin{dispExample}
 \begin{align*}
@@ -49,20 +56,31 @@
 
 \section*{harrowextender}
 
+\ifundef{\harrowextender}{\gdef\harrowextender{}}{}
+\ifundef{\relbareda}{\gdef\relbareda{}}{}
+
 \begin{dispExample}
   \begin{align*}
-    \mathtt{-} ~=~                         & - \\
-    \mathtt{\backslash relbar} ~=~        & \relbar \\
-    \mathtt{\backslash relbareda} ~=~      & \relbareda \\
-    \mathtt{\backslash harrowextender} ~=~ & \harrowextender
+    \mathtt{-} ~=~                                            & -                       \\
+    \mathtt{\backslash relbar} ~=~                            & \relbar                 \\
+    \mathtt{\backslash relbareda} ~=~                         & \relbareda              \\
+    \mathtt{\backslash mathrel \backslash harrowextender} ~=~ & \mathrel{\harrowextender} \\
+    \mathtt{\backslash ovar@auto@middle} ~=~                  & \UseName{ovar@auto@middle}
   \end{align*}
 \end{dispExample}
 
 \begin{dispExample}
-\NewOverArrowCommand{\testharrowextender}{%
-  middle config=harrowextender
-}
-\TestOverArrow{\testharrowextender}
+  \NewOverArrowCommand{\testharrowextender}{%
+    middle config=auto
+  }
+  \TestOverArrow{\testharrowextender}
+\end{dispExample}
+
+\begin{dispExample}
+  \NewOverArrowCommand{\useharrowextender}{%
+    middle config=harrowextender
+  }
+  \TestOverArrow{\useharrowextender}
 \end{dispExample}
 
 \section*{TikZ arrows}

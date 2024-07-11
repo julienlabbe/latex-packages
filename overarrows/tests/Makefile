@@ -19,21 +19,36 @@ envconfig=TEXINPUTS=$(stydir):${TEXINPUTS} $(texmfcnf)
 
 .PHONY: clean all
 
-all: $(filter-out unicode-math.pdf,$(src:.tex=.pdf)) unicode-math
+all: $(filter-out engine.pdf,$(src:.tex=.pdf)) engine
 
 %.pdf: %.tex $(dep)
 	$(envconfig) $(cmd) $(rcoptions) $(runoptions) $<
 
-.PHONY: unicode-math, unicode-math-luatex, unicode-math-xetex
-unicode-math: unicode-math-luatex unicode-math-xetex
-unicode-math-luatex: engine=lualatex
-unicode-math-luatex: unicode-math.tex $(dep)
+.PHONY: engine, engine.pdf, engine-luatex, engine-xetex, engine-pdflatex
+engine: engine-luatex engine-xetex engine-pdflatex
+engine-luatex: engine=lualatex
+engine-luatex:  engine.tex $(dep)
 	$(envconfig) $(cmd) $(rcoptions) $(runoptions) $<
-	mv unicode-math.pdf unicode-math-luatex.pdf
-unicode-math-xetex: engine=xelatex
-unicode-math-xetex: unicode-math.tex $(dep)
+	mv engine.log engine-luatex.log
+	mv engine.pdf engine-luatex.pdf
+engine-xetex: engine=xelatex
+engine-xetex: engine.tex $(dep)
 	$(envconfig) $(cmd) $(rcoptions) $(runoptions) $<
-	mv unicode-math.pdf unicode-math-xetex.pdf
+	mv engine.log engine-xetex.log
+	mv engine.pdf engine-xetex.pdf
+engine-pdflatex: engine=pdflatex
+engine-pdflatex: engine.tex $(dep)
+	$(envconfig) $(cmd) $(rcoptions) $(runoptions) $<
+	mv engine.log engine-loglatex.log
+	mv engine.pdf engine-pdflatex.pdf
+
+.PHONY: engine-luatex+, engine-xetex+, engine-pdflatex+
+engine-luatex+: engine=lualatex
+engine-luatex+: engine.pdf+
+engine-xetex+: engine=xelatex
+engine-xetex+: engine.pdf+
+engine-pdflatex+: engine=pdflatex
+engine-pdflatex+: engine.pdf+
 
 .PHONY: %.pdf+
 
