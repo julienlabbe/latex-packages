@@ -2658,7 +2658,7 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 \fi
 %    \end{macrocode}
 %
-% Add hook rules to make settings after \pkg{unicode-math}.
+% Add hook rules to apply settings after \pkg{unicode-math}.
 %    \begin{macrocode}
 \DeclareHookRule{begindocument}{overarrows}{after}{unicode-math-luatex}
 \DeclareHookRule{begindocument}{overarrows}{after}{unicode-math-xetex}
@@ -2666,7 +2666,7 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 %
 % \changes{v1.2}{2024/07/10}{Use \cs{harrowextender}, if availlable.}
 % Set \cs{ovar@auto@middle} and \cs{ovar@auto@trim@middle}, used by
-% \refKey*{middle config}|=auto|.
+% configurations made with \refKey*{middle config}|=auto|.
 %    \begin{macrocode}
 \AddToHook{begindocument}[overarrows]
   {%
@@ -3445,9 +3445,9 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
     \csuse{ovar@set@#1}
   }{%
     \PackageError{overarrows}{Unknown method #1}
-    {Try with 'symb', 'tikz' or 'picture'}
+    {Try with 'symb', 'tikz', 'pstriks' or 'picture'}
   }
-  \ovar@set{#3 }
+  \ovar@set{#3}
   \ifdef{\ovar@macro@arrow}{}{%
     \ovar@set{no arrow macro hook}
   }
@@ -4109,20 +4109,20 @@ actual '='
       ifovar@option@overrightharpoondown@, ifovar@option@underrightharpoondown@,
       ifovar@option@overleftharpoonup@, ifovar@option@underleftharpoonup@,
       ifovar@option@overleftharpoondown@, ifovar@option@underleftharpoondown@,
-      ifovar@option@overbar@, ifovar@option@underbar@, ovar@subcmd, ovar@set,
-      ovar@length@min, ovar@before@arrow, ovar@after@arrow, ovar@macro@stack,
-      ovar@macro@arrow, ovar@shift@left, ovar@shift@right, ovar@stack@fill,
-      ovar@stackunder@fill, ovar@stack@lens, ovar@stackunder@lens,
-      ovar@macro@arrowfill, ovar@arrow@fill, ovar@arrow@start, ovar@trim@start,
-      ovar@trim@middle, ovar@arrow@middle, ovar@trim@end, ovar@arrow@end,
-      ovar@tikz@command, ovar@tikz@pathoptions, ovar@tikz@path,
-      ovar@tikz@options, ovar@pstricks@geometry, ovar@pstricks@linethickness,
-      ovar@pstricks@psset, ovar@pstricks@command, ovar@picture@geometry,
-      ovar@picture@linethickness, ovar@picture@command, ovar@tempdim,
-      ovar@set@arrowlength, ovar@set@arrowthickness,
-      ovar@set@arrowthickness@UM@lua, ovar@rulethickness@fontdimen,
-      ovar@rulethickness@family, ovar@stackover@@, ovar@stackunder@@,
-      ovar@stackover@, ovar@stackunder@, ovar@stackover@fill,
+      ifovar@option@overbar@, ifovar@option@underbar@, ovar@auto@middle,
+      ovar@auto@trim@middle, ovar@subcmd, ovar@set, ovar@length@min,
+      ovar@before@arrow, ovar@after@arrow, ovar@macro@stack, ovar@macro@arrow,
+      ovar@shift@left, ovar@shift@right, ovar@stack@fill, ovar@stackunder@fill,
+      ovar@stack@lens, ovar@stackunder@lens, ovar@macro@arrowfill,
+      ovar@arrow@fill, ovar@arrow@start, ovar@trim@start, ovar@trim@middle,
+      ovar@arrow@middle, ovar@trim@end, ovar@arrow@end, ovar@tikz@command,
+      ovar@tikz@pathoptions, ovar@tikz@path, ovar@tikz@options,
+      ovar@pstricks@geometry, ovar@pstricks@linethickness, ovar@pstricks@psset,
+      ovar@pstricks@command, ovar@picture@geometry, ovar@picture@linethickness,
+      ovar@picture@command, ovar@tempdim, ovar@set@arrowlength,
+      ovar@set@arrowthickness, ovar@set@arrowthickness@UM@lua,
+      ovar@rulethickness@fontdimen, ovar@rulethickness@family, ovar@stackover@@,
+      ovar@stackunder@@, ovar@stackover@, ovar@stackunder@, ovar@stackover@fill,
       ovar@stackover@lens, ovar@cmdname@processor, ovar@set@common,
       ovar@starversion, ovar@tempbox, ovar@testmathstyles, ovar@row@teststyle,
       ovar@testkerning%

@@ -593,9 +593,9 @@
     \csuse{ovar@set@#1}
   }{%
     \PackageError{overarrows}{Unknown method #1}
-    {Try with 'symb', 'tikz' or 'picture'}
+    {Try with 'symb', 'tikz', 'pstriks' or 'picture'}
   }
-  \ovar@set{#3 }
+  \ovar@set{#3}
   \ifdef{\ovar@macro@arrow}{}{%
     \ovar@set{no arrow macro hook}
   }
