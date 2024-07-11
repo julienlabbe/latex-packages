@@ -1988,14 +1988,14 @@ $ \smalleroverrightarrow{v} \qquad \smalleroverrightarrow{AB} $
 % commands creation), the |tikz| method is chosen, then the arrow is drawn by
 % the command:
 % \begin{center}
-%   \cs{tikz}|[|\refKey*{tikz options}|]{|\refKey*{tikz command}|}|
+%   \cs{tikz}|[<|\refKey*{tikz options}|>]{<|\refKey*{tikz command}|>}|
 % \end{center}
 % \noindent where \refKey{tikz options} and \refKey{tikz command} are two keys
 % described below. When \refKey*{tikz command} is let unset, the drawing command
 % turns into:
 % \begin{center}
-%   \cs{tikz}|[|\refKey*{tikz options}|]{|\cs{draw}|[|\refKey*{path options}|]|
-%   \refKey*{path}|;}|
+%   \cs{tikz}|[<|\refKey*{tikz options}|>]{|\cs{draw}|[<|\refKey*{path options}|>]|
+%   |<|\refKey*{path}|>;}|
 % \end{center}
 %
 % The best way to customise |tikz| arrows is then to set the keys \refKey{tikz
@@ -2070,16 +2070,16 @@ $ \overdotteddoublearrow{v} \qquad \overdotteddoublearrow{AB} $
 % \subsubsection{PSTricks settings}
 % \label{sec:pstricks-keys}
 %
-% \tcbdocmarginnote{\tcbdocnew{v1.2 2024/07/10}}
+% \tcbdocmarginnote{\tcbdocnew{v1.2 2024/07/11}}
 % If, at command creation (see section~\ref{sec:macro-for-commands-creation},
 % page~\pageref{sec:macro-for-commands-creation} for the documentation of
 % commands creation), the |pstricks| method is chosen, then the arrow is drawn
-% with by:
+% by:
 % \begin{flushleft}\leftskip=3cm
-%   \cs{begin}|{pspicture}|\refDoc{key:pstricks}*{geometry}|%|\\
-%    \quad\cs{psset}|{linewidth=|\refDoc{key:pstricks}*{line thickness}|}%|\\
-%    \quad\cs{psset}|{|\refKey*{psset}|}%|\\
-%    \quad\refKey*{pstricks command}|%|\par
+%   \cs{begin}|{pspicture}<|\refDoc{key:pstricks}*{geometry}|>%|\\
+%    \quad\cs{psset}|{linewidth=<|\refDoc{key:pstricks}*{line thickness}|>}%|\\
+%    \quad\cs{psset}|{<|\refKey*{psset}|>}%|\\
+%    \quad|<|\refKey*{pstricks command}|>%|\par
 %   \cs{end}|{pspicture}%|
 % \end{flushleft}
 % \noindent where \refDoc{key:pstricks}{geometry}, \refDoc{key:pstricks}{line
@@ -2154,11 +2154,11 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 % If, at command creation (see section~\ref{sec:macro-for-commands-creation},
 % page~\pageref{sec:macro-for-commands-creation} for the documentation of
 % commands creation), the |picture| method is chosen, then the arrow is drawn
-% with by:
+% by:
 % \begin{flushleft}\leftskip=3cm
-%   \cs{begin}|{picture}|\refDoc{key:picture}*{geometry}|%|\\
-%    \quad\cs{linethickness}|{|\refDoc{key:picture}*{line thickness}|}%|\\
-%    \quad\refKey*{picture command}|%|\par
+%   \cs{begin}|{picture}<|\refDoc{key:picture}*{geometry}|>%|\\
+%    \quad\cs{linethickness}|{<|\refDoc{key:picture}*{line thickness}|>}%|\\
+%    \quad|<|\refKey*{picture command}|>%|\par
 %   \cs{end}|{picture}%|
 % \end{flushleft}
 % \noindent where \refDoc{key:picture}{geometry}, \refDoc{key:picture}{line
@@ -2326,10 +2326,10 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 % \symb{\relbareda} from the \pkg{esvect} package. This can be fixed with the
 % \refOpt{noesvect} option.
 %
-% Depending of the math font, predefined command may be faulty. For example, at
-% the time of writing, the hook vertical position is incorrect with \emph{Asana
+% Depending of the math font, predefined commands may be faulty. For example, at
+% the time of writing, hooks vertical position is incorrect with \emph{Asana
 % Math} or \cs{harrowextender} is badly positioned with \emph{Stix two Math}
-% (for the smaller math styles), \emph{Libertinus Math} and
+% (for the smallest math styles), \emph{Libertinus Math} and
 % \emph{GFSNeohellenicMath}.
 %
 % \subsubsection{Detection of non standard subscripts}
