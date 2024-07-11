@@ -19,7 +19,7 @@ envconfig=TEXINPUTS=$(stydir):${TEXINPUTS} $(texmfcnf)
 
 .PHONY: clean all
 
-all: $(filter-out engine.pdf,$(src:.tex=.pdf)) engine
+all: $(filter-out engine.pdf speed-test.pdf,$(src:.tex=.pdf)) engine
 
 %.pdf: %.tex $(dep)
 	$(envconfig) $(cmd) $(rcoptions) $(runoptions) $<
