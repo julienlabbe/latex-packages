@@ -17,9 +17,9 @@
 %% 
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{overarrows}
-[2024/07/11 v1.2 Custom extensible arrows over math expressions]
+[2025/02/02 v1.3 Custom extensible arrows over math expressions]
+\RequirePackage{etoolbox}
 \newif\ifovar@option@oldarrows@
-\newif\ifovar@option@esvect@ \ovar@option@esvect@true \PassOptionsToPackage{f}{esvect}
 \newif\ifovar@option@tikz@
 \newif\ifovar@option@pstricks@
 \newif\ifovar@option@pstarrows@
@@ -43,16 +43,17 @@
 \newif\ifovar@option@underleftharpoondown@
 \newif\ifovar@option@overbar@
 \newif\ifovar@option@underbar@
-\DeclareOption{esvect}{\ovar@option@esvect@true}
-\DeclareOption{noesvect}{\ovar@option@esvect@false}
-\DeclareOption{esvecta}{\ovar@option@esvect@true\PassOptionsToPackage{a}{esvect}}
-\DeclareOption{esvectb}{\ovar@option@esvect@true\PassOptionsToPackage{b}{esvect}}
-\DeclareOption{esvectc}{\ovar@option@esvect@true\PassOptionsToPackage{c}{esvect}}
-\DeclareOption{esvectd}{\ovar@option@esvect@true\PassOptionsToPackage{d}{esvect}}
-\DeclareOption{esvecte}{\ovar@option@esvect@true\PassOptionsToPackage{e}{esvect}}
-\DeclareOption{esvectf}{\ovar@option@esvect@true\PassOptionsToPackage{f}{esvect}}
-\DeclareOption{esvectg}{\ovar@option@esvect@true\PassOptionsToPackage{g}{esvect}}
-\DeclareOption{esvecth}{\ovar@option@esvect@true\PassOptionsToPackage{h}{esvect}}
+\def\ovar@option@esvect{f}
+\DeclareOption{esvect}{\gdef\ovar@option@esvect{f}}
+\DeclareOption{noesvect}{\gundef\ovar@option@esvect}
+\DeclareOption{esvecta}{\gdef\ovar@option@esvect{a}}
+\DeclareOption{esvectb}{\gdef\ovar@option@esvect{b}}
+\DeclareOption{esvectc}{\gdef\ovar@option@esvect{c}}
+\DeclareOption{esvectd}{\gdef\ovar@option@esvect{d}}
+\DeclareOption{esvecte}{\gdef\ovar@option@esvect{e}}
+\DeclareOption{esvectf}{\gdef\ovar@option@esvect{f}}
+\DeclareOption{esvectg}{\gdef\ovar@option@esvect{g}}
+\DeclareOption{esvecth}{\gdef\ovar@option@esvect{h}}
 \DeclareOption{old-arrows}{\ovar@option@oldarrows@true}
 \DeclareOption{tikz}{\ovar@option@tikz@true}
 \DeclareOption{pstricks}{\ovar@option@pstricks@true}
@@ -116,9 +117,8 @@
   \ovar@option@underbar@true
 }
 \DeclareOption*{\PackageWarning{overarrows}{Unknown option: '\CurrentOption'}}
-\ProcessOptions\relax
+\ProcessOptions*
 \RequirePackage{amsmath}
-\RequirePackage{etoolbox}
 \def\ovar@rightarrow{\rightarrow}
 \def\ovar@leftarrow{\leftarrow}
 \ifovar@option@oldarrows@
@@ -126,7 +126,8 @@
   \def\ovar@rightarrow{\varrightarrow}
   \def\ovar@leftarrow{\varleftarrow}
 \fi
-\ifovar@option@esvect@
+\ifdefined\ovar@option@esvect
+  \PassOptionsToPackage{\ovar@option@esvect}{esvect}
   \RequirePackage{esvect}
   \DeclareFontFamily{U}{esvect}{}
   \DeclareFontShape{U}{esvect}{m}{n}{
@@ -676,7 +677,7 @@
   \settowidth{\ovar@tempdim}{$\m@th #2{#3}$}%
   \kern\dimeval{0.5\ovar@tempdim - 0.5\wd\ovar@tempbox}%
 }
-\ifovar@option@esvect@
+\ifdefined\ovar@option@esvect
   \let\esvectvv\vv
   \undef\vv
   \NewOverArrowCommand{\vv}{esvect, middle config = relbareda}

@@ -1,7 +1,6 @@
 \ovar@rightarrow
 \ovar@leftarrow
 \ifovar@option@oldarrows@
-\ifovar@option@esvect@
 \ifovar@option@tikz@
 \ifovar@option@pstricks@
 \ifovar@option@pstarrows@
@@ -25,6 +24,7 @@
 \ifovar@option@underleftharpoondown@
 \ifovar@option@overbar@
 \ifovar@option@underbar@
+\ovar@option@esvect
 \ovar@auto@middle
 \ovar@auto@trim@middle
 \ovar@subcmd
