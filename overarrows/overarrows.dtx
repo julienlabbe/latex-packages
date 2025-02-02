@@ -16,7 +16,7 @@
 %<package>\NeedsTeXFormat{LaTeX2e}
 %<package>\ProvidesPackage{overarrows}
 %<*package>
-[2024/07/11 v1.2 Custom extensible arrows over math expressions]
+[2025/02/02 v1.3 Custom extensible arrows over math expressions]
 %</package>
 %
 %<*driver>
@@ -2430,11 +2430,14 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 % \renewcommand{\arraystretch}{2}
 % \begin{tabular*}{\linewidth}
 % {@{} l @{\extracolsep{\fill}} p{0.9\linewidth} @{}}
+% v1.3 & Bug fix for |esvect| options (see \url{https://github.com/julienlabbe/latex-packages/issues/2}).
+% \\
 % v1.2   & \noindent\par\vspace{-\baselineskip}
 %   \begin{itemize}[left=0pt, topsep=0pt, partopsep=0pt]
 %   \item Fix compatibility issues with \pkg{unicode-math}.
 %   \item Allow to draw the arrow with PSTricks.
 %   \item Make \pkg{esvect} handle all font sizes.
+%   \item Allow backslash in command name for \cs{NewOverArrowCommand} and variants.
 %   \item Rewrite starred variant for better performances.
 %   \end{itemize}
 % \\
@@ -2457,13 +2460,16 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 % \setlength{\parindent}{0em}
 % \setlength{\parskip}{\smallskipamount}
 %
+%    \begin{macrocode}
+\RequirePackage{etoolbox}
+%    \end{macrocode}
+%
 % \subsection*{Management of options}
 %
 % \subsubsection*{Declaration of conditionals}
 %
 %    \begin{macrocode}
 \newif\ifovar@option@oldarrows@
-\newif\ifovar@option@esvect@ \ovar@option@esvect@true \PassOptionsToPackage{f}{esvect}
 \newif\ifovar@option@tikz@
 \newif\ifovar@option@pstricks@
 \newif\ifovar@option@pstarrows@
@@ -2497,18 +2503,20 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 % \subsubsection*{Declaration of options}
 %
 % \changes{v1.2}{2024/07/11}{Add option pstricks}
+% \changes{v1.3}{2025/02/02}{Use a control sequence to store the esvect option}
 %
 %    \begin{macrocode}
-\DeclareOption{esvect}{\ovar@option@esvect@true}
-\DeclareOption{noesvect}{\ovar@option@esvect@false}
-\DeclareOption{esvecta}{\ovar@option@esvect@true\PassOptionsToPackage{a}{esvect}}
-\DeclareOption{esvectb}{\ovar@option@esvect@true\PassOptionsToPackage{b}{esvect}}
-\DeclareOption{esvectc}{\ovar@option@esvect@true\PassOptionsToPackage{c}{esvect}}
-\DeclareOption{esvectd}{\ovar@option@esvect@true\PassOptionsToPackage{d}{esvect}}
-\DeclareOption{esvecte}{\ovar@option@esvect@true\PassOptionsToPackage{e}{esvect}}
-\DeclareOption{esvectf}{\ovar@option@esvect@true\PassOptionsToPackage{f}{esvect}}
-\DeclareOption{esvectg}{\ovar@option@esvect@true\PassOptionsToPackage{g}{esvect}}
-\DeclareOption{esvecth}{\ovar@option@esvect@true\PassOptionsToPackage{h}{esvect}}
+\def\ovar@option@esvect{f}
+\DeclareOption{esvect}{\gdef\ovar@option@esvect{f}}
+\DeclareOption{noesvect}{\gundef\ovar@option@esvect}
+\DeclareOption{esvecta}{\gdef\ovar@option@esvect{a}}
+\DeclareOption{esvectb}{\gdef\ovar@option@esvect{b}}
+\DeclareOption{esvectc}{\gdef\ovar@option@esvect{c}}
+\DeclareOption{esvectd}{\gdef\ovar@option@esvect{d}}
+\DeclareOption{esvecte}{\gdef\ovar@option@esvect{e}}
+\DeclareOption{esvectf}{\gdef\ovar@option@esvect{f}}
+\DeclareOption{esvectg}{\gdef\ovar@option@esvect{g}}
+\DeclareOption{esvecth}{\gdef\ovar@option@esvect{h}}
 \DeclareOption{old-arrows}{\ovar@option@oldarrows@true}
 \DeclareOption{tikz}{\ovar@option@tikz@true}
 \DeclareOption{pstricks}{\ovar@option@pstricks@true}
@@ -2587,18 +2595,22 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 %
 % \subsubsection*{Options processing}
 %
+% \changes{v1.3}{2025/02/02}{Process options in the order specified by the user}
+%
 %    \begin{macrocode}
 \DeclareOption*{\PackageWarning{overarrows}{Unknown option: '\CurrentOption'}}
-\ProcessOptions\relax
+\ProcessOptions*
 %    \end{macrocode}
 %
 % \subsection*{Package dependencies}
 %
 % \LaTeX{} distributions prior to 2020/10/01 must add the \pkg{xparse} package.
 %
+% \pkg{etoolbox} is loaded at the very start of the package, as \cs{gundef} is
+% used at options processing.
+%
 %    \begin{macrocode}
 \RequirePackage{amsmath}
-\RequirePackage{etoolbox}
 %    \end{macrocode}
 %
 % Option \refOpt{old-arrows}. Configuration of arrows used for
@@ -2616,8 +2628,10 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 %    \end{macrocode}
 %
 % Option \refOpt{esvect}.
+% \changes{v1.3}{2025/02/02}{Use only one \cs{PassOptionsToPackage} with esvect}
 %    \begin{macrocode}
-\ifovar@option@esvect@
+\ifdefined\ovar@option@esvect
+  \PassOptionsToPackage{\ovar@option@esvect}{esvect}
   \RequirePackage{esvect}
 %    \end{macrocode}
 % \changes{v1.2}{2024/07/11}{Fix esvect font sizes}
@@ -3569,8 +3583,10 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 % \begin{macro}{\vv}
 % \begin{macro}{\esvectvv}
 % Backup and redefinition of \pkg{esvect} \refCom{vv} vector command.
+% \changes{v1.3}{2025/02/02}{Replace esvect conditionnal by the definition of
+% a control sequence}
 %    \begin{macrocode}
-\ifovar@option@esvect@
+\ifdefined\ovar@option@esvect
   \let\esvectvv\vv
   \undef\vv
 %    \end{macrocode}
@@ -4099,7 +4115,7 @@ actual '='
 %    \begin{macrocode}
     texcs       = [4]{% internal macros
       ovar@rightarrow, ovar@leftarrow, ifovar@option@oldarrows@,
-      ifovar@option@esvect@, ifovar@option@tikz@, ifovar@option@pstricks@,
+      ovar@option@esvect, ifovar@option@tikz@, ifovar@option@pstricks@,
       ifovar@option@pstarrows@, ifovar@detectsubscripts@,
       ifovar@option@subother@, ifovar@option@subactive@, ifovar@option@debug@,
       ifovar@option@overrightarrow@, ifovar@option@underrightarrow@,
