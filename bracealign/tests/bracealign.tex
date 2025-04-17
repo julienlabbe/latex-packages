@@ -1,0 +1,308 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Test of the LaTeX bracealign package
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass{article}
+
+\title{Test of the \textsf{bracealign} package}
+\author{Julien Labb\'e}
+
+\usepackage{bracealign}
+\usepackage{bracealign-doc}
+
+% \bracealignsetup{underbrace=false}
+
+\bracealignsetup{
+  add-brace = \overrightarrow,
+  add-braces = {\overleftarrow, \overrightarrow},
+}
+
+\newcommand{\smallcontent}{\textcolor{cyan}{\rule[-3pt]{1cm}{6pt}}}
+\newcommand{\medcontent}{\textcolor{cyan}{\rule[-6pt]{1.2cm}{12pt}}}
+\newcommand{\bigcontent}{\textcolor{cyan}{\rule[-12pt]{2cm}{24pt}}}
+\newcommand{\hugecontent}{\textcolor{cyan}{\rule[-18pt]{2.5cm}{36pt}}}
+
+\begin{document}
+
+\maketitle
+
+\section{Example}
+
+\begin{dispExample}
+  \[
+    \rho c \frac{\partial T}{\partial t} =
+    \begin{bracealign}
+      \underbrace{
+        \begin{bracealign}
+          \underbrace{
+            - \lambda \frac{\partial^2 T}{\partial x^2}
+          }_{\text{diffusion}}
+          - \underbrace{
+            \mu (T^4 - {T_0}^4)
+          }_{\substack{\text{radiative loss}}}
+        \end{bracealign}
+      }_{\text{heat transferts}}
+      + \underbrace{
+        \sum_{i=1}^{n} \dot{q}_i
+      }_{\substack{\text{heat}\\{\text{sources}}}}
+    \end{bracealign}
+  \]
+\end{dispExample}
+
+\section{\cs{underbrace}}
+
+\subsection{Without \pkg{bracealign}}
+
+\begin{dispExample}
+  \[
+    \underbrace{
+      \underbrace{\medcontent}_{1}
+      ~+~
+      \underbrace{\smallcontent}_{2}
+    }_{nested}
+    ~=~
+    \underbrace{\hugecontent}_{3}
+    ~+~
+    \underbrace{\bigcontent}_{4}
+    ~+~
+    \underbrace{\smallcontent}_{5}
+  \]
+\end{dispExample}
+
+\subsection{With \pkg{bracealign}}
+
+\begin{dispExample}
+  \[
+    \begin{bracealign}
+      \underbrace{
+        \begin{bracealign}
+          \underbrace{\medcontent}_{1}
+          ~+~
+          \underbrace{\smallcontent}_{2}
+        \end{bracealign}
+      }_{nested}
+      ~=~
+      \underbrace{\hugecontent}_{3}
+      ~+~
+      \underbrace{\bigcontent}_{4}
+      ~+~
+      \underbrace{\smallcontent}_{5}
+    \end{bracealign}
+  \]
+\end{dispExample}
+
+\section{\cs{overbrace}}
+
+\subsection{Without \pkg{bracealign}}
+
+\begin{dispExample}
+  \[
+    \overbrace{
+      \overbrace{\medcontent}^{1}
+      ~+~
+      \overbrace{\smallcontent}^{2}
+    }^{nested}
+    ~=~
+    \overbrace{\hugecontent}^{3}
+    ~+~
+    \overbrace{\bigcontent}^{4}
+    ~+~
+    \overbrace{\smallcontent}^{5}
+  \]
+\end{dispExample}
+
+\subsection{With \pkg{bracealign}}
+
+\begin{dispExample}
+  \[
+    \begin{bracealign}
+      \overbrace{
+        \begin{bracealign}
+          \overbrace{\medcontent}^{1}
+          ~+~
+          \overbrace{\smallcontent}^{2}
+        \end{bracealign}
+      }^{nested}
+      ~=~
+      \overbrace{\hugecontent}^{3}
+      ~+~
+      \overbrace{\bigcontent}^{4}
+      ~+~
+      \overbrace{\smallcontent}^{5}
+    \end{bracealign}
+  \]
+\end{dispExample}
+
+\section{Mixed}
+
+\begin{dispExample}
+  \[
+    \begin{bracealign}
+      \overbrace{
+        \begin{bracealign}
+          \overbrace{\medcontent}^{1}
+          ~+~
+          \overbrace{\smallcontent}^{2}
+        \end{bracealign}
+      }^{nested}
+      ~=~
+      \underbrace{\hugecontent}_{3}
+      ~+~
+      \overbrace{\bigcontent}^{4}
+      ~+~
+      \underbrace{\smallcontent}_{5}
+    \end{bracealign}
+  \]
+\end{dispExample}
+
+\section{Other tests}
+
+\subsection{Setting keys}
+
+\begin{dispExample}
+  \[
+    \begin{bracealign}[nooverbrace]
+      \overbrace{
+        \begin{bracealign}
+          \overbrace{\medcontent}^{1}
+          ~+~
+          \overbrace{\smallcontent}^{2}
+        \end{bracealign}
+      }^{nested}
+      ~=~
+      \underbrace{\hugecontent}_{3}
+      ~+~
+      \overbrace{\bigcontent}^{4}
+      ~+~
+      \underbrace{\smallcontent}_{5}
+    \end{bracealign}
+  \]
+\end{dispExample}
+
+\begin{dispExample}
+  \[
+    \begin{bracealign}[nounderbrace]
+      \overbrace{
+        \begin{bracealign}
+          \overbrace{\medcontent}^{1}
+          ~+~
+          \overbrace{\smallcontent}^{2}
+        \end{bracealign}
+      }^{nested}
+      ~=~
+      \underbrace{\hugecontent}_{3}
+      ~+~
+      \overbrace{\bigcontent}^{4}
+      ~+~
+      \underbrace{\smallcontent}_{5}
+    \end{bracealign}
+  \]
+\end{dispExample}
+
+
+\begin{dispExample}
+  \[
+    \bracealignsetup{overbrace=false}
+    \begin{bracealign}
+      \overbrace{
+        \begin{bracealign}
+          \overbrace{\medcontent}^{1}
+          ~+~
+          \overbrace{\smallcontent}^{2}
+        \end{bracealign}
+      }^{nested}
+      ~=~
+      \underbrace{\hugecontent}_{3}
+      ~+~
+      \overbrace{\bigcontent}^{4}
+      ~+~
+      \underbrace{\smallcontent}_{5}
+    \end{bracealign}
+  \]
+\end{dispExample}
+
+\subsection{Adding commands}
+
+\begin{dispListing}
+\bracealignsetup{
+  add-brace = \overrightarrow,
+  add-braces = {\overleftarrow, \overrightarrow},
+}
+\end{dispListing}
+
+\begin{dispExample}
+  \[
+    \begin{bracealign}
+      \overrightarrow{
+        \begin{bracealign}
+          \overrightarrow{\medcontent}
+          ~+~
+          \overrightarrow{\smallcontent}
+        \end{bracealign}
+      }
+      ~=~
+      \overrightarrow{\hugecontent}
+      ~+~
+      \overrightarrow{\bigcontent}
+      ~+~
+      \overrightarrow{\smallcontent}
+    \end{bracealign}
+  \]
+\end{dispExample}
+
+\begin{dispExample}
+  \[
+    \begin{bracealign}
+      \overleftarrow{
+        \begin{bracealign}
+          \overleftarrow{\medcontent}
+          ~+~
+          \overleftarrow{\smallcontent}
+        \end{bracealign}
+      }
+      ~=~
+      \overleftarrow{\hugecontent}
+      ~+~
+      \overleftarrow{\bigcontent}
+      ~+~
+      \overleftarrow{\smallcontent}
+    \end{bracealign}
+  \]
+\end{dispExample}
+
+\begin{dispExample}
+  \[
+    \begin{bracealign}[nooverrightarrow]
+      \overleftarrow{
+        \begin{bracealign}
+          \overrightarrow{\medcontent}
+          ~+~
+          \overrightarrow{\smallcontent}
+        \end{bracealign}
+      }
+      ~=~
+      \overleftarrow{\hugecontent}
+      ~+~
+      \overleftarrow{\bigcontent}
+      ~+~
+      \overleftarrow{\smallcontent}
+    \end{bracealign}
+  \]
+\end{dispExample}
+
+\subsection{Check of commands definition}
+
+\begin{dispExample}
+  Before \textsf{bracealign}:\newline
+  ``\expandafter\meaning\csname overbrace\endcsname"
+  \par\bigskip
+  \begin{bracealign}
+    Inside \textsf{bracealign}:\newline
+    ``\expandafter\meaning\csname overbrace\endcsname"
+  \end{bracealign}
+  \par\bigskip
+  Before \textsf{bracealign}:\newline
+  ``\expandafter\meaning\csname overbrace\endcsname"
+\end{dispExample}
+
+\end{document}

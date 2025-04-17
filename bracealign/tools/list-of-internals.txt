@@ -1,0 +1,15 @@
+@@@@_define_switches:e
+@@@@_define_switches:n
+@@@@_define_switches:N
+@@@@_finalize:n
+@@@@_initialize:n
+@@@@_update_active_braces:
+@@@@_use_strutcontent:n
+l@@@@_active_brace_seq
+l@@@@_default_brace_clist
+l@@@@_overbrace_bool
+l@@@@_overbracket_bool
+l@@@@_overparen_bool
+l@@@@_underbrace_bool
+l@@@@_underbracket_bool
+l@@@@_underparen_bool

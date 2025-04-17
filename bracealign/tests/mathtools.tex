@@ -1,0 +1,180 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Test of the LaTeX bracealign package
+% compatibility with the mathtools package
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass{article}
+
+\title{Test of the \textsf{bracealign} package\\
+compatibility with the \pkg{mathtools} package}
+\author{Julien Labb\'e}
+
+\usepackage{bracealign}
+\usepackage{bracealign-doc}
+
+\usepackage{mathtools}
+
+\newcommand{\smallcontent}{\textcolor{cyan}{\rule[-3pt]{1cm}{6pt}}}
+\newcommand{\medcontent}{\textcolor{cyan}{\rule[-6pt]{1.2cm}{12pt}}}
+\newcommand{\bigcontent}{\textcolor{cyan}{\rule[-12pt]{2cm}{24pt}}}
+\newcommand{\hugecontent}{\textcolor{cyan}{\rule[-18pt]{2.5cm}{36pt}}}
+
+% \ShowHook{begindocument}
+
+\begin{document}
+
+\maketitle
+
+\section{\cs{underbrace} / \cs{overbrace}}
+
+\begin{dispExample}
+  \[
+    \begin{bracealign}
+      \underbrace{
+        \begin{bracealign}
+          \underbrace{\medcontent}_{1}
+          ~+~
+          \underbrace{\smallcontent}_{2}
+        \end{bracealign}
+      }_{nested}
+      ~=~
+      \underbrace{\hugecontent}_{3}
+      ~+~
+      \underbrace{\bigcontent}_{4}
+      ~+~
+      \underbrace{\smallcontent}_{5}
+    \end{bracealign}
+  \]
+\end{dispExample}
+
+\begin{dispExample}
+  \[
+    \begin{bracealign}
+      \overbrace{
+        \begin{bracealign}
+          \overbrace{\medcontent}^{1}
+          ~+~
+          \overbrace{\smallcontent}^{2}
+        \end{bracealign}
+      }^{nested}
+      ~=~
+      \overbrace{\hugecontent}^{3}
+      ~+~
+      \overbrace{\bigcontent}^{4}
+      ~+~
+      \overbrace{\smallcontent}^{5}
+    \end{bracealign}
+  \]
+\end{dispExample}
+
+\begin{dispExample}
+  \[
+    \begin{bracealign}
+      \overbrace{
+        \begin{bracealign}
+          \overbrace{\medcontent}^{1}
+          ~+~
+          \overbrace{\smallcontent}^{2}
+        \end{bracealign}
+      }^{nested}
+      ~=~
+      \underbrace{\hugecontent}_{3}
+      ~+~
+      \overbrace{\bigcontent}^{4}
+      ~+~
+      \underbrace{\smallcontent}_{5}
+    \end{bracealign}
+  \]
+\end{dispExample}
+
+\section{\cs{underbracket} / \cs{overbracket}}
+
+\begin{dispExample}
+  \[
+    \begin{bracealign}
+      \underbracket{
+        \begin{bracealign}
+          \underbracket{\medcontent}_{1}
+          ~+~
+          \underbracket{\smallcontent}_{2}
+        \end{bracealign}
+      }_{nested}
+      ~=~
+      \underbracket{\hugecontent}_{3}
+      ~+~
+      \underbracket{\bigcontent}_{4}
+      ~+~
+      \underbracket{\smallcontent}_{5}
+    \end{bracealign}
+  \]
+\end{dispExample}
+
+\begin{dispExample}
+  \[
+    \begin{bracealign}
+      \overbracket{
+        \begin{bracealign}
+          \overbracket{\medcontent}^{1}
+          ~+~
+          \overbracket{\smallcontent}^{2}
+        \end{bracealign}
+      }^{nested}
+      ~=~
+      \overbracket{\hugecontent}^{3}
+      ~+~
+      \overbracket{\bigcontent}^{4}
+      ~+~
+      \overbracket{\smallcontent}^{5}
+    \end{bracealign}
+  \]
+\end{dispExample}
+
+\begin{dispExample}
+  \[
+    \begin{bracealign}
+      \overbracket{
+        \begin{bracealign}
+          \overbracket{\medcontent}^{1}
+          ~+~
+          \overbracket{\smallcontent}^{2}
+        \end{bracealign}
+      }^{nested}
+      ~=~
+      \underbracket{\hugecontent}_{3}
+      ~+~
+      \overbracket{\bigcontent}^{4}
+      ~+~
+      \underbracket{\smallcontent}_{5}
+    \end{bracealign}
+  \]
+\end{dispExample}
+
+\subsection{Check of commands definition}
+
+\begin{dispExample}
+  Before \textsf{bracealign}:\newline
+  ``\expandafter\meaning\csname underbrace\endcsname"
+  \par\bigskip
+  \begin{bracealign}
+    Inside \textsf{bracealign}:\newline
+    ``\expandafter\meaning\csname underbrace\endcsname"
+  \end{bracealign}
+  \par\bigskip
+  Before \textsf{bracealign}:\newline
+  ``\expandafter\meaning\csname underbrace\endcsname"
+\end{dispExample}
+
+\begin{dispExample}
+  Before \textsf{bracealign}:\newline
+  ``\expandafter\meaning\csname underbracket\endcsname"
+  \par\bigskip
+  \begin{bracealign}
+    Inside \textsf{bracealign}:\newline
+    ``\expandafter\meaning\csname underbracket\endcsname"
+  \end{bracealign}
+  \par\bigskip
+  Before \textsf{bracealign}:\newline
+  ``\expandafter\meaning\csname underbracket\endcsname"
+\end{dispExample}
+
+\end{document}

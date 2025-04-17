@@ -1,0 +1,177 @@
+%%
+%% This is file `bracealign.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% bracealign.dtx  (with options: `package')
+%% 
+%% This is a generated file.
+%% 
+%% Copyright (C) 2025 by Julien Labbé <Julien.Labbe@univ-grenoble-alpes.fr>
+%% 
+%% This file may be distributed and/or modified under the conditions of the LaTeX
+%% Project Public License (LPPL), either version 1.3c of this license or (at your
+%% option) any later version. The latest version of this license is in the file
+%% https://www.latex-project.org/lppl.txt
+%% 
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesExplPackage{bracealign}{2025/04/17}{v1.0}{Align underbraces and overbraces}
+\seq_new:N \l_bracealign_brace_seq
+\msg_new:nnn { bracealign } { already-added-brace }
+  { Brace~command~\token_to_str:c #1~has~already~been~added.~Skipped. }
+\cs_new:Nn \bracealign_add_brace:n
+  {
+    \seq_if_in:NnTF \l_bracealign_brace_seq { #1 }
+      {
+        \msg_warning:nnn { bracealign } { already-added-brace } { #1 }
+      }
+      {
+        \seq_put_right:Nn \l_bracealign_brace_seq { #1 }
+        \cs_set_eq:cc { __bracealign_#1_std_cmd:n } { #1 }
+        \bool_if_exist:cF { l__bracealign_#1_bool }
+          { \__bracealign_define_switches:e { #1 } }
+        \tl_new:c { g__bracealign_#1_strutcontent_tl }
+        \tl_new:c { l__bracealign_#1_strutcontent_tl }
+        \tl_new:c { l__bracealign_#1_strutcontent_surround_tl }
+        \cs_new:cn { __bracealign_#1_collect_strutcontent:n }
+          {
+            \tl_gput_right:cn { g__bracealign_#1_strutcontent_tl } { ##1 }
+            \use:c { __bracealign_#1_std_cmd:n } { }
+          }
+        \cs_new:cn { __bracealign_#1_use_strutcontent:n }
+          {
+            \use:c {  __bracealign_#1_std_cmd:n }
+              {
+                \vphantom
+                  {
+                    \tl_use:c { l__bracealign_#1_strutcontent_tl }
+                  }
+                  ##1
+              }
+          }
+      }
+  }
+\cs_generate_variant:Nn \bracealign_add_brace:n { e }
+\cs_new:Nn \bracealign_add_brace:N
+  {
+    \bracealign_add_brace:e { \cs_to_str:N #1 }
+  }
+\keys_define:nn { bracealign }
+  {
+    add-brace   .code:n = { \bracealign_add_brace:N  #1 },
+    add-braces  .code:n =
+      {
+        \clist_map_function:nN { #1 } \bracealign_add_brace:N
+      },
+  }
+\cs_new:Nn \__bracealign_define_switches:n
+  {
+    \bool_new:c { l__bracealign_#1_bool }
+    \bool_set_true:c { l__bracealign_#1_bool }
+    \keys_define:nn { bracealign }
+      {
+        #1   .bool_set:c          = { l__bracealign_#1_bool },
+        no#1 .bool_set_inverse:c  = { l__bracealign_#1_bool },
+      }
+  }
+\cs_generate_variant:Nn \__bracealign_define_switches:n { e }
+\cs_new:Nn \__bracealign_define_switches:N
+  {
+    \__bracealign_define_switches:e { \cs_to_str:N #1 }
+  }
+\cs_new:Nn \__bracealign_initialize:n
+  {
+    \tl_set_eq:cc
+      { l__bracealign_#1_strutcontent_surround_tl }
+      { g__bracealign_#1_strutcontent_tl }
+    \tl_clear:c { g__bracealign_#1_strutcontent_tl }
+    \cs_set_eq:cc
+      { #1 }
+      { __bracealign_#1_collect_strutcontent:n }
+  }
+\cs_new:Nn \__bracealign_use_strutcontent:n
+  {
+    \tl_set_eq:cc
+      { l__bracealign_#1_strutcontent_tl }
+      { g__bracealign_#1_strutcontent_tl }
+    \cs_set_eq:cc
+      { #1 }
+      { __bracealign_#1_use_strutcontent:n }
+  }
+\cs_new:Nn \__bracealign_finalize:n
+  {
+    \tl_set_eq:cc
+      { g__bracealign_#1_strutcontent_tl }
+      { l__bracealign_#1_strutcontent_surround_tl }
+  }
+\seq_new:N \l__bracealign_active_brace_seq
+\cs_new:Nn \__bracealign_update_active_braces:
+  {
+    \seq_map_inline:Nn \l__bracealign_active_brace_seq
+      {
+        \cs_set_eq:cc { ##1 } { __bracealign_##1_std_cmd:n }
+      }
+    \seq_clear:N \l__bracealign_active_brace_seq
+    \seq_map_inline:Nn \l_bracealign_brace_seq
+      {
+        \bool_if:cT { l__bracealign_##1_bool }
+          { \seq_put_right:Nn \l__bracealign_active_brace_seq { ##1 } }
+      }
+  }
+\cs_new:Nn \bracealign_bracealign:n
+  {
+    \__bracealign_update_active_braces:
+    \seq_map_inline:Nn \l__bracealign_active_brace_seq
+      { \__bracealign_initialize:n { ##1 } }
+    \hbox_set:Nn \l_tmpa_box { $ #1 $ }
+    \seq_map_inline:Nn \l__bracealign_active_brace_seq
+      { \__bracealign_use_strutcontent:n { ##1 } }
+    #1
+    \seq_map_inline:Nn \l__bracealign_active_brace_seq
+      { \__bracealign_finalize:n { ##1 } }
+  }
+\NewDocumentCommand { \bracealignsetup } { m }
+  {
+    \keys_set:nn { bracealign } { #1 }
+  }
+\NewDocumentEnvironment { bracealign } { O{} b }
+  {
+    \bracealignsetup{ #1 }
+    \bracealign_bracealign:n { #2 }
+  }
+  {
+  }
+\clist_new:N \l__bracealign_default_brace_clist
+\keys_define:nn { bracealign }
+  {
+    default-braces  .clist_set:N = \l__bracealign_default_brace_clist,
+    default-braces  .initial:n =
+      {
+        \underbrace,    \overbrace,
+        \underbracket,  \overbracket,
+        \underparen,    \overparen
+      },
+  }
+\clist_map_inline:Nn \l__bracealign_default_brace_clist
+  {
+   \__bracealign_define_switches:N #1
+  }
+\clist_map_inline:nn
+  {
+    mathtools,
+    unicode-math-luatex, unicode-math-xetex,
+    libertinus, libertinust1math,
+    stix2-type1, stix2
+  }
+  { \hook_gset_rule:nnnn { begindocument } { . } { after } { #1 } }
+\hook_gput_code:nnn { begindocument } { . }
+  {
+    \clist_map_inline:Nn \l__bracealign_default_brace_clist
+      {
+        \cs_if_exist:NT #1 { \bracealign_add_brace:N #1 }
+      }
+  }
+\endinput
+%%
+%% End of file `bracealign.sty'.

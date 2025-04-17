@@ -1,0 +1,248 @@
+%%
+%% This is file `bracealign-doc.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% bracealign.dtx  (with options: `docstyle')
+%% 
+%% This is a generated file.
+%% 
+%% Copyright (C) 2025 by Julien Labbé <Julien.Labbe@univ-grenoble-alpes.fr>
+%% 
+%% This file may be distributed and/or modified under the conditions of the LaTeX
+%% Project Public License (LPPL), either version 1.3c of this license or (at your
+%% option) any later version. The latest version of this license is in the file
+%% https://www.latex-project.org/lppl.txt
+%% 
+\RequirePackage{xcolor}
+\RequirePackage{metalogo}
+\PassOptionsToPackage{hyperref}{xcolor}
+\RequirePackage[many]{tcolorbox}
+\tcbuselibrary{listings}
+\tcbuselibrary{documentation}
+\hypersetup{hidelinks}
+\definecolor{bracealign_lavender}{rgb}{0.92,0.92,1}
+\definecolor{bracealign_darkblue}{rgb}{0.1,0.2,0.5}
+\definecolor{bracealign_darkgreen}{rgb}{0,0.39,0}
+\definecolor{bracealign_beige}{rgb}{.96,.96,.86}
+\colorlet{bracealign_commands}{bracealign_darkblue}
+\colorlet{bracealign_keys}{bracealign_darkgreen}
+\colorlet{bracealign_lengths}{violet}
+\colorlet{bracealign_options}{Definition} % from tcolorbox documentation
+\lstdefinestyle{lstbracealigndoc}{%
+  language = [LaTeX]TeX,
+  alsoletter      = {_,:},% for expl3
+  columns         = fullflexible,
+  keepspaces      = true,
+  keywordstyle    = {\bfseries\color{bracealign_darkblue}},
+  texcsstyle      = *{\bfseries\color{bracealign_darkblue}},
+  commentstyle    = {\color{gray}},
+  identifierstyle = {\color{bracealign_darkgreen}},
+  morekeywords    = {},% keywordsprefix needs a morekeywords before
+  keywordsprefix  = {\\},
+  literate        = *{\$}{{\textcolor{red}{\$}}}{1}
+                    {\&}{{\textcolor{red}{\&}}}{1}
+                    {\}}{{\textcolor{darkgray}{\}}}}{1}
+                    {\{}{{\textcolor{darkgray}{\{}}}{1}
+                    {\\\\}{{\textcolor{red}{\textbackslash\textbackslash}}}{2}
+                    {\%\ \ \ \ }{}0,
+  basicstyle      = \ttfamily\footnotesize,
+  frame           = none,
+  framesep        = 0pt,
+  aboveskip       = 0pt,
+  belowskip       = 0pt,
+}
+\lstdefinestyle{lstbracealigncode}{%
+  style           = lstbracealigndoc,
+  backgroundcolor = \color{bracealign_beige},
+  breakindent     = 1cm,
+  numbers         = left,
+  numberstyle     = \scriptsize\ttfamily\color{gray},
+  aboveskip       = \smallskipamount,
+  belowskip       = \smallskipamount,
+}
+\tcbset{% copied and adapted from tcolorbox.doc.s_main.sty
+  documentation listing style=lstbracealigndoc,%
+  doc keypath=bracealign,
+  size=small,%
+  % verbatim ignore percent,
+  %% styles
+  docexample/.style={%
+    bicolor jigsaw,
+    before skip balanced=\medskipamount,
+    after skip balanced=\medskipamount,
+    fonttitle=\bfseries,
+    fontlower=\normalfont,
+    halign lower=center,
+    colframe=bracealign_darkblue,
+    colback=bracealign_lavender,
+    colbacklower=white,
+    drop fuzzy shadow,
+  },
+  color key=bracealign_keys,
+  color command=bracealign_commands,
+  color length=bracealign_lengths,
+  doc head key={fontlower=\footnotesize, collower=darkgray},
+  before doc body={\parskip=\smallskipamount},
+}
+\DeclareTotalTCBox{\code}{ v }
+  {
+    verbatim,
+    colframe=bracealign_beige,
+    colback=bracealign_beige,
+    sharp corners,
+    size=tight,
+    left=2pt,
+    right=2pt,
+  }
+  {%
+    \strut\lstinline[basicstyle=\ttfamily\small\color{bracealign_darkblue}]!#1!%
+  }
+\begin{filecontents*}{\jobname.mst}
+actual '='
+\end{filecontents*}
+\tcbset{%
+  index actual={=},
+  index colorize=true,
+  index gather all,
+  index format=pgfsection,
+}
+\def\tcb@doc@index@pgfsection{%
+  \def\index@prologue{%
+    \section*{\kvtcb@text@index}\addcontentsline{toc}{section}{\kvtcb@text@index}
+    {\small%
+      Entries listed in the categories ``commands" and ``internal macros" also
+      include references to package implementation. }
+    \bigskip\par\noindent%
+  }%
+  \tcb@doc@index@pgf@%
+}
+\newcommand{\indexmacro}[1]{%
+  \begingroup
+  \let\lst@UM\@empty%
+  \index{{Commands!#1=\tcbIndexPrintComC {#1}}}%
+  \endgroup
+}
+\newcommand{\indexmacrointernal}[1]{%
+  \begingroup
+  \let\lst@UM\@empty%
+  \index{{Internal macros!#1=\tcbIndexPrintComC {#1}}}%
+  \endgroup
+}
+\newcommand{\indexlength}[1]{%
+  \begingroup
+  \let\lst@UM\@empty%
+  \index{{Lengths!#1=\tcbIndexPrintLenC {#1}}}%
+  \endgroup
+}
+\let\macrocode\relax
+\lstnewenvironment{macrocode}{%
+  \lstset{%
+    name=macrocode,
+    firstnumber=auto,
+    style=lstbracealigncode,
+    showlines=false,
+    keepspaces=true,
+    texcs       = [2]{% commands
+      bracealignsetup
+      ,bracealign_add_brace:e
+      ,bracealign_add_brace:n
+      ,bracealign_add_brace:N
+      ,bracealign_bracealign:n
+    },
+    index       = [2][texcs2],%
+    indexstyle  = [2]\indexmacro,%
+    texcs       = [3]{% lengths
+    },
+    index       = [3][texcs3],%
+    indexstyle  = [3]\indexlength,%
+    texcs       = [4]{% internal macros (@@ → __bracealign with DocStrip)
+      @@_define_switches:e
+      ,@@_define_switches:n
+      ,@@_define_switches:N
+      ,@@_finalize:n
+      ,@@_initialize:n
+      ,@@_update_active_braces:
+      ,@@_use_strutcontent:n
+      ,l@@_active_brace_seq
+      ,l@@_default_brace_clist
+      ,l@@_overbrace_bool
+      ,l@@_overbracket_bool
+      ,l@@_overparen_bool
+      ,l@@_underbrace_bool
+      ,l@@_underbracket_bool
+      ,l@@_underparen_bool
+    },
+    index       = [4][texcs4],%
+    indexstyle  = [4]\indexmacrointernal,%
+    morekeywords = [2]{%
+      bracealign/add-brace
+      ,bracealign/add-braces
+      ,bracealign/default-braces
+      ,bracealign/nooverbrace
+      ,bracealign/nooverbracket
+      ,bracealign/nooverparen
+      ,bracealign/nounderbrace
+      ,bracealign/nounderbracket
+      ,bracealign/nounderparen
+      ,bracealign/overbrace
+      ,bracealign/overbracket
+      ,bracealign/overparen
+      ,bracealign/underbrace
+      ,bracealign/underbracket
+      ,bracealign/underparen
+    },
+    index       = [3][keywords2],%
+    indexstyle  = [3]\lstindexmacro,%
+  }
+  \csname\@lst @SetFirstNumber\endcsname
+}{%
+  \csname \@lst @SaveFirstNumber\endcsname
+}
+\DeclareDocumentEnvironment{macro}{m}{%
+ \count@\escapechar \escapechar=-1
+ \edef\macroname{\string#1}
+ \escapechar\count@
+ \marginpar{%
+   \parbox{0.88\linewidth}{%
+     \scriptsize\flushright\ifcsdef{r@com:\macroname}{\refCom*{\macroname}}{\cs{\macroname}}%
+   }%
+ }
+}{% end of macro environment
+}
+\def\refDoc#1{\tcb@ref@doc{#1}}
+\newcommand{\pkg}[1]{\textsf{#1}}
+\ExplSyntaxOn
+\cs_new_protected:Nn \bracealigndoc_cs:n
+  {
+   \str_set:Nn \l_tmpa_str { #1 }
+   \exp_args:Ne \texttt{ \c_backslash_str \str_use:N \l_tmpa_str }
+ }
+\cs_generate_variant:Nn \bracealigndoc_cs:n { e }
+\RenewDocumentCommand{\cs}{ m }{\bracealigndoc_cs:e { #1} }
+\ExplSyntaxOff
+\newrobustcmd{\tcbIndexPrintOptionCA}[1]{% adapted from \tcbIndexPrintKeyCA
+  \tcb@Index@Print@CA{#1}{bracealign_options}{package option}%
+}
+\newrobustcmd{\tcbIndexPrintOptionC}[1]{% adapted from \tcbIndexPrintKeyCA
+  \tcb@Index@Print@C{#1}{bracealign_options}%
+}
+\DeclareDocumentEnvironment{docOption}{ O{} m }{%
+  \begin{docKey*}[]
+    [doc name={#2}, doc label={opt:#2}, color key=bracealign_options, #1]
+    {#2}{}{}%
+    \kvtcb@index@command{%
+      \kvtcb@doc@sortindex\idx@actual\tcbIndexPrintOptionCA{#2}%
+    }%
+    \kvtcb@index@command{%
+      {Package options}\idx@level\kvtcb@doc@sortindex\idx@actual%
+      \tcbIndexPrintOptionC{#2}%
+    }%
+}{%
+  \end{docKey*}%
+}
+\def\refOpt{\refDoc{key:opt}}
+\endinput
+%%
+%% End of file `bracealign-doc.sty'.

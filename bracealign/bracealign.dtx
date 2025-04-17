@@ -1,0 +1,1162 @@
+% \iffalse meta-comment
+%
+% Copyright (C) 2025 by Julien Labbé <Julien.Labbe@univ-grenoble-alpes.fr>
+%
+% This file may be distributed and/or modified under the conditions of the
+% LaTeX Project Public License (LPPL), either version 1.3c of this license or
+% (at your option) any later version. The latest version of this license is in
+% the file https://www.latex-project.org/lppl.txt
+%
+% \fi
+%
+% \iffalse
+%
+%<package>\NeedsTeXFormat{LaTeX2e}
+%<package>\ProvidesExplPackage{bracealign}{2025/04/17}{v1.0}{Align underbraces and overbraces}
+%
+%<*driver>
+\documentclass[nohyperref]{ltxdoc}
+
+\usepackage{bracealign-doc} %^^A defined at end of this file, with guard <docstyle>
+\usepackage{bracealign}
+
+\usepackage{mathtools}
+
+\EnableCrossrefs
+\PageIndex
+% \CodelineIndex
+\RecordChanges
+% \OnlyDescription
+
+\begin{document}
+
+\DocInput{bracealign.dtx}
+
+\PrintIndex
+\PrintChanges
+
+\end{document}
+%</driver>
+% \fi
+%
+% \changes{v1.0}{2025/04/17}{Initial version.}
+%
+% \GetFileInfo{\jobname.sty}
+%
+% \title{The \pkg{bracealign} package\thanks{This document corresponds to
+% \pkg{bracealign}~\fileversion, dated \filedate.}}
+% \author{Julien Labb\'e \\ {\small \url{https://github.com/julienlabbe/latex-packages}}}
+%
+% \maketitle
+%
+% \begin{abstract}
+%   A \LaTeX{} package to align braces under and over math expressions. A new
+%   environment called \refEnv{bracealign} is provided, inside which braces and
+%   brackets drawn with the commands \cs{underbrace}, \cs{overbrace},
+%   \cs{underbracket}, \cs{overbracket}, \cs{underparen} or \cs{overparen} are
+%   vertically aligned. The package also allows adding support for new commands.
+%
+% \bigskip
+%
+% Example:
+% \iffalse
+%<*example>
+% \fi
+\begin{dispExample}
+  \[
+    \rho c \frac{\partial T}{\partial t} =
+    \begin{bracealign}
+      \underbrace{
+        \begin{bracealign}
+          \underbrace{
+            - \lambda \frac{\partial^2 T}{\partial x^2}
+          }_{\text{diffusion}}
+          - \underbrace{
+            \mu (T^4 - {T_0}^4)
+          }_{\substack{\text{radiative loss}}}
+        \end{bracealign}
+      }_{\text{heat transferts}}
+      + \underbrace{
+        \sum_{i=1}^{n} \dot{q}_i
+      }_{\substack{\text{heat}\\{\text{sources}}}}
+    \end{bracealign}
+  \]
+\end{dispExample}
+% \iffalse
+%</example>
+% \fi
+%
+% \end{abstract}
+%
+% \clearpage
+%
+% \tableofcontents{}
+%
+% \clearpage
+%
+% \section{Introduction}
+%
+% The \pkg{bracealign} package provides the environment \refEnv{bracealign}
+% inside which brace-like commands are vertically aligned. Supported brace-like
+% commands are:
+% \begin{center}
+%   \begin{tabular}{lll}
+%     \cs{underbrace} &
+%     \cs{underbracket} &
+%     \cs{underparen} \\
+%     \cs{overbrace} &
+%     \cs{overbracket} &
+%     \cs{overparen}
+%   \end{tabular}
+% \end{center}
+% \cs{underbrace} and \cs{overbrace} are standard \LaTeX{} commands. 
+% The commands \cs{underbracket} and \cs{overbracket} are defined, for example,
+% by the packages: \pkg{unicode-math}, \pkg{mathtools}, \pkg{stix2} or
+% \pkg{libertinus}; the commands \cs{underparen} and \cs{overparen} by:
+% \pkg{unicode-math}, \pkg{stix2} or \pkg{libertinus}. The support for new
+% commands can be added by the user.
+%
+% Inside the \refEnv{bracealign} environment, the content of brace-like commands
+% is grabbed and appended inside all same braces with a \cs{vphantom} macro to
+% generate the braces alignment. Note that this prohibits the use of optional
+% arguments for the commands (see \emph{Known issue}, section~\ref{sec:issue-command-with-optionnal-arguments}, page~\pageref{sec:issue-command-with-optionnal-arguments}).
+%
+% \medskip
+%
+% This package originates in an answer on the TeX -- LaTeX Stack
+% Exchange network\footnote{\url{https://tex.stackexchange.com/a/740290}.}.
+%
+% \section{User interface}
+% \label{sec:user-interface}
+%
+% \newcommand{\smallcontent}{\textcolor{cyan}{\rule[-3pt]{1cm}{6pt}}}
+% \newcommand{\medcontent}  {\textcolor{cyan}{\rule[-6pt]{1.2cm}{12pt}}}
+% \newcommand{\bigcontent}  {\textcolor{cyan}{\rule[-12pt]{2cm}{24pt}}}
+% \newcommand{\hugecontent} {\textcolor{cyan}{\rule[-18pt]{2.5cm}{36pt}}}
+%
+% The examples given in this section use the following commands:
+% \iffalse
+%<*example>
+% \fi
+\begin{dispListing}
+\newcommand{\smallcontent}{\textcolor{cyan}{\rule[-3pt]{1cm}{6pt}}}
+\newcommand{\medcontent}  {\textcolor{cyan}{\rule[-6pt]{1.2cm}{12pt}}}
+\newcommand{\bigcontent}  {\textcolor{cyan}{\rule[-12pt]{2cm}{24pt}}}
+\newcommand{\hugecontent} {\textcolor{cyan}{\rule[-18pt]{2.5cm}{36pt}}}
+\end{dispListing}
+% \iffalse
+%</example>
+% \fi
+% \noindent The \pkg{xcolor} package is also required (for the command
+% \cs{textcolor}), as loading the \pkg{amsmath} package (for the command
+% \cs{text}) and a package that defines \cs{underbracket} (such as
+% \pkg{mathtools}).
+%
+% \subsection{Environment}
+%
+% \begin{docEnvironment}{bracealign}{ \oarg{options list} }
+%   Vertically aligns the brace-like commands in \meta{environment content}.
+%   Each command is aligned separately (note that commands that uses
+%   internally a brace-like command are also aligned). \refEnv{bracealign}
+%   environments can be nested.
+%
+%   The keys described in section~\ref{sec:keys}, can be used in \meta{options list} to
+%   activate, or deactivate, the alignment of each braces.
+%
+%\clearpage
+%
+% \noindent\vspace{-\baselineskip}
+%
+% \marginpar{\hfill
+%   \parbox[t]{0.88\linewidth}{\vspace*{1cm}\raggedright
+%     Separate alignment of brace-like commands
+%   }
+% }
+% \iffalse
+%<*example>
+% \fi
+\begin{dispExample}
+\[
+  \begin{bracealign}
+    \underbrace{\medcontent}_{1}
+    ~+~ \underbracket{\smallcontent}_{A}
+    ~=~ \underbrace{\hugecontent}_{2}
+    ~+~ \underbracket{\bigcontent}_{B}
+    ~+~ \underbrace{\smallcontent}_{3}
+  \end{bracealign}
+\]
+\end{dispExample}
+% \iffalse
+%</example>
+% \fi
+%
+% \vfill
+%
+% \marginpar{\hfill
+%   \parbox[t]{0.88\linewidth}{\vspace*{1cm}\raggedright
+%     Nested \refEnv*{bracealign} environments
+%   }
+% }
+% \iffalse
+%<*example>
+% \fi
+\begin{dispExample}
+\[
+  \begin{bracealign}
+    \underbrace{
+      \begin{bracealign}
+        \underbrace{\medcontent}_{1}
+        ~+~ \underbrace{\smallcontent}_{2}
+      \end{bracealign}
+    }_{\text{nested}}
+    ~=~ \underbrace{\hugecontent}_{3}
+    ~+~ \underbrace{\bigcontent}_{4}
+    ~+~ \underbrace{\smallcontent}_{5}
+  \end{bracealign}
+\]
+\end{dispExample}
+% \iffalse
+%</example>
+% \fi
+%
+%\vfill
+%
+% \marginpar{\hfill
+%   \parbox[t]{0.88\linewidth}{\vspace*{1cm}\raggedright
+%     Using internally a brace-like command
+%
+%     \bigskip
+%
+%     \itshape\footnotesize Note: the {\normalfont \cs{ubrace}} command has been
+%     suggested by Enrico Gregorio to fix the syntax and spacing issues of
+%     \cs{underbrace} (see {\normalfont
+%     \url{https://tex.stackexchange.com/a/728627/}}).
+%   }
+% }
+% \iffalse
+%<*example>
+% \fi
+\begin{dispExample}
+\newcommand{\ubrace}[2]{{\underbrace{#1}_{#2}}}
+\[
+  \begin{bracealign}
+    \ubrace{\medcontent}{1}
+    ~+~ \underbrace{\smallcontent}_{A}
+    ~=~ \ubrace{\hugecontent}{2}
+    ~+~ \underbrace{\bigcontent}_{B}
+    ~+~ \ubrace{\smallcontent}{3}
+  \end{bracealign}
+\]
+\end{dispExample}
+% \iffalse
+%</example>
+% \fi
+%
+% \clearpage
+%
+% \end{docEnvironment}
+%
+% \subsection{Command}
+%
+%\begin{docCommand}{bracealignsetup}{ \marg{options list} }
+%  Sets options for every \refEnv{bracealign} environments. All keys described
+%  in the section~\ref{sec:keys} can be used in \meta{options list}.
+%
+%  This is equivalent to \cs{SetKeys} |[bracealign]| \marg{options list}.
+%
+% \iffalse
+%<*example>
+% \fi
+\begin{dispExample}
+\bracealignsetup{underbracket=false}
+
+\[
+  \begin{bracealign}
+    \underbrace{\medcontent}_{1}
+    ~+~ \underbracket{\smallcontent}_{A}
+    ~=~ \underbrace{\hugecontent}_{2}
+    ~+~ \underbracket{\bigcontent}_{B}
+    ~+~ \underbrace{\smallcontent}_{3}
+  \end{bracealign}
+\]
+\end{dispExample}
+% \iffalse
+%</example>
+% \fi
+% \end{docCommand}
+%
+% \subsection{Keys}
+% \label{sec:keys}
+%
+% \begin{docKeys}[
+%   doc keypath = bracealign,
+%   doc parameter = {=true\textbar{}false}
+%   ]
+%   {
+%     {
+%       doc name = {overbrace},
+%       doc description = {default |true|, initially |true|},
+%     },
+%     {
+%       doc name = {nooverbrace},
+%       doc description = {default |true|, inverse of |overbrace|},
+%     },
+%   }
+% \end{docKeys}
+% \begin{docKeys}[
+%   doc keypath = bracealign,
+%   doc parameter = {=true\textbar{}false}
+%   ]
+%   {
+%     {
+%       doc name = {underbrace},
+%       doc description = {default |true|, initially |true|},
+%     },
+%     {
+%       doc name = {nounderbrace},
+%       doc description = {default |true|, inverse of |underbrace|},
+%     },
+%   }
+% \end{docKeys}
+% \begin{docKeys}[
+%   doc keypath = bracealign,
+%   doc parameter = {=true\textbar{}false}
+%   ]
+%   {
+%     {
+%       doc name = {overbracket},
+%       doc description = {default |true|, initially |true|},
+%     },
+%     {
+%       doc name = {nooverbracket},
+%       doc description = {default |true|, inverse of |overbracket|},
+%     },
+%   }
+% \end{docKeys}
+% \begin{docKeys}[
+%   doc keypath = bracealign,
+%   doc parameter = {=true\textbar{}false}
+%   ]
+%   {
+%     {
+%       doc name = {underbracket},
+%       doc description = {default |true|, initially |true|},
+%     },
+%     {
+%       doc name = {nounderbracket},
+%       doc description = {default |true|, inverse of |underbracket|},
+%     },
+%   }
+% \end{docKeys}
+% \begin{docKeys}[
+%   doc keypath = bracealign,
+%   doc parameter = {=true\textbar{}false}
+%   ]
+%   {
+%     {
+%       doc name = {overparen},
+%       doc description = {default |true|, initially |true|},
+%     },
+%     {
+%       doc name = {nooverparen},
+%       doc description = {default |true|, inverse of |overparen|},
+%     },
+%   }
+% \end{docKeys}
+% \begin{docKeys}[
+%   doc keypath = bracealign,
+%   doc parameter = {=true\textbar{}false}
+%   ]
+%   {
+%     {
+%       doc name = {underparen},
+%       doc description = {default |true|, initially |true|},
+%     },
+%     {
+%       doc name = {nounderparen},
+%       doc description = {default |true|, inverse of |underparen|},
+%     },
+%   }
+%     Activates, or deactivates, the alignment of the corresponding brace-like
+%     command. These boolean keys are defined when the package \pkg{bracealign}
+%     is loaded, whether the commands are defined or not (as they can be defined
+%     later).
+%
+% \iffalse
+%<*example>
+% \fi
+\begin{dispExample}
+\[
+  \begin{bracealign}[underbrace=false]
+    \underbrace{\medcontent}_{1}
+    ~+~ \underbracket{\smallcontent}_{A}
+    ~=~ \underbrace{\hugecontent}_{2}
+    ~+~ \underbracket{\bigcontent}_{B}
+    ~+~ \underbrace{\smallcontent}_{3}
+  \end{bracealign}
+\]
+\end{dispExample}
+% \iffalse
+%</example>
+% \fi
+% \end{docKeys}
+%
+% \begin{docKeys}[
+%   doc keypath = bracealign,
+%   ]
+%   {
+%     {
+%       doc name = {add-brace},
+%       doc parameter = {=\textbackslash\meta{command} }
+%     },
+%     {
+%       doc name = {add-braces},
+%       doc parameter = {=\marg{commands list}}
+%     }
+%   }
+%     \refKey{/bracealign/add-brace} adds the support for the new brace-like
+%     command
+%     |\|\meta{command}. This also defines the keys \meta{command}
+%     and |no|\meta{command} to activate or deactivate the alignment of
+%     |\|\meta{command} braces.
+%
+%     \refKey{/bracealign/add-braces} adds the support for multiple brace-like
+%     commands, given as a comma separated list of commands.
+%
+% \iffalse
+%<*example>
+% \fi
+\begin{dispExample}
+\newcommand*{\mybrace}[1]{\mathop{\overleftrightarrow{#1}}\limits}
+\bracealignsetup{add-brace=\mybrace}
+
+\[
+  \begin{bracealign}
+    \mybrace{
+      \begin{bracealign}[mybrace=false]
+        \mybrace{\medcontent}^{1}
+        ~+~ \mybrace{\smallcontent}^{2}
+      \end{bracealign}
+    }^{\text{nested}}
+    ~=~ \mybrace{\hugecontent}^{3}
+    ~+~ \mybrace{\bigcontent}^{4}
+    ~+~ \mybrace{\smallcontent}^{5}
+  \end{bracealign}
+\]
+\end{dispExample}
+% \iffalse
+%</example>
+% \fi
+% \end{docKeys}
+%
+% \begin{docKey}[bracealign][before lower=\bigskip\par]{default-braces}
+% {=\marg{commands list}}
+% {no default, initially |\{\cs{underbrace}, \cs{overbrace},\par
+% \cs{underbracket}, \cs{overbracket},\par \cs{underparen}, \cs{overparen}\}|}
+% Sets the list of brace-like commands that must be supported by
+% \refEnv{bracealign}. At the beginning of the document (through the
+% |begindocument| hook) the existence of each command is tested and, if the test
+% sucesses, the command is passed to \refKey{/bracealign/add-brace}.
+% \end{docKey}
+%
+% \section{Complements}
+%
+% \subsection{Known issue: Commands with optional arguments}
+% \label{sec:issue-command-with-optionnal-arguments}
+%
+% The brace-like commands are expected to have only one mandatory argument (this
+% argument is grabbed and used to align the braces). In particular, if a command
+% handles optional arguments (such as the commands
+% \cs{underbracket} and \cs{overbracket} as defined by the \pkg{mathtools}
+% package), these optional arguments can't be used inside the
+% \refEnv{bracealign} environment.
+%
+% \subsection{Changelog}
+%
+% \begin{description}
+%  \item[v1.0] Initial version.
+% \end{description}
+%
+% \MaybeStop{}
+%
+% \section{Implementation}
+%
+%\iffalse
+%<*package>
+%\fi
+% \setlength{\parindent}{0em}
+% \setlength{\parskip}{\smallskipamount}
+%
+% \iffalse ^^A Not in doc to get the right line numbering
+% Internal prefix for \pkg{DocStrip}.
+%    \begin{macrocode}
+%<@@=bracealign>
+%    \end{macrocode}
+% \fi
+%
+% \subsection{Adding brace command}
+%
+% The sequence that store the brace-like commands.
+%    \begin{macrocode}
+\seq_new:N \l_bracealign_brace_seq
+%    \end{macrocode}
+%
+% \begin{macro}{\bracealign_add_brace:n}
+% \begin{macro}{\bracealign_add_brace:e}
+% \begin{macro}{\bracealign_add_brace:N}
+%   Add the brace command |#1|.
+%    \begin{macrocode}
+\msg_new:nnn { bracealign } { already-added-brace }
+  { Brace~command~\token_to_str:c #1~has~already~been~added.~Skipped. }
+\cs_new:Nn \bracealign_add_brace:n
+  {
+    \seq_if_in:NnTF \l_bracealign_brace_seq { #1 }
+      {
+        \msg_warning:nnn { bracealign } { already-added-brace } { #1 }
+      }
+      {
+        \seq_put_right:Nn \l_bracealign_brace_seq { #1 }
+%    \end{macrocode}
+%
+%   Backup the standard command.
+%    \begin{macrocode}
+        \cs_set_eq:cc { @@_#1_std_cmd:n } { #1 }
+%    \end{macrocode}
+%
+%   Define switches, if needed (for commands initially in
+%   \cs{l@@_default_brace_clist}, the switches are defined when the
+%   package is loaded, but the commands are added through the hook
+%   |begindocument|).
+%    \begin{macrocode}
+        \bool_if_exist:cF { l@@_#1_bool }
+          { \@@_define_switches:e { #1 } }
+%    \end{macrocode}
+%
+%   These token lists store the content of braces.
+%    \begin{macrocode}
+        \tl_new:c { g@@_#1_strutcontent_tl }
+        \tl_new:c { l@@_#1_strutcontent_tl }
+        \tl_new:c { l@@_#1_strutcontent_surround_tl }
+%    \end{macrocode}
+%
+%   Command wrapper to collect the braces content.
+%    \begin{macrocode}
+        \cs_new:cn { @@_#1_collect_strutcontent:n }
+          {
+            \tl_gput_right:cn { g@@_#1_strutcontent_tl } { ##1 }
+            \use:c { @@_#1_std_cmd:n } { }
+          }
+%    \end{macrocode}
+%
+%   Command wrapper to use the braces content in \cs{vphantom}.
+%    \begin{macrocode}
+        \cs_new:cn { @@_#1_use_strutcontent:n }
+          {
+            \use:c {  @@_#1_std_cmd:n }
+              {
+                \vphantom
+                  {
+                    \tl_use:c { l@@_#1_strutcontent_tl }
+                  }
+                  ##1
+              }
+          }
+      }
+  }
+\cs_generate_variant:Nn \bracealign_add_brace:n { e }
+\cs_new:Nn \bracealign_add_brace:N
+  {
+    \bracealign_add_brace:e { \cs_to_str:N #1 }
+  }
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% Keys \refKey{/bracealign/add-brace} and \refKey{/bracealign/add-braces}
+% (wrapper to \cs{bracealign_add_brace:N}).
+%    \begin{macrocode}
+\keys_define:nn { bracealign }
+  {
+    add-brace   .code:n = { \bracealign_add_brace:N  #1 },
+    add-braces  .code:n =
+      {
+        \clist_map_function:nN { #1 } \bracealign_add_brace:N
+      },
+  }
+%    \end{macrocode}
+%
+% \begin{macro}{\@@_define_switches:n}
+% \begin{macro}{\@@_define_switches:e}
+% \begin{macro}{\@@_define_switches:N}
+%   Define the switches for the brace command |#1|.
+%    \begin{macrocode}
+\cs_new:Nn \@@_define_switches:n
+  {
+    \bool_new:c { l@@_#1_bool }
+    \bool_set_true:c { l@@_#1_bool }
+    \keys_define:nn { bracealign }
+      {
+        #1   .bool_set:c          = { l@@_#1_bool },
+        no#1 .bool_set_inverse:c  = { l@@_#1_bool },
+      }
+  }
+\cs_generate_variant:Nn \@@_define_switches:n { e }
+\cs_new:Nn \@@_define_switches:N
+  {
+    \@@_define_switches:e { \cs_to_str:N #1 }
+  }
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \subsection{Alteration of brace command}
+%
+% These three commands are used for each brace. |#1| is the brace name.
+%
+% \begin{macro}{\@@_initialize:n}
+%   Sets the brace command to collect its content in |\g@@_#1_strutcontent_tl|.
+%    \begin{macrocode}
+\cs_new:Nn \@@_initialize:n
+  {
+    \tl_set_eq:cc
+      { l@@_#1_strutcontent_surround_tl }
+      { g@@_#1_strutcontent_tl }
+    \tl_clear:c { g@@_#1_strutcontent_tl }
+    \cs_set_eq:cc
+      { #1 }
+      { @@_#1_collect_strutcontent:n }
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@@_use_strutcontent:n}
+%   Set the brace command to use the all braces contents as strut (using
+%   \cs{vphantom}).
+%    \begin{macrocode}
+\cs_new:Nn \@@_use_strutcontent:n
+  {
+    \tl_set_eq:cc
+      { l@@_#1_strutcontent_tl }
+      { g@@_#1_strutcontent_tl }
+    \cs_set_eq:cc
+      { #1 }
+      { @@_#1_use_strutcontent:n }
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@@_finalize:n}
+% Restore |\g@@_#1_strutcontent_tl| for the surrounding group.
+%    \begin{macrocode}
+\cs_new:Nn \@@_finalize:n
+  {
+    \tl_set_eq:cc
+      { g@@_#1_strutcontent_tl }
+      { l@@_#1_strutcontent_surround_tl }
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \subsection{Main command}
+%
+% Sequence of active braces.
+%    \begin{macrocode}
+\seq_new:N \l@@_active_brace_seq
+%    \end{macrocode}
+%
+% \begin{macro}{\@@_update_active_braces:}
+% Update the sequence of active brace commands.
+%    \begin{macrocode}
+\cs_new:Nn \@@_update_active_braces:
+  {
+%    \end{macrocode}
+%   Restore standard brace commands (in the case the command is set is the
+%   surrounding group, and unset in the current one).
+%    \begin{macrocode}
+    \seq_map_inline:Nn \l@@_active_brace_seq
+      {
+        \cs_set_eq:cc { ##1 } { @@_##1_std_cmd:n }
+      }
+%    \end{macrocode}
+%    Set \cs{l@@_active_brace_seq}.
+%    \begin{macrocode}
+    \seq_clear:N \l@@_active_brace_seq
+    \seq_map_inline:Nn \l_bracealign_brace_seq
+      {
+        \bool_if:cT { l@@_##1_bool }
+          { \seq_put_right:Nn \l@@_active_brace_seq { ##1 } }
+      }
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\bracealign_bracealign:n}
+% Align braces in |#1|.
+%    \begin{macrocode}
+\cs_new:Nn \bracealign_bracealign:n
+  {
+%    \end{macrocode}
+%
+% List active brace commands.
+%    \begin{macrocode}
+    \@@_update_active_braces:
+%    \end{macrocode}
+%
+%   Set the braces to collect their contents.
+%    \begin{macrocode}
+    \seq_map_inline:Nn \l@@_active_brace_seq
+      { \@@_initialize:n { ##1 } }
+%    \end{macrocode}
+%
+%   Expand |#1| in an unused box.
+%    \begin{macrocode}
+    \hbox_set:Nn \l_tmpa_box { $ #1 $ }
+%    \end{macrocode}
+%
+%   Set the braces to automatically use a strut, and align.
+%    \begin{macrocode}
+    \seq_map_inline:Nn \l@@_active_brace_seq
+      { \@@_use_strutcontent:n { ##1 } }
+%    \end{macrocode}
+%
+%   Typeset |#1|.
+%    \begin{macrocode}
+    #1
+%    \end{macrocode}
+%
+%   Finalize.
+%    \begin{macrocode}
+    \seq_map_inline:Nn \l@@_active_brace_seq
+      { \@@_finalize:n { ##1 } }
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \subsection{User interface}
+%
+% \begin{macro}{\bracealignsetup}
+% Set \pkg{bracealign} keys.
+%    \begin{macrocode}
+\NewDocumentCommand { \bracealignsetup } { m }
+  {
+    \keys_set:nn { bracealign } { #1 }
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{environment}{bracealign}
+% Main environment.
+%    \begin{macrocode}
+\NewDocumentEnvironment { bracealign } { O{} b }
+  {
+    \bracealignsetup{ #1 }
+    \bracealign_bracealign:n { #2 }
+  }
+  {
+  }
+%    \end{macrocode}
+% \end{environment}
+%
+% \subsection{Default braces}
+%
+% The |clist| that stores the default brace commands.
+%    \begin{macrocode}
+\clist_new:N \l@@_default_brace_clist
+\keys_define:nn { bracealign }
+  {
+    default-braces  .clist_set:N = \l@@_default_brace_clist,
+    default-braces  .initial:n =
+      {
+        \underbrace,    \overbrace,
+        \underbracket,  \overbracket,
+        \underparen,    \overparen
+      },
+  }
+%    \end{macrocode}
+%
+% Define the switches for the commands initially in
+% \cs{l@@_default_brace_clist} to make them available in the preamble
+% (these commands are added through the hook |begindocument|).
+%    \begin{macrocode}
+\clist_map_inline:Nn \l@@_default_brace_clist
+  {
+   \@@_define_switches:N #1
+  }
+%    \end{macrocode}
+%
+% \subsection{Hook: \texttt{begindocument}}
+%
+% All these packages define brace commands. Wait for their commands definition.
+%    \begin{macrocode}
+\clist_map_inline:nn
+  {
+    mathtools,
+    unicode-math-luatex, unicode-math-xetex,
+    libertinus, libertinust1math,
+    stix2-type1, stix2
+  }
+  { \hook_gset_rule:nnnn { begindocument } { . } { after } { #1 } }
+%    \end{macrocode}
+%
+% Add braces in \cs{l@@_default_brace_clist}.
+%    \begin{macrocode}
+\hook_gput_code:nnn { begindocument } { . }
+  {
+    \clist_map_inline:Nn \l@@_default_brace_clist
+      {
+        \cs_if_exist:NT #1 { \bracealign_add_brace:N #1 }
+      }
+  }
+%    \end{macrocode}
+%
+%\iffalse
+%</package> ^^A End of package implementation.
+%\fi
+%
+% \iffalse % ^^A The following is not for doc
+%
+%<*docstyle>
+%
+% \section*{bracealign-doc package}
+%
+% The following define some styles used for documentation and should not be
+% included in the documentation itself.
+%
+% \subsection*{Packages}
+%
+%    \begin{macrocode}
+\RequirePackage{xcolor}
+\RequirePackage{metalogo}
+\PassOptionsToPackage{hyperref}{xcolor}
+\RequirePackage[many]{tcolorbox}
+\tcbuselibrary{listings}
+\tcbuselibrary{documentation}
+\hypersetup{hidelinks}
+%    \end{macrocode}
+%
+% \subsection*{Colors}
+%
+%    \begin{macrocode}
+\definecolor{bracealign_lavender}{rgb}{0.92,0.92,1}
+\definecolor{bracealign_darkblue}{rgb}{0.1,0.2,0.5}
+\definecolor{bracealign_darkgreen}{rgb}{0,0.39,0}
+\definecolor{bracealign_beige}{rgb}{.96,.96,.86}
+\colorlet{bracealign_commands}{bracealign_darkblue}
+\colorlet{bracealign_keys}{bracealign_darkgreen}
+\colorlet{bracealign_lengths}{violet}
+\colorlet{bracealign_options}{Definition} % from tcolorbox documentation
+%    \end{macrocode}
+%
+% \subsection*{listings styles}
+%
+%    \begin{macrocode}
+\lstdefinestyle{lstbracealigndoc}{%
+  language = [LaTeX]TeX,
+  alsoletter      = {_,:},% for expl3
+  columns         = fullflexible,
+  keepspaces      = true,
+  keywordstyle    = {\bfseries\color{bracealign_darkblue}},
+  texcsstyle      = *{\bfseries\color{bracealign_darkblue}},
+  commentstyle    = {\color{gray}},
+  identifierstyle = {\color{bracealign_darkgreen}},
+  morekeywords    = {},% keywordsprefix needs a morekeywords before
+  keywordsprefix  = {\\},
+%    \end{macrocode}
+% For literate, the extra braces around the replacement text avoid the error: "Argument of |lst@FillFixed@| has an extra \}."
+%    \begin{macrocode}
+  literate        = *{\$}{{\textcolor{red}{\$}}}{1}
+                    {\&}{{\textcolor{red}{\&}}}{1}
+                    {\}}{{\textcolor{darkgray}{\}}}}{1}
+                    {\{}{{\textcolor{darkgray}{\{}}}{1}
+                    {\\\\}{{\textcolor{red}{\textbackslash\textbackslash}}}{2}
+%    \begin{macrocode}
+% One \% and four spaces to remove extra lines added by \cs{macrocode}
+%    \end{macrocode}
+                    {\%\ \ \ \ }{}0,
+  basicstyle      = \ttfamily\footnotesize,
+  frame           = none,
+  framesep        = 0pt,
+  aboveskip       = 0pt,
+  belowskip       = 0pt,
+}
+\lstdefinestyle{lstbracealigncode}{%
+  style           = lstbracealigndoc,
+  backgroundcolor = \color{bracealign_beige},
+  breakindent     = 1cm,
+  numbers         = left,
+  numberstyle     = \scriptsize\ttfamily\color{gray},
+  aboveskip       = \smallskipamount,
+  belowskip       = \smallskipamount,
+}
+%    \end{macrocode}
+%
+% \subsection*{tcolorbox}
+%
+%    \begin{macrocode}
+\tcbset{% copied and adapted from tcolorbox.doc.s_main.sty
+  documentation listing style=lstbracealigndoc,%
+  doc keypath=bracealign,
+  size=small,%
+  % verbatim ignore percent,
+  %% styles
+  docexample/.style={%
+    bicolor jigsaw,
+    before skip balanced=\medskipamount,
+    after skip balanced=\medskipamount,
+    fonttitle=\bfseries,
+    fontlower=\normalfont,
+    halign lower=center,
+    colframe=bracealign_darkblue,
+    colback=bracealign_lavender,
+    colbacklower=white,
+    drop fuzzy shadow,
+  },
+  color key=bracealign_keys,
+  color command=bracealign_commands,
+  color length=bracealign_lengths,
+  doc head key={fontlower=\footnotesize, collower=darkgray},
+  before doc body={\parskip=\smallskipamount},
+}
+%    \end{macrocode}
+%
+% Inline code
+%
+%    \begin{macrocode}
+\DeclareTotalTCBox{\code}{ v }
+  {
+    verbatim,
+    colframe=bracealign_beige,
+    colback=bracealign_beige,
+    sharp corners, 
+    size=tight,
+    left=2pt,
+    right=2pt,
+  }
+  {%
+    \strut\lstinline[basicstyle=\ttfamily\small\color{bracealign_darkblue}]!#1!%
+  }
+%    \end{macrocode}
+%
+% \subsection*{Index}
+%
+% To deal with DocStrip @@ prefix, use '=' as index actual, in place of '@'.
+%    \begin{macrocode}
+\begin{filecontents*}{\jobname.mst}
+actual '='
+\end{filecontents*}
+%    \begin{macrocode}
+\tcbset{%
+  index actual={=},
+  index colorize=true,
+  index gather all,
+  index format=pgfsection,
+}
+%    \end{macrocode}
+% Redefine \cs{tcb@doc@index@pgfsection} to add prologue (adapted from
+% tcbdocumentation.code.tex).
+%    \begin{macrocode}
+\def\tcb@doc@index@pgfsection{%
+  \def\index@prologue{%
+    \section*{\kvtcb@text@index}\addcontentsline{toc}{section}{\kvtcb@text@index}
+    {\small%
+      Entries listed in the categories ``commands" and ``internal macros" also
+      include references to package implementation. }
+    \bigskip\par\noindent%
+  }%
+  \tcb@doc@index@pgf@%
+}
+%    \end{macrocode}
+% Unset |\lst@UM| before indexing, to deal with comma (avoid |\unhbox \voidb@x
+% \kern \z@| in index file, see: \url{https://tex.stackexchange.com/a/510108}).
+%    \begin{macrocode}
+\newcommand{\indexmacro}[1]{%
+  \begingroup
+  \let\lst@UM\@empty%
+  \index{{Commands!#1=\tcbIndexPrintComC {#1}}}%
+  \endgroup
+}
+\newcommand{\indexmacrointernal}[1]{%
+  \begingroup
+  \let\lst@UM\@empty%
+  \index{{Internal macros!#1=\tcbIndexPrintComC {#1}}}%
+  \endgroup
+}
+\newcommand{\indexlength}[1]{%
+  \begingroup
+  \let\lst@UM\@empty%
+  \index{{Lengths!#1=\tcbIndexPrintLenC {#1}}}%
+  \endgroup
+}
+%    \end{macrocode}
+%
+% \subsection*{Redefinition of macrocode environment}
+%
+%    \begin{macrocode}
+\let\macrocode\relax
+\lstnewenvironment{macrocode}{%
+  \lstset{%
+    name=macrocode,
+    firstnumber=auto,
+    style=lstbracealigncode,
+    showlines=false,
+    keepspaces=true,
+%    \end{macrocode}
+% Commands identification and indexing
+%
+% Note: index works badly with inherited styles. It seems that "texcs" and
+% "index" keys should be set together.
+%    \begin{macrocode}
+    texcs       = [2]{% commands
+      bracealignsetup
+      ,bracealign_add_brace:e
+      ,bracealign_add_brace:n
+      ,bracealign_add_brace:N
+      ,bracealign_bracealign:n
+    },
+    index       = [2][texcs2],%
+    indexstyle  = [2]\indexmacro,%
+    texcs       = [3]{% lengths
+    },
+    index       = [3][texcs3],%
+    indexstyle  = [3]\indexlength,%
+%    \end{macrocode}
+% Internal macros identification and indexing
+%    \begin{macrocode}
+    texcs       = [4]{% internal macros (@@@@ → @@ with DocStrip)
+      @@@@_define_switches:e
+      ,@@@@_define_switches:n
+      ,@@@@_define_switches:N
+      ,@@@@_finalize:n
+      ,@@@@_initialize:n
+      ,@@@@_update_active_braces:
+      ,@@@@_use_strutcontent:n
+      ,l@@@@_active_brace_seq
+      ,l@@@@_default_brace_clist
+      ,l@@@@_overbrace_bool
+      ,l@@@@_overbracket_bool
+      ,l@@@@_overparen_bool
+      ,l@@@@_underbrace_bool
+      ,l@@@@_underbracket_bool
+      ,l@@@@_underparen_bool
+    },
+    index       = [4][texcs4],%
+    indexstyle  = [4]\indexmacrointernal,%
+%    \end{macrocode}
+% Keys identification and indexing ^^A works badly if keys have spaces
+%    \begin{macrocode}
+    morekeywords = [2]{%
+      bracealign/add-brace
+      ,bracealign/add-braces
+      ,bracealign/default-braces
+      ,bracealign/nooverbrace
+      ,bracealign/nooverbracket
+      ,bracealign/nooverparen
+      ,bracealign/nounderbrace
+      ,bracealign/nounderbracket
+      ,bracealign/nounderparen
+      ,bracealign/overbrace
+      ,bracealign/overbracket
+      ,bracealign/overparen
+      ,bracealign/underbrace
+      ,bracealign/underbracket
+      ,bracealign/underparen
+    },
+    index       = [3][keywords2],%
+    indexstyle  = [3]\lstindexmacro,%
+  }
+%    \end{macrocode}
+% Save and restore the line number (not done by environments defined with
+% |\lstnewenvironment|, see \url{https://tex.stackexchange.com/a/95048}):
+%    \begin{macrocode}
+  \csname\@lst @SetFirstNumber\endcsname
+}{%
+  \csname \@lst @SaveFirstNumber\endcsname
+}
+%    \end{macrocode}
+%
+% \subsection*{Redefinition of macro environment}
+%
+%    \begin{macrocode}
+\DeclareDocumentEnvironment{macro}{m}{%
+%    \end{macrocode}
+% Extraction of macro name. Save/restore current \cs{escapechar} in \cs{count@}.
+%    \begin{macrocode}
+ \count@\escapechar \escapechar=-1
+ \edef\macroname{\string#1}
+ \escapechar\count@
+ \marginpar{%
+   \parbox{0.88\linewidth}{%
+     \scriptsize\flushright\ifcsdef{r@com:\macroname}{\refCom*{\macroname}}{\cs{\macroname}}%
+   }%
+ }
+}{% end of macro environment
+}
+%    \end{macrocode}
+%
+% \subsection*{Documentation styles}
+%
+% \subsubsection*{Tool for references}
+%
+%    \begin{macrocode}
+\def\refDoc#1{\tcb@ref@doc{#1}}
+%    \end{macrocode}
+%
+% \subsubsection*{Package name}
+%
+%    \begin{macrocode}
+\newcommand{\pkg}[1]{\textsf{#1}}
+%    \end{macrocode}
+%
+%
+% \subsubsection*{Redefinition of the \cs{cs} command}
+%
+% To handle |expl3| syntax.
+%
+%    \begin{macrocode}
+\ExplSyntaxOn
+\cs_new_protected:Nn \bracealigndoc_cs:n
+  {
+   \str_set:Nn \l_tmpa_str { #1 }
+   \exp_args:Ne \texttt{ \c_backslash_str \str_use:N \l_tmpa_str }
+ }
+\cs_generate_variant:Nn \bracealigndoc_cs:n { e }
+\RenewDocumentCommand{\cs}{ m }{\bracealigndoc_cs:e { #1} }
+\ExplSyntaxOff
+%    \end{macrocode}
+%
+% \subsubsection*{Package options}
+%
+% Definition of docOption environment to document package options, like keys.
+%    \begin{macrocode}
+\newrobustcmd{\tcbIndexPrintOptionCA}[1]{% adapted from \tcbIndexPrintKeyCA
+  \tcb@Index@Print@CA{#1}{bracealign_options}{package option}%
+}
+\newrobustcmd{\tcbIndexPrintOptionC}[1]{% adapted from \tcbIndexPrintKeyCA
+  \tcb@Index@Print@C{#1}{bracealign_options}%
+}
+\DeclareDocumentEnvironment{docOption}{ O{} m }{%
+  \begin{docKey*}[]
+    [doc name={#2}, doc label={opt:#2}, color key=bracealign_options, #1]
+    {#2}{}{}%
+    \kvtcb@index@command{%
+      \kvtcb@doc@sortindex\idx@actual\tcbIndexPrintOptionCA{#2}%
+    }%
+    \kvtcb@index@command{%
+      {Package options}\idx@level\kvtcb@doc@sortindex\idx@actual%
+      \tcbIndexPrintOptionC{#2}%
+    }%
+}{%
+  \end{docKey*}%
+}
+\def\refOpt{\refDoc{key:opt}}
+%    \end{macrocode}
+%
+%</docstyle>
+%
+% \fi %^^A end of \iffalse
+%
+% \Finale
+%
+\endinput
