@@ -16,7 +16,7 @@
 %<package>\NeedsTeXFormat{LaTeX2e}
 %<package>\ProvidesPackage{overarrows}
 %<*package>
-[2025/02/02 v1.3 Custom extensible arrows over math expressions]
+[2025/04/30 v1.4 Custom extensible arrows over math expressions]
 %</package>
 %
 %<*driver>
@@ -410,6 +410,7 @@ $\myovercmd{test}$
 % \iffalse
 %<*example>
 % \fi
+\NewOverArrowCommand{\myovercmd}{}
 \begin{dispExample}
 $ v_{sub} \qquad \myovercmd{v}_{sub} \qquad \myovercmd*{v}_{sub} $
 \end{dispExample}
@@ -897,7 +898,6 @@ $ \overpictarrow{v} \qquad \overpictarrow{AB} $
 %<*example>
 % \fi
 \pstarrows%^^A pst arrows
-\csundef{overpictarrow}
 \begin{dispExample}
 \NewOverArrowCommand[picture]{\overpictarrow}{}
 $ \overpictarrow{v} \qquad \overpictarrow{AB} $
@@ -1173,6 +1173,7 @@ $ \overbandedarrow{v} \qquad \overbandedarrow{AB} $
 % \end{docOption}
 %
 % \begin{docOption}{pstarrows}
+% \DeclareOverArrowCommand[picture]{\overpictarrow}{}
 %   Loads the \pkg{pict2e} package, with its option |pstarrows|. Vectors using
 %   \LaTeX{} |picture| environment gives then \pstarrows$\overpictarrow{AB}$
 %   instead of \ltxarrows$\overpictarrow{AB}$.
@@ -2240,9 +2241,9 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 %     doc parameter=\marg{name}\oarg{pre code}\marg{keys def},
 %   },
 % }
-%   Defines the method \meta{name}, to be used in commands
-%   \refCom{NewOverArrowCommand}, \refCom{RenewOverArrowCommand},
-%   \refCom{ProvideOverArrowCommand} or \refCom{DeclareOverArrowCommand}.
+%   Defines the method \meta{name}, to be used with
+%   \refCom{NewOverArrowCommand}, with \refCom{RenewOverArrowCommand}, with
+%   \refCom{ProvideOverArrowCommand} or with \refCom{DeclareOverArrowCommand}.
 %   When the \meta{name} method is chosen, corresponding keys are defined by
 %   \meta{keys def}. This must set, in particular, the keys \refKey{no stack
 %   macro hook} and \refKey{no arrow macro hook}. Optional code \meta{pre code}
@@ -3480,6 +3481,19 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
       }
     }
   }
+  \ifovar@option@debug@
+  \PackageInfo{overarrows}{%
+    Meaning of \protect\ovar@#2@normal\MessageBreak
+    used for \@backslashchar#2:\MessageBreak%
+      \expandafter\meaning\csname ovar@#2@normal\endcsname}
+  \fi
+%    \end{macrocode}
+% \changes{v1.4}{2025/04/30}{Make commmands robust}
+%   Expand \cs{ifovar@detectsubscripts@} before closing the group, then define
+%   the command.
+%    \begin{macrocode}
+  \expandafter%
+  \endgroup
   \ifovar@detectsubscripts@%
   \csgdef{ovar@#2@auto}##1{%
 %    \end{macrocode}
@@ -3492,21 +3506,14 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
       \csuse{ovar@#2@normal}{##1}%
     }%
   }
-  \csgdef{#2}{%
-    \@ifstar{\csuse{ovar@#2@starred}}{\csuse{ovar@#2@auto}}%
-  }
+  \expandafter\DeclareDocumentCommand\csname #2\endcsname { s }{%
+    \IfBooleanTF{##1}{\csuse{ovar@#2@starred}}{\csuse{ovar@#2@auto}}%
+  }%
   \else
-  \csgdef{#2}{%
-    \@ifstar{\csuse{ovar@#2@starred}}{\csuse{ovar@#2@normal}}%
-  }
+  \expandafter\DeclareDocumentCommand\csname #2\endcsname { s }{%
+    \IfBooleanTF{##1}{\csuse{ovar@#2@starred}}{\csuse{ovar@#2@normal}}%
+  }%
   \fi
-  \ifovar@option@debug@
-  \PackageInfo{overarrows}{%
-    Meaning of \protect\ovar@#2@normal\MessageBreak
-    used for \@backslashchar#2:\MessageBreak%
-      \expandafter\meaning\csname ovar@#2@normal\endcsname}
-  \fi
-  \endgroup
 }
 %    \end{macrocode}
 % \end{macro}

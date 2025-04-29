@@ -2,6 +2,7 @@
 % Test of the LaTeX overarrows package
 % Loading package with all its options
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\DocumentMetadata{}
 \documentclass{article}
 
 
@@ -54,6 +55,7 @@
 \end{dispExample}
 
 \begin{dispExample}
+\NewOverArrowCommand[tikz]{\tikzvec}{}
 \NewOverArrowCommand[tikz]{\thinnertikzvec}{%
   thinner,
 }

@@ -53,7 +53,7 @@ engine-pdflatex+: engine.pdf+
 .PHONY: %.pdf+
 
 %.pdf+: %.tex $(dep)
-	$(envconfig) $(cmd) $(rcoptions) $(runoptions) $(pvcoptions) $<
+	$(envconfig) $(cmd) $(rcoptions) $(runoptions) $(pvcoptions) $<  < /dev/null | texlogfilter --full-log
 
 .PHONY: speed
 speed: speed-test.tex

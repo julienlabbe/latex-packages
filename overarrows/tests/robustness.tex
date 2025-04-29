@@ -1,0 +1,36 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Test of the LaTeX overarrows package
+% Commands robustness.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass{article}
+\title{Test of the \textsf{overarrows} package\\for commands robustness}
+\author{Julien Labb\'e}
+
+%% test options subother and subactive
+\usepackage[allcommands]{overarrows}
+\usepackage{overarrows-doc}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\listoftables
+
+\listoffigures
+
+\section{Test command in section: $\vv{v}$}
+
+\begin{figure}
+  \caption{Test command in figure caption: $\overleftharpoonup{figure}$}
+\end{figure}
+
+\subsection{Test command in subsection: $\overleftrightarrow{ABCD}$}
+
+\begin{table}
+  \caption{Test command in table caption: $\underbar{table}$}
+\end{table}
+
+\end{document}

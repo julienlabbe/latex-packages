@@ -17,7 +17,7 @@
 %% 
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{overarrows}
-[2025/02/02 v1.3 Custom extensible arrows over math expressions]
+[2025/04/30 v1.4 Custom extensible arrows over math expressions]
 \RequirePackage{etoolbox}
 \newif\ifovar@option@oldarrows@
 \newif\ifovar@option@tikz@
@@ -615,6 +615,14 @@
       }
     }
   }
+  \ifovar@option@debug@
+  \PackageInfo{overarrows}{%
+    Meaning of \protect\ovar@#2@normal\MessageBreak
+    used for \@backslashchar#2:\MessageBreak%
+      \expandafter\meaning\csname ovar@#2@normal\endcsname}
+  \fi
+  \expandafter%
+  \endgroup
   \ifovar@detectsubscripts@%
   \csgdef{ovar@#2@auto}##1{%
     \@ifnextchar \ovar@subcmd {%
@@ -623,21 +631,14 @@
       \csuse{ovar@#2@normal}{##1}%
     }%
   }
-  \csgdef{#2}{%
-    \@ifstar{\csuse{ovar@#2@starred}}{\csuse{ovar@#2@auto}}%
-  }
+  \expandafter\DeclareDocumentCommand\csname #2\endcsname { s }{%
+    \IfBooleanTF{##1}{\csuse{ovar@#2@starred}}{\csuse{ovar@#2@auto}}%
+  }%
   \else
-  \csgdef{#2}{%
-    \@ifstar{\csuse{ovar@#2@starred}}{\csuse{ovar@#2@normal}}%
-  }
+  \expandafter\DeclareDocumentCommand\csname #2\endcsname { s }{%
+    \IfBooleanTF{##1}{\csuse{ovar@#2@starred}}{\csuse{ovar@#2@normal}}%
+  }%
   \fi
-  \ifovar@option@debug@
-  \PackageInfo{overarrows}{%
-    Meaning of \protect\ovar@#2@normal\MessageBreak
-    used for \@backslashchar#2:\MessageBreak%
-      \expandafter\meaning\csname ovar@#2@normal\endcsname}
-  \fi
-  \endgroup
 }
 \NewDocumentCommand{\ProvideOverArrowCommand}{
  O{symb} >{\ovar@cmdname@processor} m m
