@@ -468,6 +468,7 @@ $ \overhooktwoheadrightarrow{v} \qquad \overhooktwoheadrightarrow{AB} $
 % \iffalse
 %<*example>
 % \fi
+\csundef{overhooktwoheadrightarrow code}
 \csundef{overhooktwoheadrightarrow}
 \begin{dispExample}
 \NewOverArrowCommand{\overhooktwoheadrightarrow}{%
@@ -493,6 +494,7 @@ $ \overhooktwoheadrightarrow{v} \qquad \overhooktwoheadrightarrow{AB} $
 % \iffalse
 %<*example>
 % \fi
+\csundef{overhooktwoheadrightarrow code}
 \csundef{overhooktwoheadrightarrow}
 \begin{dispExample}
 \NewOverArrowCommand{\overhooktwoheadrightarrow}{%
@@ -512,6 +514,10 @@ $ \overhooktwoheadrightarrow{v} \qquad \overhooktwoheadrightarrow{AB} $
 % \iffalse
 %<*example>
 % \fi
+\DeclareOverArrowCommand{\overhooktwoheadrightarrow}{%
+  start=\lhook, end=\twoheadrightarrow, middle=\relbar,
+  trim start=0, trim end=3, trim middle=5,
+}
 \begin{dispExample}
 \TestOverArrow{\overhooktwoheadrightarrow}
 \end{dispExample}
@@ -546,7 +552,6 @@ $ \OverRightarrow{v} \qquad \OverRightarrow{AB} $
 % \iffalse
 %<*example>
 % \fi
-\csundef{OverRightarrow}
 \begin{dispExample}
 \NewOverArrowCommand{\OverRightarrow}{%
   start={\smallermathstyle\Relbar},
@@ -568,7 +573,6 @@ $ \OverRightarrow{v} \qquad \OverRightarrow{AB} $
 % \iffalse
 %<*example>
 % \fi
-\csundef{OverRightarrow}
 \begin{dispExample}
 \NewOverArrowCommand{\OverRightarrow}{%
   start={\smallermathstyle\Relbar},
@@ -694,7 +698,6 @@ $ \overtttailrightarrow{v} \qquad \overtttailrightarrow{AB} $
 % \iffalse
 %<*example>
 % \fi
-\csundef{overtttailrightarrow}
 \begin{dispExample}
 \NewOverArrowCommand{\overtttailrightarrow}{%
   start={\vcenter{\hbox{$\smallermathstyle\tttail$}}},
