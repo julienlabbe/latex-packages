@@ -400,7 +400,7 @@
 % \fi
 \begin{dispExample}
 \NewOverArrowCommand{\myovercmd}{}
-$\myovercmd{test}$
+$ \myovercmd{test} $
 \end{dispExample}
 % \iffalse
 %</example>
@@ -446,9 +446,9 @@ $ v_{sub} \qquad \myovercmd{v}_{sub} \qquad \myovercmd*{v}_{sub} $
 \end{dispListing}
 % \iffalse
 %</example>
-% \fi
-% But with the previous definition, the result of the command
-% \cs{overhooktwoheadrightarrow} is faulty:
+% \fi 
+% But with the previous definition, the output of \cs{overhooktwoheadrightarrow}
+% is faulty:
 % \iffalse
 %<*example>
 % \fi
@@ -508,9 +508,9 @@ $ \overhooktwoheadrightarrow{v} \qquad \overhooktwoheadrightarrow{AB} $
 % \fi
 %
 % Finding the correct values for \refKey{trim start}, \refKey{trim end} and
-% \refKey{trim middle} may need many trials. For this purpose, the macro
-% \refCom{TestOverArrow} displays the result of a command for different lengths
-% and math styles:
+% \refKey{trim middle} may need many trials. For this purpose, the
+% \refCom{TestOverArrow} macro displays the result of a command for different
+% lengths and math styles:
 % \iffalse
 %<*example>
 % \fi
@@ -527,8 +527,8 @@ $ \overhooktwoheadrightarrow{v} \qquad \overhooktwoheadrightarrow{AB} $
 %
 % \subsection{Size and position of the arrow}
 %
-% A command \cs{OverRightarrow}, built with the symbols \cs{Relbar}
-% \symb{\Relbar} and \cs{Rightarrow} \symb{\Rightarrow}, gives:
+% A command \cs{OverRightarrow}, built with the symbol \cs{Relbar}
+% \symb{\Relbar} and the symbol \cs{Rightarrow} \symb{\Rightarrow}, gives:
 %\iffalse
 %<*example>
 % \fi
@@ -646,7 +646,7 @@ $ \UnderLeftRightarrow{v} \qquad \UnderLeftRightarrow{AB} $
 % \cs{mathrel}\texttt{\{\textbar\}}\cs{joinrel}\cs{Relbar} and corresponds to
 % the assemblage of a  vertical line \symb{\vert} and the symbol \cs{Relbar}
 % \symb{\Relbar}. The command \cs{mathrel} modifies the spacing according to the
-% math relation class ; \cs{Relbar} corresponds to the equal sign (it's
+% math relation class; \cs{Relbar} corresponds to the equal sign (it's
 % definition is \cs{mathrel}\texttt{\{=\}}).}
 %
 % Symbols association is then simple. As example, one can define a triple tail
@@ -688,7 +688,10 @@ $ \overtttailrightarrow{v} \qquad \overtttailrightarrow{AB} $
 %
 % The previous arrow would be better with a smaller tail, and this can be done
 % with the macro \refCom{smallermathstyle}. But a small tail and a normal sized
-% head are not aligned; as |{\smallermathstyle\tttail}\xjoinrel[8]\rightarrow}|
+% head are not aligned; as
+% \begin{center}
+%|{\smallermathstyle\tttail}\xjoinrel[8]\rightarrow}|
+% \end{center}
 % gives:
 % \begin{center}
 %      \scalebox{2}{${\smallermathstyle\tttail}\xjoinrel[8]\rightarrow$}
@@ -828,9 +831,13 @@ $ \overarchedleftrightarrow{v} \qquad \overarchedleftrightarrow{ABCD} $
 % In addition to PGF/TikZ, the arrow can be drawn with PSTricks macros.
 % For this, the optional argument |pstricks| must be passed to
 % \refCom{NewOverArrowCommand}. Like with
-% |tikz|, the three lengths \refCom{overarrowlength}, \refCom{overarrowthickness}
-% and \refCom{overarrowsmallerthickness} can be used in PSTricks commands.
-% By default, a right arrow is drawn:
+% |tikz|, the three lengths
+% \begin{itemize}
+% \item \refCom{overarrowlength};
+% \item \refCom{overarrowthickness};
+% \item \refCom{overarrowsmallerthickness}
+% \end{itemize}
+% can be used in PSTricks commands. By default, a right arrow is drawn:
 % \iffalse
 %<*example>
 % \fi
@@ -880,9 +887,14 @@ $ \ellipticarrow{v} \qquad \ellipticarrow{AB} $
 % Without any other package, arrows can also be drawn with the \LaTeX{}
 % |picture| environment. In this case, the optional argument |picture| must be
 % passed to \refCom{NewOverArrowCommand}. As with |tikz| or |pstricks|, the
-% three lengths \refCom{overarrowlength}, \refCom{overarrowthickness} and
-% \refCom{overarrowsmallerthickness} are available and can be used in
-% |picture| drawing commands. By default, a right vector is drawn:
+% three lengths
+% \begin{itemize}
+% \item \refCom{overarrowlength};
+% \item \refCom{overarrowthickness};
+% \item \refCom{overarrowsmallerthickness}
+% \end{itemize}
+% are available and can be used in |picture| drawing commands. By default,
+% a right vector is drawn:
 % \iffalse
 %<*example>
 % \fi
@@ -1411,11 +1423,11 @@ $ \displaystyle \heartarrow{Love}
 %
 % \begin{docCommand}{baselinebar}{}
 %   \tcbdocmarginnote{\tcbdocnew{v1.5 2025/10/19}}
-%   Draws a zero-height horizontal bar, aligned with the baseline (analogous to
-%   \cs{relbar} defined by \LaTeX{}, and redefined by the \pkg{amsmath}
-%   package, but centered on the baseline). \cs{baselinebar} should work with
-%   most fonts. It is used in the definition of \refCom{overbar} and
-%   \refCom{underbar}.
+%   Draws a zero-height horizontal bar \symb{\baselinebar}, aligned with the
+%   baseline (analogous to \cs{relbar} defined by \LaTeX{}, and redefined by
+%   the \pkg{amsmath} package, but centered on the baseline). \cs{baselinebar}
+%   should work with most fonts. It is used in the definition of
+%   \refCom{overbar} and \refCom{underbar}.
 %
 %   For example, the \refCom{overbar} command is defined with:
 % \iffalse
@@ -1482,13 +1494,13 @@ $\scriptstyle \overparabola{v} \qquad \overparabola{ABCD} $ \par
 %   \tcbdocmarginnote{\tcbdocupdated{v1.5 2025/10/19}}
 %   Since the version 1.5, the length \cs{overarrowthickness} is always
 %   available, whatever drawing method is used for the arrow (including arrows
-%   drawn with symbols assemblage).
+%   drawn by symbols assemblage).
 % \end{docLength}
 %
 %  \begin{docLength}{overarrowsmallerthickness}
 %    Is set to the default rule thickness of the next smaller math style.
 %    That is:
-%    \begin{itemize}
+%    \begin{itemize}[before=\raggedright]
 %     \item |\fontdimen 8 \scriptfont 3| in \cs{displaystyle} or \cs{textstyle};
 %     \item |\fontdimen 8 \scriptscriptfont 3| in \cs{scriptstyle} or
 %      \cs{scriptscriptstyle}.
@@ -1502,7 +1514,7 @@ $\scriptstyle \overparabola{v} \qquad \overparabola{ABCD} $ \par
 %   \tcbdocmarginnote{\tcbdocupdated{v1.5 2025/10/19}}
 %   Since the version 1.5, the length \cs{overarrowsmallerthickness} is always
 %   available, whatever drawing method is used for the arrow (including arrows
-%   drawn with symbols assemblage).
+%   drawn by symbols assemblage).
 %  \end{docLength}
 %
 % \subsubsection{Vectors macros}
@@ -1564,10 +1576,15 @@ $ \esvectvv*{\imath}{0}  \quad \esvectvv*{e}{r} \quad \esvectvv*{L}{\Delta} $
 % Predefined commands are defined if the corresponding option is set (see
 % section~\ref{sec:predefined-commands-opt},
 % page~\pageref{sec:predefined-commands-opt}). The commands
-% \refCom*{overrightarrow}, \refCom*{overleftarrow},
-% \refCom*{overleftrightarrow}, \refCom*{underrightarrow},
-% \refCom*{underleftarrow} and \refCom*{underleftrightarrow} are affected by the
-% option \refOpt{old-arrows}.
+% \begin{itemize}
+% \item \refCom*{overrightarrow};
+% \item \refCom*{overleftarrow};
+% \item \refCom*{overleftrightarrow};
+% \item \refCom*{underrightarrow};
+% \item \refCom*{underleftarrow};
+% \item \refCom*{underleftrightarrow}
+% \end{itemize}
+% are affected by the option \refOpt{old-arrows}.
 %
 % \medskip
 %
@@ -1839,9 +1856,10 @@ $ \lookback{\text{look back}} $
 %
 % \tcbdocmarginnote{\tcbdocupdated{v1.5 2025/10/19}}
 % Since the version 1.5, the length \refLen{overarrowthickness} can be used to
-% set \refKey{space before arrow} or \refKey{space after arrow}. The main
-% interest is that \refLen{overarrowthickness} scale with the math style and
-% the main font.
+% set \refKey{space before arrow} or \refKey{space after arrow}, whatever
+% drawing methods is chosen, including the symbols assemblage. The main interest
+% is that \refLen{overarrowthickness} scale with the math style and the
+% main font.
 %
 % \iffalse
 %<*example>
@@ -2064,12 +2082,15 @@ $ \smalleroverrightarrow{v} \qquad \smalleroverrightarrow{AB} $
 %     &\refKey*{right arrow}|=2|
 %       \end{tabular*}
 %   \end{center}
-%  \item[\refKey*{esvect}|=strict|] makes, in addition, the command uses the
-%  internal macros of  \pkg{esvect}
-%  \cs{vv} (\refKey*{no trimming}, \refKey*{fill
-%  macro}|={\traitfill@}|, \refKey*{stack macro}|={\overvect@}|). Note that
-%  many configuration keys becomes ineffective.
-% \end{description}
+%   \item[\refKey*{esvect}|=strict|] makes, in addition, the command uses the
+%     internal macros of the \pkg{esvect} \cs{vv} command. this imply
+%     \begin{flushleft}
+%       \refKey*{no trimming}\\
+%       \refKey*{fill macro}|={\traitfill@}|\\
+%       \refKey*{stack macro}|={\overvect@}|
+%     \end{flushleft}
+%     Note that many configuration keys becomes ineffective.
+%   \end{description}
 %
 %\end{docKeys}
 %
@@ -2497,7 +2518,7 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 %
 % \subsection{Alternatives}
 %
-% \begin{description}
+% \begin{description}[style=unboxed]
 %  \item[\textsf{esvect} package]
 %   (\url{https://www.ctan.org/pkg/esvect}), by Eddie Saudrais, provides the
 %   fine vector macro \cs{vv}. This package is loaded by default by
@@ -2510,8 +2531,8 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 %
 %  \item[\pkg{overrightarrow} package]
 %   (\url{https://www.ctan.org/pkg/overrightarrow}), by Robin Fairbairns,
-%   provides the \cs{Overrightarrow} which is an amalgam of \cs{overrightarrow}
-%   and \cs{Rightarrow}.
+%   provides the \cs{Overrightarrow} command which is an amalgam of \cs{overrightarrow}
+%     and \cs{Rightarrow}.
 %
 %  \item[\pkg{harpoon} package] (\url{https://ctan.org/pkg/harpoon}), by Tobias
 %   Kuipers, provides over- and under-harpoon symbol commands.
@@ -3481,8 +3502,8 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 % |#5|: math style\\
 % |#6|: content
 % \changes{v1.5}{2025/10/19}{Save math style}
-% \changes{v1.5}{2025/10/19}{Make \cs{overarrowthickness} and
-% \cs{overarrowsmallerthickness} always available}
+% \changes{v1.5}{2025/10/19}{Make \refLen{overarrowthickness} and
+% \refLen{overarrowsmallerthickness} always available}
 %    \begin{macrocode}
 \def\ovar@stackover@@#1#2#3#4#5#6{%
   \ovar@save@mathstyle{#5}%
