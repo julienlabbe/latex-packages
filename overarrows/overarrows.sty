@@ -155,21 +155,21 @@
   {%
     \ifdef{\relbareda}
       {%
-        \gdef\ovar@auto@middle{\relbareda}
-        \gdef\ovar@auto@trim@middle{1}
-      }
+        \gdef\ovar@auto@middle{\relbareda}%
+        \gdef\ovar@auto@trim@middle{1}%
+      }%
       {%
-        \gdef\ovar@auto@middle{\relbar}
-        \gdef\ovar@auto@trim@middle{2.5}
+        \gdef\ovar@auto@middle{\relbar}%
+        \gdef\ovar@auto@trim@middle{2.5}%
       }%
     \@ifpackageloaded{unicode-math}
       {%
         \check@mathfonts
         \iffontchar\textfont\tw@\string"23AF
-          \gdef\ovar@auto@middle{\mathrel\harrowextender}
-          \gdef\ovar@auto@trim@middle{0}
+          \gdef\ovar@auto@middle{\mathrel\harrowextender}%
+          \gdef\ovar@auto@trim@middle{0}%
         \fi
-      }
+      }%
       {}%
   }
 \newcommand{\SetOverArrowsSubscriptCommand}[1]{\global\let\ovar@subcmd=#1}
@@ -211,11 +211,11 @@
   arrow macro/.value required,
   no stack macro hook/.code={%
     \PackageError{overarrows}{Undefined stack macro}
-    {The requested method is perhaps mispelled}
+    {The requested method is perhaps mispelled}%
   },
   no arrow macro hook/.code={%
     \PackageError{overarrows}{Undefined arrow macro}
-    {The requested method is perhaps mispelled}
+    {The requested method is perhaps mispelled}%
   },
   min length/.store in=\ovar@length@min,
   min length/.value required,
@@ -248,16 +248,16 @@
   right arrow/.default=2,
   right arrow,
   arrow under/.is choice,
-  arrow under/noconfig/.code={
-    \def\ovar@stack@fill{\ovar@stackunder@fill}
-    \def\ovar@stack@lens{\ovar@stackunder@lens}
+  arrow under/noconfig/.code={%
+    \def\ovar@stack@fill{\ovar@stackunder@fill}%
+    \def\ovar@stack@lens{\ovar@stackunder@lens}%
   },
-  arrow under/autoconfig/.code={
+  arrow under/autoconfig/.code={%
     \pgfkeysalso{%
       arrow under=noconfig,
       detect subscripts=false,
       before arrow={\kern 1.3\ex@\relax},% like underarrow@ from amsmath
-    }
+    }%
   },
   arrow under/.default=autoconfig,
 }
@@ -270,9 +270,9 @@
         fill macro/.expanded={%
           \noexpand\ovar@arrow@fill%
           {\expandonce\ovar@shift@left}{\expandonce\ovar@shift@right}%
-        }
-      }
-    }
+        }%
+      }%
+    }%
     \ovar@set{%
       arrow macro/.expanded={%
         \expandonce{\ovar@macro@arrowfill}%
@@ -280,8 +280,8 @@
         {\expandonce{\ovar@trim@middle}\expandonce{\ovar@arrow@middle}%
           \expandonce{\ovar@trim@middle}}%
         {\expandonce{\ovar@trim@end}\expandonce{\ovar@arrow@end}}%
-      }
-    }
+      }%
+    }%
   },
   start/.store in=\ovar@arrow@start,
   middle/.store in=\ovar@arrow@middle,
@@ -321,20 +321,20 @@
       \pgfkeysalso{%
         middle={\relbareda},
         trim middle={1},
-      }
-    }
+      }%
+    }%
   },
   middle config/harrowextender/.code={%
     \pgfkeysalso{%
       middle={\harrowextender},
       trim middle={0},
-    }
+    }%
   },
   middle config/auto/.code={%
     \pgfkeysalso{%
       middle={\ovar@auto@middle},
       trim middle={\ovar@auto@trim@middle},
-    }
+    }%
   },
   amsmath/.is choice,%
   amsmath/mimic/.code=\pgfkeysalso{%
@@ -372,21 +372,21 @@
 \SetOverArrowsMethod[lens]{tikz}[\undef{\ovar@tikz@command}]{%
   no arrow macro hook/.code={%
     \ifdef{\ovar@tikz@command}{}{%
-      \pgfkeysgetvalue{/overarrows/path options}{\ovar@tikz@pathoptions}
+      \pgfkeysgetvalue{/overarrows/path options}{\ovar@tikz@pathoptions}%
       \ovar@set{%
         tikz command/.expanded={%
           \noexpand\draw[\expandonce\ovar@tikz@pathoptions]\expandonce\ovar@tikz@path;
-        }
-      }
-    }
-    \pgfkeysgetvalue{/overarrows/tikz options}{\ovar@tikz@options}
+        }%
+      }%
+    }%
+    \pgfkeysgetvalue{/overarrows/tikz options}{\ovar@tikz@options}%
     \ovar@set{%
       arrow macro/.expanded={%
         $\noexpand\mkern \expandonce{\ovar@shift@left} mu\noexpand\relax$%
         \noexpand\tikz[\expandonce{\ovar@tikz@options}]{\expandonce{\ovar@tikz@command}}%
         $\noexpand\mkern \expandonce{\ovar@shift@right} mu\noexpand\relax$%
-      }
-    }
+      }%
+    }%
   },
   tikz command/.store in=\ovar@tikz@command,
   tikz options/.initial={x=\overarrowlength, line width=\overarrowthickness},
@@ -423,8 +423,8 @@
           \expandonce{\ovar@pstricks@command}%
         \noexpand\end{pspicture}%
         $\noexpand\mkern \expandonce{\ovar@shift@right} mu\noexpand\relax$%
-      }
-    }
+      }%
+    }%
   },
   pstricks command/.store in=\ovar@pstricks@command,
   psset/.store in=\ovar@pstricks@psset,
@@ -455,8 +455,8 @@
           \expandonce{\ovar@picture@command}%
           \noexpand\end{picture}%
         $\noexpand\mkern \expandonce{\ovar@shift@right} mu\noexpand\relax$%
-      }
-    }
+      }%
+    }%
   },
   picture command/.store in=\ovar@picture@command,
   geometry/.store in=\ovar@picture@geometry,
@@ -474,11 +474,11 @@
 \ifdef{\xjoinrel}{%
   \PackageWarning{overarrows}{Command \protect\xjoinrel\space already defined.
     \MessageBreak%
-    Previous definition will be overridden}
+    Previous definition will be overridden}%
 }{}
 \DeclareRobustCommand{\xjoinrel}[1][3.5]{\mathrel{\mkern-#1mu}}
 \newcommand*{\smallermathstyle}{%
-  \mathchoice{\scriptstyle}{\scriptstyle}{\scriptscriptstyle}{}
+  \mathchoice{\scriptstyle}{\scriptstyle}{\scriptscriptstyle}{}%
 }
 \def\ovar@save@mathstyle#1{%
   \let\arrowmathstyle#1%
@@ -548,16 +548,16 @@
   {%
     \@ifpackageloaded{unicode-math-luatex}
       {%
-        \global\let\ovar@set@arrowthickness\ovar@set@arrowthickness@UM@lua
-      }
+        \global\let\ovar@set@arrowthickness\ovar@set@arrowthickness@UM@lua%
+      }%
       {%
         \@ifpackageloaded{unicode-math-xetex}
           {%
-            \gdef\ovar@rulethickness@fontdimen{54}
-            \gdef\ovar@rulethickness@family{2}
+            \gdef\ovar@rulethickness@fontdimen{54}%
+            \gdef\ovar@rulethickness@family{2}%
           }
-          {}
-      }
+          {}%
+      }%
   }
 \def\ovar@stackover@@#1#2#3#4#5#6{%
   \ovar@save@mathstyle{#5}%
@@ -612,38 +612,38 @@
   \begingroup
   \ovar@set@common
   \ifcsdef{ovar@set@#1}{%
-    \csuse{ovar@set@#1}
+    \csuse{ovar@set@#1}%
   }{%
     \PackageError{overarrows}{Unknown method #1}
-    {Try with 'symb', 'tikz', 'pstriks' or 'picture'}
-  }
-  \ovar@set{#3}
+    {Try with 'symb', 'tikz', 'pstriks' or 'picture'}%
+  }%
+  \ovar@set{#3}%
   \ifdef{\ovar@macro@arrow}{}{%
-    \ovar@set{no arrow macro hook}
-  }
+    \ovar@set{no arrow macro hook}%
+  }%
   \ifdef{\ovar@macro@stack}{}{%
-    \ovar@set{no stack macro hook}
-  }
+    \ovar@set{no stack macro hook}%
+  }%
   \csxdef{ovar@#2@normal}{%
     \noexpand\mathpalette{%
       \expandonce{\ovar@macro@stack}{\expandonce{\ovar@macro@arrow}}%
-    }
-  }
+    }%
+  }%
   \csxdef{ovar@#2@starred}{%
     \noexpand\mathpalette{%
       \noexpand\ovar@starversion{%
         \expandonce{\ovar@macro@stack}{\expandonce{\ovar@macro@arrow}}%
-      }
-    }
-  }
+      }%
+    }%
+  }%
   \ifovar@option@debug@
   \PackageInfo{overarrows}{%
     Meaning of \protect\ovar@#2@normal\MessageBreak
     used for \@backslashchar#2:\MessageBreak%
-      \expandafter\meaning\csname ovar@#2@normal\endcsname}
+      \expandafter\meaning\csname ovar@#2@normal\endcsname}%
   \fi
   \expandafter%
-  \endgroup
+  \endgroup%
   \ifovar@detectsubscripts@%
   \csgdef{ovar@#2@auto}##1{%
     \@ifnextchar \ovar@subcmd {%
@@ -651,7 +651,7 @@
     }{%
       \csuse{ovar@#2@normal}{##1}%
     }%
-  }
+  }%
   \expandafter\DeclareDocumentCommand\csname #2\endcsname { s }{%
     \IfBooleanTF{##1}{\csuse{ovar@#2@starred}}{\csuse{ovar@#2@auto}}%
   }%
@@ -664,9 +664,9 @@
 \NewDocumentCommand{\ProvideOverArrowCommand}{
  O{symb} >{\ovar@cmdname@processor} m m
 }{%
-  \ifcsdef{#2}{}{
-    \DeclareOverArrowCommand[#1]{#2}{#3}
-  }
+  \ifcsdef{#2}{}{%
+    \DeclareOverArrowCommand[#1]{#2}{#3}%
+  }%
 }
 \NewDocumentCommand{\NewOverArrowCommand}{
  O{symb} >{\ovar@cmdname@processor} m m
@@ -675,10 +675,10 @@
     \PackageError{overarrows}{Command \csname #2\endcsname already defined}%
     {You have used \protect\NewOverArrowCommand\space with a command that
       already has a definition. \MessageBreak%
-      Choose another name, or use instead \protect\DeclareOverArrowCommand.}
+      Choose another name, or use instead \protect\DeclareOverArrowCommand.}%
   }{%
-    \DeclareOverArrowCommand[#1]{#2}{#3}
-  }
+    \DeclareOverArrowCommand[#1]{#2}{#3}%
+  }%
 }
 \NewDocumentCommand{\RenewOverArrowCommand}{
  O{symb} >{\ovar@cmdname@processor} m m
@@ -687,10 +687,10 @@
     \PackageError{overarrows}{Command  \csname #2\endcsname undefined}%
     {You have used \protect\RenewOverArrowCommand\space with a command that was
       never defined. \MessageBreak%
-      Check the requested name, or use instead \protect\NewOverArrowCommand.}
+      Check the requested name, or use instead \protect\NewOverArrowCommand.}%
   }{%
-    \DeclareOverArrowCommand[#1]{#2}{#3}
-  }
+    \DeclareOverArrowCommand[#1]{#2}{#3}%
+  }%
 }
 \newsavebox\ovar@tempbox
 \def\ovar@starversion#1#2#3{%
@@ -705,13 +705,13 @@
   \NewOverArrowCommand{\vv}{esvect, middle config = relbareda}
 \fi
 \AddToHook{begindocument}[overarrows]
-  {
+  {%
     \ifovar@option@overrightarrow@
       \DeclareOverArrowCommand{\overrightarrow}{%
         amsmath, middle config=relbar,
         end=\ovar@rightarrow,
         right arrow,
-      }
+      }%
     \fi
     \ifovar@option@underrightarrow@
       \DeclareOverArrowCommand{\underrightarrow}{%
@@ -719,7 +719,7 @@
         end=\ovar@rightarrow,
         right arrow,
         arrow under,
-      }
+      }%
     \fi
     \ifovar@option@overleftarrow@
       \DeclareOverArrowCommand{\overleftarrow}{%
@@ -727,7 +727,7 @@
         start=\ovar@leftarrow,
         end=\relbar,
         left arrow,
-      }
+      }%
     \fi
     \ifovar@option@underleftarrow@
       \DeclareOverArrowCommand{\underleftarrow}{%
@@ -736,7 +736,7 @@
         end=\relbar,
         left arrow,
         arrow under,
-      }
+      }%
     \fi
     \ifovar@option@overleftrightarrow@
       \DeclareOverArrowCommand{\overleftrightarrow}{%
@@ -744,7 +744,7 @@
         start=\ovar@leftarrow,
         end=\ovar@rightarrow,
         center arrow,
-      }
+      }%
     \fi
     \ifovar@option@underleftrightarrow@
       \DeclareOverArrowCommand{\underleftrightarrow}{%
@@ -753,14 +753,14 @@
         end=\ovar@rightarrow,
         center arrow,
         arrow under,
-      }
+      }%
     \fi
     \ifovar@option@overrightharpoonup@
       \DeclareOverArrowCommand{\overrightharpoonup}{%
         amsmath, middle config=relbar,
         end=\rightharpoonup,
         right arrow,
-      }
+      }%
     \fi
     \ifovar@option@underrightharpoonup@
       \DeclareOverArrowCommand{\underrightharpoonup}{%
@@ -768,14 +768,14 @@
         end=\rightharpoonup,
         right arrow,
         arrow under,
-      }
+      }%
     \fi
     \ifovar@option@overrightharpoondown@
       \DeclareOverArrowCommand{\overrightharpoondown}{%
         amsmath, middle config=relbar,
         end=\rightharpoondown,
         right arrow,
-      }
+      }%
     \fi
     \ifovar@option@underrightharpoondown@
       \DeclareOverArrowCommand{\underrightharpoondown}{%
@@ -783,7 +783,7 @@
         end=\rightharpoondown,
         right arrow,
         arrow under,
-      }
+      }%
     \fi
     \ifovar@option@overleftharpoonup@
       \DeclareOverArrowCommand{\overleftharpoonup}{%
@@ -791,7 +791,7 @@
         start=\leftharpoonup,
         end=\relbar,
         left arrow,
-      }
+      }%
     \fi
     \ifovar@option@underleftharpoonup@
       \DeclareOverArrowCommand{\underleftharpoonup}{%
@@ -800,7 +800,7 @@
         end=\relbar,
         left arrow,
         arrow under,
-      }
+      }%
     \fi
     \ifovar@option@overleftharpoondown@
       \DeclareOverArrowCommand{\overleftharpoondown}{%
@@ -808,7 +808,7 @@
         start=\leftharpoondown,
         end=\relbar,
         left arrow,
-      }
+      }%
     \fi
     \ifovar@option@underleftharpoondown@
       \DeclareOverArrowCommand{\underleftharpoondown}{%
@@ -817,7 +817,7 @@
         end=\relbar,
         left arrow,
         arrow under,
-      }
+      }%
     \fi
     \ifovar@option@overbar@
       \DeclareOverArrowCommand{\overbar}{%
@@ -825,7 +825,7 @@
         start={\baselinebar}, end={\baselinebar},
         space before arrow={0.5\overarrowthickness},
         space after arrow={3.5\overarrowthickness}
-      }
+      }%
     \fi
     \ifovar@option@underbar@
       \DeclareOverArrowCommand{\underbar}{%
@@ -834,10 +834,10 @@
         arrow under=noconfig,
         space before arrow={3.5\overarrowthickness},
         space after arrow={0.5\overarrowthickness}
-      }
+      }%
     \fi
   }
-\newcommand{\ovar@testmathstyles}[2][]{
+\newcommand{\ovar@testmathstyles}[2][]{%
   \begingroup
   \newcommand*{\ovar@row@teststyle}[1]{%
     $\displaystyle ##1$
@@ -845,8 +845,8 @@
     & $\scriptstyle ##1$
     & $\scriptscriptstyle ##1$
     \\
-  }
-  \renewcommand*{\arraystretch}{1.5}
+  }%
+  \renewcommand*{\arraystretch}{1.5}%
   \begin{tabular*}{0.95\linewidth}{@{\extracolsep{\fill}} cccc}
     \hline
     \footnotesize\texttt{\texttt{\textbackslash displaystyle}}
@@ -861,8 +861,8 @@
     \ovar@row@teststyle{\csuse{#2}{my~long~vector}}
     \IfValueT{#1}{\ovar@row@teststyle{\csuse{#2}{#1}}}
     \hline
-  \end{tabular*}
-  \endgroup
+  \end{tabular*}%
+  \endgroup%
 }
 \begingroup
 \ifovar@option@subother@  \catcode `_=12 \fi
@@ -876,7 +876,7 @@
     #1{v}
     = #1{v}_x + #1{v}_y + #1{v}_z
     = v_x #1{\imath} + v_y #1{\jmath} + v_z #1{k}
-  \end{displaymath}
+  \end{displaymath}%
 }
 \endgroup
 \NewDocumentCommand{\TestOverArrow}{
@@ -884,8 +884,8 @@
 }{%
   \ifcsdef{#3}{}{%
     \PackageWarning{overarrows}{Unknown name '#3' passed to
-      \protect\TestOverArrow}
-  }
+      \protect\TestOverArrow}%
+  }%
   \IfBooleanTF{#1}{%
     \noindent\framebox{%
       \begin{minipage}{0.95\linewidth}
@@ -905,7 +905,7 @@
     }\bigskip\par
   }{%
     \ovar@testmathstyles[#2]{#3}%
-  }
+  }%
 }
 \endinput
 %%
