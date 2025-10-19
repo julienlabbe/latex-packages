@@ -1,7 +1,9 @@
 SetOverArrowsSubscriptCommand
 SetOverArrowsMethod
+arrowmathstyle
 xjoinrel
 smallermathstyle
+baselinebar
 DeclareOverArrowCommand
 ProvideOverArrowCommand
 NewOverArrowCommand

@@ -59,6 +59,8 @@
 \ovar@picture@geometry
 \ovar@picture@linethickness
 \ovar@picture@command
+\ovar@save@mathstyle
+\ovar@bar
 \ovar@tempdim
 \ovar@set@arrowlength
 \ovar@set@arrowthickness

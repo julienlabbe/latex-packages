@@ -8,7 +8,7 @@
 %% 
 %% This is a generated file.
 %% 
-%% Copyright (C) 2023 by Julien Labbé <Julien.Labbe@univ-grenoble-alpes.fr>
+%% Copyright (C) 2023-2025 by Julien Labbé <Julien.Labbe@univ-grenoble-alpes.fr>
 %% 
 %% This file may be distributed and/or modified under the conditions of the LaTeX
 %% Project Public License (LPPL), either version 1.3c of this license or (at your
@@ -17,7 +17,7 @@
 %% 
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{overarrows}
-[2025/04/30 v1.4 Custom extensible arrows over math expressions]
+[2025/10/19 v1.5 Custom extensible arrows over math expressions]
 \RequirePackage{etoolbox}
 \newif\ifovar@option@oldarrows@
 \newif\ifovar@option@tikz@
@@ -480,6 +480,21 @@
 \newcommand*{\smallermathstyle}{%
   \mathchoice{\scriptstyle}{\scriptstyle}{\scriptscriptstyle}{}
 }
+\def\ovar@save@mathstyle#1{%
+  \let\arrowmathstyle#1%
+}%
+\def\ovar@bar#1{%
+  \raisebox
+    {\dimeval{-0.5\height+0.5\depth}} [0pt] [0pt]
+    {$\m@th #1\vphantom{+}\std@minus$}%
+}
+\NewDocumentCommand{\baselinebar} { } {%
+  \mathrel {%
+    \ifdef \arrowmathstyle
+      {\ovar@bar\arrowmathstyle}
+      {\mathpalette\ovar@bar{}}%
+  }%
+}
 \def\ovar@arrow@fill#1#2#3#4#5#6{%
   $\m@th\thickmuskip0mu\medmuskip\thickmuskip\thinmuskip\thickmuskip\relax%
   \mkern #1 mu\relax#6#3%
@@ -544,7 +559,11 @@
           {}
       }
   }
-\def\ovar@stackover@@#1#2#3#4#5#6{\vbox{\ialign{##\crcr%
+\def\ovar@stackover@@#1#2#3#4#5#6{%
+  \ovar@save@mathstyle{#5}%
+  \ovar@set@arrowthickness{#5}%
+  \vbox{%
+    \ialign{##\crcr%
       $#5\mskip #1 mu\relax$\crcr%
       \noalign{#2\nointerlineskip}#4\crcr%
       \noalign{#3\nointerlineskip}%
@@ -552,7 +571,11 @@
     }%
   }%
 }
-\def\ovar@stackunder@@#1#2#3#4#5#6{\vtop{\ialign{##\crcr%
+\def\ovar@stackunder@@#1#2#3#4#5#6{%
+  \ovar@save@mathstyle{#5}%
+  \ovar@set@arrowthickness{#5}%
+  \vtop{%
+    \ialign{##\crcr%
       $\m@th\hfil#5#6\hfil$\crcr%
       \noalign{#2\nointerlineskip}#4\crcr%
       \noalign{#3\nointerlineskip}%
@@ -567,12 +590,10 @@
 \def\ovar@stack@fill{\ovar@stackover@fill}
 \def\ovar@stackover@lens#1#2#3#4#5#6{%
   \ovar@set@arrowlength{#1}{#5}{#6}%
-  \ovar@set@arrowthickness{#5}%
   \ovar@stackover@{#2}{#3}{#4}{#5}{#6}%
 }
 \def\ovar@stackunder@lens#1#2#3#4#5#6{%
   \ovar@set@arrowlength{#1}{#5}{#6}%
-  \ovar@set@arrowthickness{#5}%
   \ovar@stackunder@{#2}{#3}{#4}{#5}{#6}%
 }
 \def\ovar@stack@lens{\ovar@stackover@lens}
@@ -800,19 +821,19 @@
     \fi
     \ifovar@option@overbar@
       \DeclareOverArrowCommand{\overbar}{%
-        amsmath, middle config=relbar,
-        start={\std@minus}, end={\std@minus},% \relbar is defined with \mathsm@sh
-        shift leftright=0,
-        space after arrow=-0.3ex,
+        amsmath, middle={\baselinebar},
+        start={\baselinebar}, end={\baselinebar},
+        space before arrow={0.5\overarrowthickness},
+        space after arrow={3.5\overarrowthickness}
       }
     \fi
     \ifovar@option@underbar@
       \DeclareOverArrowCommand{\underbar}{%
-        amsmath, middle config=relbar,
-        start={\vphantom{+}\std@minus}, end={\std@minus},% \relbar is defined with \mathsm@sh
-        shift leftright=0,
-        arrow under,
-        space before arrow=-0.3ex,
+        amsmath, middle={\baselinebar},
+        start={\baselinebar}, end={\baselinebar},
+        arrow under=noconfig,
+        space before arrow={3.5\overarrowthickness},
+        space after arrow={0.5\overarrowthickness}
       }
     \fi
   }

@@ -1,0 +1,65 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Test of the LaTeX overarrows package
+% for nested \overbar and \underbar commands
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass{article}
+\title{Test of the \textsf{overarrows} package\\
+for nested \cs{underbar} and \cs{overbar} commands}
+\author{Julien Labb\'e}
+
+\usepackage[noesvect, underbar, overbar]{overarrows}
+
+\usepackage{unicode-math}
+
+\newcommand{\cs}[1]{\texttt{\textbackslash #1}}
+
+\begin{document}
+
+\maketitle
+
+\UseName{clist_map_inline:nn}{
+  Latin Modern Math,
+  TeX Gyre Bonum Math,
+  TeX Gyre Pagella Math,
+  TeX Gyre Schola Math,
+  TeX Gyre Termes Math,
+  TeX Gyre DejaVu Math,
+  Asana Math,
+  FiraMath-Regular,
+  Libertinus Math,
+  Garamond Math,
+  GFS Neohellenic Math,
+  KpMath-Regular.otf,
+  STIX Two Math,
+  XITS Math,
+}{%
+  \section*{Math font: #1}
+  \setmathfont{#1}%
+
+  %% unicode-math redefine \overbar when \setmathfont is used (but curiously,
+  %% not \underbar). Redeclare \overbar
+  \DeclareOverArrowCommand{\overbar}{%
+    amsmath, middle={\baselinebar},
+    start={\baselinebar}, end={\baselinebar},
+    space before arrow={0.5\overarrowthickness},
+    space after arrow={3.5\overarrowthickness}
+  }
+
+  \begin{tabular}{ccccc}
+    \cs{bar}
+    & \cs{overline}
+    & \cs{overbar}
+    & \cs{underbar}
+    & \cs{underline}
+    \\
+    $\bar{x} \quad \bar{\bar{x}}$
+    & $\overline{x} \quad \overline{\overline{x}}$
+    & $\overbar{x} \quad \overbar{\overbar{x}} \quad \overrightarrow{\overbar{x}} \quad X_{\overbar{\overbar{ABC}}}$
+    & $\underbar{x} \quad \underbar{\underbar{x}} \quad X_{\underbar{\underbar{ABC}}}$
+    & $\underline{x} \quad \underline{\underline{x}}$
+    \\
+  \end{tabular}
+}
+
+\end{document}

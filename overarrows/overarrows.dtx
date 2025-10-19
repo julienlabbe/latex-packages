@@ -1,6 +1,6 @@
 % \iffalse meta-comment
 %
-% Copyright (C) 2023 by Julien Labbé <Julien.Labbe@univ-grenoble-alpes.fr>
+% Copyright (C) 2023-2025 by Julien Labbé <Julien.Labbe@univ-grenoble-alpes.fr>
 %
 % This file may be distributed and/or modified under the conditions of the
 % LaTeX Project Public License (LPPL), either version 1.3c of this license or
@@ -16,7 +16,7 @@
 %<package>\NeedsTeXFormat{LaTeX2e}
 %<package>\ProvidesPackage{overarrows}
 %<*package>
-[2025/04/30 v1.4 Custom extensible arrows over math expressions]
+[2025/10/19 v1.5 Custom extensible arrows over math expressions]
 %</package>
 %
 %<*driver>
@@ -132,7 +132,7 @@
 % Predefined commands are also provided:
 % \begin{itemize}
 %  \item to typeset vectors:
-%   $$ \vv{v} \qquad \vv{AB}, $$
+%   \[  \vv{v} \qquad \vv{AB},  \]
 %
 % \item to draw arrows of various shapes above math expressions:
 % \begin{align*}
@@ -1246,6 +1246,10 @@ $ \overbandedarrow{v} \qquad \overbandedarrow{AB} $
 %   \meta{command} can be given with or without backslash (prior to the version
 %   1.2, only the name, without backslash, was accepted).
 %
+%   \tcbdocmarginnote{\tcbdocupdated{v1.4 2025/04/30}}
+%   Since the version 1.4, the \meta{command} is robust (for example, it can be
+%   used safety inside \cs{caption}).
+%
 % \begin{description}
 %   \item[\cs{NewOverArrowCommand}] raises an error if \meta{command} is
 %     already defined.
@@ -1325,9 +1329,8 @@ $ \myoverarrow{v} \qquad \myoverarrow{ABCD} $
 %
 % \subsubsection{Useful macros for symbols assemblage}
 %
-% Math symbols assemblage is the default method used to draw arrows. The macros
-% \refCom*{xjoinrel} and \refCom*{smallermathstyle} are designed to help combine
-% and format math symbols.
+% Math symbols assemblage is the default method used to draw arrows.
+% The following macros are designed to help combine and format math symbols.
 %
 % \begin{docCommand}{xjoinrel}{\oarg{number}}
 %   Removes an horizontal space of \meta{number} math units (|3.5 mu| by
@@ -1367,6 +1370,65 @@ $ \displaystyle AB \quad \textstyle AB
 $ \displaystyle AB \quad \smallermathstyle AB
  \quad \smallermathstyle AB \quad \smallermathstyle AB $
 \end{dispExample}
+% \iffalse
+%</example>
+% \fi
+%
+% \end{docCommand}
+%
+% \begin{docCommand}{arrowmathstyle}{}
+%   \tcbdocmarginnote{\tcbdocnew{v1.5 2025/10/19}}
+%   Expands to the current math style. This could be useful inside box macros,
+%   such as, for example, \cs{raisebox}, \cs{rotatebox} or \cs{scalebox} (these
+%   last two are defined by the package \pkg{graphicx}). \cs{arrowmathstyle} is
+%   only available inside commands created with \refCom{NewOverArrowCommand}
+%   and variants.
+%
+%\iffalse
+%<*example>
+% \fi
+\begin{dispExample}
+% ^^A \rotatebox is defined with \usepackage{graphicx}
+\NewOverArrowCommand{\heartarrow}{%
+  start={\raisebox{\dimeval{-0.5\height+0.5\depth}}{$\arrowmathstyle\gg$}},
+  end={\rotatebox[origin=cB]{+90}{$\arrowmathstyle\heartsuit$}},
+  middle={\baselinebar},
+  trim start=7,
+  trim end=2.5,
+  trim middle=4,
+  shift leftright=-6,
+}
+$ \displaystyle \heartarrow{Love}
+\qquad \textstyle \heartarrow{Love}
+\qquad \scriptstyle \heartarrow{Love}
+\qquad \scriptscriptstyle \heartarrow{Love} $
+\end{dispExample}
+% \iffalse
+%</example>
+% \fi
+%
+% \end{docCommand}
+%
+% \begin{docCommand}{baselinebar}{}
+%   \tcbdocmarginnote{\tcbdocnew{v1.5 2025/10/19}}
+%   Draws a zero-height horizontal bar, aligned with the baseline (analogous to
+%   \cs{relbar} defined by \LaTeX{}, and redefined by the \pkg{amsmath}
+%   package, but centered on the baseline). \cs{baselinebar} should work with
+%   most fonts. It is used in the definition of \refCom{overbar} and
+%   \refCom{underbar}.
+%
+%   For example, the \refCom{overbar} command is defined with:
+% \iffalse
+%<*example>
+% \fi
+\begin{dispListing}
+\DeclareOverArrowCommand{\overbar}{%
+  amsmath, middle={\baselinebar}, 
+  start={\baselinebar}, end={\baselinebar},
+  space before arrow={0.5\overarrowthickness},
+  space after arrow={3.5\overarrowthickness}
+}
+\end{dispListing}
 % \iffalse
 %</example>
 % \fi
@@ -1416,6 +1478,11 @@ $\scriptstyle \overparabola{v} \qquad \overparabola{ABCD} $ \par
 %   Theses settings are adapted when the package \pkg{unicode-math} is loaded
 %   (using \cs{Umathoverbarrule} with \LuaLaTeX{} or |\fontdimen 54|, family~2
 %   with \XeLaTeX{} --- see the manual of \pkg{unicode-math}).
+%
+%   \tcbdocmarginnote{\tcbdocupdated{v1.5 2025/10/19}}
+%   Since the version 1.5, the length \cs{overarrowthickness} is always
+%   available, whatever drawing method is used for the arrow (including arrows
+%   drawn with symbols assemblage).
 % \end{docLength}
 %
 %  \begin{docLength}{overarrowsmallerthickness}
@@ -1431,6 +1498,11 @@ $\scriptstyle \overparabola{v} \qquad \overparabola{ABCD} $ \par
 %   Theses settings are adapted when the package \pkg{unicode-math} is loaded
 %   (using \cs{Umathoverbarrule} with \LuaLaTeX{} or |\fontdimen 54|, family~2
 %   with \XeLaTeX{} --- see the manual of \pkg{unicode-math}).
+%
+%   \tcbdocmarginnote{\tcbdocupdated{v1.5 2025/10/19}}
+%   Since the version 1.5, the length \cs{overarrowsmallerthickness} is always
+%   available, whatever drawing method is used for the arrow (including arrows
+%   drawn with symbols assemblage).
 %  \end{docLength}
 %
 % \subsubsection{Vectors macros}
@@ -1502,41 +1574,46 @@ $ \esvectvv*{\imath}{0}  \quad \esvectvv*{e}{r} \quad \esvectvv*{L}{\Delta} $
 % \noindent\textbf{Over arrows}
 %
 %  \begin{docCommand}{overrightarrow}{}
-%    $$\overrightarrow{v} \qquad \overrightarrow{AB} \qquad \overrightarrow{\mathrm{grad}}$$
+%    \[ \overrightarrow{v} \qquad \overrightarrow{AB} \qquad \overrightarrow{\mathrm{grad}} \]
 %
 %   The shape of the arrow is smaller if the option \refOpt{old-arrows} is set.
 %  \end{docCommand}
 %
 %  \begin{docCommand}{overleftarrow}{}
-%    $$\overleftarrow{v} \qquad \overleftarrow{AB} \qquad \overleftarrow{\mathrm{grad}}$$
+%    \[ \overleftarrow{v} \qquad \overleftarrow{AB} \qquad \overleftarrow{\mathrm{grad}} \]
 %
 %   The shape of the arrow is smaller if the option \refOpt{old-arrows} is set.
 %  \end{docCommand}
 %
 %  \begin{docCommand}{overleftrightarrow}{}
-%  $$\overleftrightarrow{v} \qquad \overleftrightarrow{AB} \qquad\overleftrightarrow{\mathrm{grad}}$$
+%  \[ \overleftrightarrow{v} \qquad \overleftrightarrow{AB} \qquad\overleftrightarrow{\mathrm{grad}} \]
 %
 %   The shape of the arrows is smaller if the option \refOpt{old-arrows} is set.%
 %  \end{docCommand}
 %
 %\begin{docCommand}{overrightharpoonup}{}
-%  $$\overrightharpoonup{v} \qquad \overrightharpoonup{AB} \qquad \overrightharpoonup{\mathrm{grad}}$$
+%  \[ \overrightharpoonup{v} \qquad \overrightharpoonup{AB} \qquad \overrightharpoonup{\mathrm{grad}} \]
 %  \end{docCommand}
 %
 %  \begin{docCommand}{overrightharpoondown}{}
-%  $$\overrightharpoondown{v} \qquad \overrightharpoondown{AB} \qquad \overrightharpoondown{\mathrm{grad}}$$
+%  \[ \overrightharpoondown{v} \qquad \overrightharpoondown{AB} \qquad \overrightharpoondown{\mathrm{grad}} \]
 %  \end{docCommand}
 %
 %  \begin{docCommand}{overleftharpoonup}{}
-%    $$\overleftharpoonup{v} \qquad \overleftharpoonup{AB} \qquad \overleftharpoonup{\mathrm{grad}}$$
+%    \[ \overleftharpoonup{v} \qquad \overleftharpoonup{AB} \qquad \overleftharpoonup{\mathrm{grad}} \]
 %  \end{docCommand}
 %
 %  \begin{docCommand}{overleftharpoondown}{}
-%  $$\overleftharpoondown{v} \qquad \overleftharpoondown{AB} \qquad \overleftharpoondown{\mathrm{grad}}$$
+%  \[ \overleftharpoondown{v} \qquad \overleftharpoondown{AB} \qquad \overleftharpoondown{\mathrm{grad}} \]
 %  \end{docCommand}
 %
 %  \begin{docCommand}{overbar}{}
-%  $$\overbar{v} \qquad \overbar{AB} \qquad \overbar{\mathrm{grad}}$$
+%  \[ \overbar{v} \qquad \overbar{AB} \qquad \overbar{\mathrm{grad}} \]
+%
+%   \tcbdocmarginnote{\tcbdocupdated{v1.5 2025/10/19}}
+%   Since version 1.5, the \cs{overbar} command car be properly nested.
+%   \[  \overbar{\overbar{AB}} \qquad x_{\overbar{\overbar{AB}}}  \]
+%
 %  \end{docCommand}
 %
 %
@@ -1545,41 +1622,45 @@ $ \esvectvv*{\imath}{0}  \quad \esvectvv*{e}{r} \quad \esvectvv*{L}{\Delta} $
 % \noindent\textbf{Under arrows}
 %
 %  \begin{docCommand}{underrightarrow}{}
-%    $$\underrightarrow{v} \qquad \underrightarrow{AB} \qquad \underrightarrow{\mathrm{grad}}$$
+%    \[ \underrightarrow{v} \qquad \underrightarrow{AB} \qquad \underrightarrow{\mathrm{grad}} \]
 %
 %   The shape of the arrow is smaller if the option \refOpt{old-arrows} is set.
 %  \end{docCommand}
 %
 %  \begin{docCommand}{underleftarrow}{}
-%    $$\underleftarrow{v} \qquad \underleftarrow{AB} \qquad \underleftarrow{\mathrm{grad}}$$
+%    \[ \underleftarrow{v} \qquad \underleftarrow{AB} \qquad \underleftarrow{\mathrm{grad}} \]
 %
 %   The shape of the arrow is smaller if the option \refOpt{old-arrows} is set.
 %  \end{docCommand}
 %
 %  \begin{docCommand}{underleftrightarrow}{}
-%  $$\underleftrightarrow{v} \qquad \underleftrightarrow{AB} \qquad \underleftrightarrow{\mathrm{grad}}$$
+%  \[ \underleftrightarrow{v} \qquad \underleftrightarrow{AB} \qquad \underleftrightarrow{\mathrm{grad}} \]
 %
 %   The shape of the arrows is smaller if the option \refOpt{old-arrows} is set.
 %  \end{docCommand}
 %
 %  \begin{docCommand}{underrightharpoonup}{}
-%  $$\underrightharpoonup{v} \qquad \underrightharpoonup{AB} \qquad \underrightharpoonup{\mathrm{grad}}$$
+%  \[ \underrightharpoonup{v} \qquad \underrightharpoonup{AB} \qquad \underrightharpoonup{\mathrm{grad}} \]
 %  \end{docCommand}
 %
 %  \begin{docCommand}{underrightharpoondown}{}
-%  $$\underrightharpoondown{v} \qquad \underrightharpoondown{AB} \qquad \underrightharpoondown{\mathrm{grad}}$$
+%  \[ \underrightharpoondown{v} \qquad \underrightharpoondown{AB} \qquad \underrightharpoondown{\mathrm{grad}} \]
 %  \end{docCommand}
 %
 %  \begin{docCommand}{underleftharpoonup}{}
-%  $$\underleftharpoonup{v} \qquad \underleftharpoonup{AB} \qquad \underleftharpoonup{\mathrm{grad}}$$
+%  \[ \underleftharpoonup{v} \qquad \underleftharpoonup{AB} \qquad \underleftharpoonup{\mathrm{grad}} \]
 %  \end{docCommand}
 %
 %  \begin{docCommand}{underleftharpoondown}{}
-%  $$\underleftharpoondown{v} \qquad \underleftharpoondown{AB} \qquad \underleftharpoondown{\mathrm{grad}}$$
+%  \[ \underleftharpoondown{v} \qquad \underleftharpoondown{AB} \qquad \underleftharpoondown{\mathrm{grad}} \]
 %  \end{docCommand}
 %
 %  \begin{docCommand}{underbar}{}
-%  $$\underbar{v} \qquad \underbar{AB} \qquad \underbar{\mathrm{grad}}$$
+%  \[ \underbar{v} \qquad \underbar{AB} \qquad \underbar{\mathrm{grad}} \]
+%
+%   \tcbdocmarginnote{\tcbdocupdated{v1.5 2025/10/19}}
+%   Since version 1.5, the \cs{underbar} command car be properly nested.
+%   \[  \underbar{\underbar{AB}} \qquad x_{\underbar{\underbar{AB}}}  \]
 %  \end{docCommand}
 %
 % \subsection{Keys}
@@ -1703,7 +1784,7 @@ $ \lookback{\text{look back}} $
 % \fi
 %
 %
-% \begin{docKey}{shift leftright}{=\oarg{number}}{no default}
+% \begin{docKey}{shift leftright}{=\marg{number}}{no default}
 %   Sets \refKey{shift left} and \refKey{shift right} to the same
 %   \meta{number} value.
 %\end{docKey}
@@ -1713,11 +1794,11 @@ $ \lookback{\text{look back}} $
 %   Sets \refKey{shift left} and \refKey{shift right} to zero.
 %\end{docKey}
 %
-% \begin{docKey}{left arrow}{}{default |2|}
+% \begin{docKey}{left arrow}{=\marg{number}}{default |2|}
 %   Sets \refKey{shift left} to zero and \refKey{shift right} to \meta{number}.
 % \end{docKey}
 %
-% \begin{docKey}{right arrow}{}{default |2|}
+% \begin{docKey}{right arrow}{=\marg{number}}{default |2|}
 %   Sets \refKey{shift right} to zero and \refKey{shift left} to \meta{number}.
 % \end{docKey}
 %
@@ -1756,15 +1837,23 @@ $ \lookback{\text{look back}} $
 %   \refKey{after arrow}.
 % \end{docKey}
 %
+% \tcbdocmarginnote{\tcbdocupdated{v1.5 2025/10/19}}
+% Since the version 1.5, the length \refLen{overarrowthickness} can be used to
+% set \refKey{space before arrow} or \refKey{space after arrow}. The main
+% interest is that \refLen{overarrowthickness} scale with the math style and
+% the main font.
+%
 % \iffalse
 %<*example>
 % \fi
 \begin{dispExample*}{grow to left by=-2em}
 \NewOverArrowCommand{\overharpoonsdown}{%
   start=\leftharpoondown, end=\rightharpoondown, center arrow,
-  space before arrow=-0.2ex, space after arrow=0.3ex,
+  space before arrow=-\overarrowthickness,
+  space after arrow=3\overarrowthickness,
 }
-$ \dot{\overharpoonsdown{v}} \qquad \ddot{\overharpoonsdown{AB}}$
+$ \dot{\overharpoonsdown{v}} \quad \ddot{\overharpoonsdown{AB}} \qquad
+\scriptstyle \dot{\overharpoonsdown{v}} \quad \ddot{\overharpoonsdown{AB}} $
 \end{dispExample*}
 % \iffalse
 %</example>
@@ -2434,6 +2523,18 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 % \renewcommand{\arraystretch}{2}
 % \begin{tabular*}{\linewidth}
 % {@{} l @{\extracolsep{\fill}} p{0.9\linewidth} @{}}
+% v1.5 &\noindent\par\vspace{-\baselineskip}
+% \begin{itemize}[left=0pt, topsep=0pt, partopsep=0pt]
+%   \item Provide the command \refCom{baselinebar}.
+%   \item Redefine \refCom{overbar} and \refCom{underbar} so that they can be
+%     nested properly.
+%   \item Make always available the lengths \refLen{overarrowthickness} and
+%     \refLen{overarrowsmallerthickness}.
+%   \item Provide the command \refCom{arrowmathstyle}.
+% \end{itemize}
+% \\
+% v1.4 & Make commands robust.
+% \\
 % v1.3 & Bug fix for |esvect| options (see \url{https://github.com/julienlabbe/latex-packages/issues/2}).
 % \\
 % v1.2   & \noindent\par\vspace{-\baselineskip}
@@ -2468,9 +2569,9 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 \RequirePackage{etoolbox}
 %    \end{macrocode}
 %
-% \subsection*{Management of options}
+% \subsection{Management of options}
 %
-% \subsubsection*{Declaration of conditionals}
+% \subsubsection{Declaration of conditionals}
 %
 %    \begin{macrocode}
 \newif\ifovar@option@oldarrows@
@@ -2504,7 +2605,7 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 \newif\ifovar@option@underbar@
 %    \end{macrocode}
 %
-% \subsubsection*{Declaration of options}
+% \subsubsection{Declaration of options}
 %
 % \changes{v1.2}{2024/07/11}{Add option pstricks}
 % \changes{v1.3}{2025/02/02}{Use a control sequence to store the esvect option}
@@ -2597,7 +2698,7 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 }
 %    \end{macrocode}
 %
-% \subsubsection*{Options processing}
+% \subsubsection{Options processing}
 %
 % \changes{v1.3}{2025/02/02}{Process options in the order specified by the user}
 %
@@ -2606,7 +2707,7 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 \ProcessOptions*
 %    \end{macrocode}
 %
-% \subsection*{Package dependencies}
+% \subsection{Package dependencies}
 %
 % \LaTeX{} distributions prior to 2020/10/01 must add the \pkg{xparse} package.
 %
@@ -2713,7 +2814,7 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
   }
 %    \end{macrocode}
 %
-% \subsection*{Configuration of subscripts detection}
+% \subsection{Configuration of subscripts detection}
 %
 % \changes{v1.1}{2023/02/15}{Support for non-standard subscripts}
 %
@@ -2747,9 +2848,9 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
   \endgroup
 \fi
 %    \end{macrocode}
-% \subsection*{Management of keys}
+% \subsection{Management of keys}
 %
-% \subsubsection*{Family declaration and setters}
+% \subsubsection{Family declaration and setters}
 %
 %    \begin{macrocode}
 \RequirePackage{pgfkeys}
@@ -2781,7 +2882,7 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 %    \end{macrocode}
 % \end{macro}
 %
-% \subsubsection*{Common keys}
+% \subsubsection{Common keys}
 %
 %    \begin{macrocode}
 \SetOverArrowsMethod*{common}[\undef{\ovar@macro@stack}\undef{\ovar@macro@arrow}]{%
@@ -2882,7 +2983,7 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 }
 %    \end{macrocode}
 %
-% \subsubsection*{Keys for the \texttt{symb} method}
+% \subsubsection{Keys for the \texttt{symb} method}
 %
 %    \begin{macrocode}
 \SetOverArrowsMethod{symb}[\undef{\ovar@macro@arrowfill}]{%
@@ -3028,7 +3129,7 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 }
 %    \end{macrocode}
 %
-% \subsubsection*{Keys for the \texttt{tikz} method}
+% \subsubsection{Keys for the \texttt{tikz} method}
 %
 %    \begin{macrocode}
 \SetOverArrowsMethod[lens]{tikz}[\undef{\ovar@tikz@command}]{%
@@ -3090,7 +3191,7 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 }
 %    \end{macrocode}
 %
-% \subsubsection*{Keys for the \texttt{pstricks} method}
+% \subsubsection{Keys for the \texttt{pstricks} method}
 %
 % \changes{v1.2}{2024/07/11}{Add the method pstricks}
 %
@@ -3143,7 +3244,7 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 }
 %    \end{macrocode}
 %
-% \subsubsection*{Keys for the \texttt{picture} method}
+% \subsubsection{Keys for the \texttt{picture} method}
 %
 %    \begin{macrocode}
 \SetOverArrowsMethod[lens]{picture}{%
@@ -3187,9 +3288,9 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 }
 %    \end{macrocode}
 %
-% \subsection*{Commands}
-%
-% \subsubsection*{Macros for symbols assemblage}
+% \subsection{Commands}
+% 
+% \subsubsection{Macros for symbols assemblage}
 %
 % \begin{macro}{\xjoinrel}
 %    \begin{macrocode}
@@ -3215,6 +3316,45 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 %    \end{macrocode}
 % \end{macro}
 %
+% \changes{v1.5}{2025/10/19}{Save math style}
+% \begin{macro}{\arrowmathstyle}
+% \begin{macro}{\ovar@save@mathstyle}
+% Math styles for arrows commands.
+% |#1|: math style
+%    \begin{macrocode}
+\def\ovar@save@mathstyle#1{%
+  \let\arrowmathstyle#1%
+}%
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\ovar@bar}
+% Draw a zero height horizontal bar aligned on the baseline.\\
+% |#1|: math style
+%    \begin{macrocode}
+\def\ovar@bar#1{%
+  \raisebox
+    {\dimeval{-0.5\height+0.5\depth}} [0pt] [0pt]
+    {$\m@th #1\vphantom{+}\std@minus$}%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\baselinebar}
+% Draw a zero height horizontal bar aligned on the baseline with the current
+% math style (use \cs{arrowmathstyle}, if defined).
+%    \begin{macrocode}
+\NewDocumentCommand{\baselinebar} { } {%
+  \mathrel {%
+    \ifdef \arrowmathstyle
+      {\ovar@bar\arrowmathstyle}
+      {\mathpalette\ovar@bar{}}%
+  }%
+}
+%    \end{macrocode}
+% \end{macro}
+%
 % \begin{macro}{\ovar@arrow@fill}
 % Macro used for default \refKey{fill macro}.\\
 % |#1|: left shift\\
@@ -3233,7 +3373,7 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 %    \end{macrocode}
 % \end{macro}
 %
-% \subsubsection*{Macros for fixed length arrows}
+% \subsubsection{Macros for fixed length arrows}
 %
 % Lengths declaration.
 %    \begin{macrocode}
@@ -3329,7 +3469,7 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 % \end{macro}
 % \end{macro}
 %
-% \subsubsection*{Stack macros}
+% \subsubsection{Stack macros}
 %
 % \begin{macro}{\ovar@stackover@@}
 % \begin{macro}{\ovar@stackunder@@}
@@ -3340,8 +3480,15 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 % |#4|: arrow\\
 % |#5|: math style\\
 % |#6|: content
+% \changes{v1.5}{2025/10/19}{Save math style}
+% \changes{v1.5}{2025/10/19}{Make \cs{overarrowthickness} and
+% \cs{overarrowsmallerthickness} always available}
 %    \begin{macrocode}
-\def\ovar@stackover@@#1#2#3#4#5#6{\vbox{\ialign{##\crcr%
+\def\ovar@stackover@@#1#2#3#4#5#6{%
+  \ovar@save@mathstyle{#5}%
+  \ovar@set@arrowthickness{#5}%
+  \vbox{%
+    \ialign{##\crcr%
       $#5\mskip #1 mu\relax$\crcr%
       \noalign{#2\nointerlineskip}#4\crcr%
       \noalign{#3\nointerlineskip}%
@@ -3349,7 +3496,11 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
     }%
   }%
 }
-\def\ovar@stackunder@@#1#2#3#4#5#6{\vtop{\ialign{##\crcr%
+\def\ovar@stackunder@@#1#2#3#4#5#6{%
+  \ovar@save@mathstyle{#5}%
+  \ovar@set@arrowthickness{#5}%
+  \vtop{%
+    \ialign{##\crcr%
       $\m@th\hfil#5#6\hfil$\crcr%
       \noalign{#2\nointerlineskip}#4\crcr%
       \noalign{#3\nointerlineskip}%
@@ -3413,12 +3564,10 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 %    \begin{macrocode}
 \def\ovar@stackover@lens#1#2#3#4#5#6{%
   \ovar@set@arrowlength{#1}{#5}{#6}%
-  \ovar@set@arrowthickness{#5}%
   \ovar@stackover@{#2}{#3}{#4}{#5}{#6}%
 }
 \def\ovar@stackunder@lens#1#2#3#4#5#6{%
   \ovar@set@arrowlength{#1}{#5}{#6}%
-  \ovar@set@arrowthickness{#5}%
   \ovar@stackunder@{#2}{#3}{#4}{#5}{#6}%
 }
 %    \end{macrocode}
@@ -3431,7 +3580,7 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 % \end{macro}
 % \end{macro}
 %
-% \subsubsection*{Macro for commands creation}
+% \subsubsection{Macro for commands creation}
 %
 % \changes{v1.2}{2024/07/11}{Allow backslash in command name}
 % In the initial version, the commands names must be given as csname (without
@@ -3567,7 +3716,7 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 %    \end{macrocode}
 % \end{macro}
 %
-% \subsubsection*{Starred variant}
+% \subsubsection{Starred variant}
 %
 % \changes{v1.2}{2024/07/11}{Use boxes in starred variant for better performances}
 % \begin{macro}{\ovar@starversion}
@@ -3588,7 +3737,7 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 %    \end{macrocode}
 % \end{macro}
 %
-% \subsubsection*{\cs{vv} vector command}
+% \subsubsection{\cs{vv} vector command}
 %
 % \begin{macro}{\vv}
 % \begin{macro}{\esvectvv}
@@ -3609,7 +3758,7 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 % \end{macro}
 % \end{macro}
 %
-% \subsubsection*{Predefined commands}
+% \subsubsection{Predefined commands}
 %
 % \changes{v1.2}{2024/07/11}{Declare predefined commands after \pkg{unicode-math} settings}
 % Declare predefined commands after \pkg{unicode-math} settings.
@@ -3803,28 +3952,33 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
 % \end{macro}
 %
 % \begin{macro}{\overbar}
+%   \changes{v1.5}{2025/10/19}{Redefine \refCom{overbar} so that it can be
+%   properly nested.}
+%
 %    \begin{macrocode}
     \ifovar@option@overbar@
       \DeclareOverArrowCommand{\overbar}{%
-        amsmath, middle config=relbar,
-        start={\std@minus}, end={\std@minus},% \relbar is defined with \mathsm@sh
-        shift leftright=0,
-        space after arrow=-0.3ex,
+        amsmath, middle={\baselinebar},
+        start={\baselinebar}, end={\baselinebar},
+        space before arrow={0.5\overarrowthickness},
+        space after arrow={3.5\overarrowthickness}
       }
     \fi
 %    \end{macrocode}
 % \end{macro}
 %
-% With \pkg{unicode-math}, add |\vphantom{+}| to get the correct position.
 % \begin{macro}{\underbar}
+%   \changes{v1.5}{2025/10/19}{Redefine \refCom{underbar} so that it can be
+%   properly nested.}
+%
 %    \begin{macrocode}
     \ifovar@option@underbar@
       \DeclareOverArrowCommand{\underbar}{%
-        amsmath, middle config=relbar,
-        start={\vphantom{+}\std@minus}, end={\std@minus},% \relbar is defined with \mathsm@sh
-        shift leftright=0,
-        arrow under,
-        space before arrow=-0.3ex,
+        amsmath, middle={\baselinebar},
+        start={\baselinebar}, end={\baselinebar},
+        arrow under=noconfig,
+        space before arrow={3.5\overarrowthickness},
+        space after arrow={0.5\overarrowthickness}
       }
     \fi
 %    \end{macrocode}
@@ -3835,8 +3989,7 @@ $ \overloopandarrow{v} \qquad \overloopandarrow{AB} $
   }
 %    \end{macrocode}
 %
-%
-% \subsubsection*{Test macros}
+% \subsubsection{Test macros}
 %
 % \begin{macro}{\ovar@testmathstyles}
 % Tabular containing the output of a command for the four math styles and
@@ -4105,7 +4258,7 @@ actual '='
     texcs       = [2]{% commands
       DeclareOverArrowCommand, ProvideOverArrowCommand,%
       NewOverArrowCommand, RenewOverArrowCommand,%
-      TestOverArrow, xjoinrel, smallermathstyle,%
+      TestOverArrow, xjoinrel, smallermathstyle, arrowmathstyle, baselinebar,%
       esvectvv, vv,%
       overrightarrow, overleftarrow, overleftrightarrow, overrightharpoonup,%
       overrightharpoondown, overleftharpoonup, overleftharpoondown, overbar,%
@@ -4151,7 +4304,8 @@ actual '='
       ovar@stackunder@@, ovar@stackover@, ovar@stackunder@, ovar@stackover@fill,
       ovar@stackover@lens, ovar@cmdname@processor, ovar@set@common,
       ovar@starversion, ovar@tempbox, ovar@testmathstyles, ovar@row@teststyle,
-      ovar@testkerning%
+      ovar@testkerning,%
+      ovar@save@mathstyle, ovar@bar,%
     },
     index       = [4][texcs4],%
     indexstyle  = [4]\indexmacrointernal,%

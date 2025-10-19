@@ -17,7 +17,7 @@ https://github.com/julienlabbe/latex-packages/tree/main/overarrows
 
 ## Licence
 
-Copyright (C) 2023-2024 by Julien Labbé
+Copyright (C) 2023-2025 by Julien Labbé
 
 This file may be distributed and/or modified under the conditions of the LaTeX
 Project Public License (LPPL), either version 1.3c of this license or (at your
